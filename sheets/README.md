@@ -63,17 +63,17 @@ who keeps forgetting her passwords.
 
 Every field is required, and they stand in the order of this table. Every value is a YAML string in double quotes, with `\"` for a quote and `\\` for a backslash inside it, and so is each item of `tags`; unquoted, YAML 1.1 reads `made` as [a date](https://yaml.org/type/timestamp.html) and `language: no` as [a boolean](https://yaml.org/type/bool.html), and a title with a colon does not parse.
 
-| Field | Holds | Form | Example |
-|---|---|---|---|
-| `title` | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact | Text on one line that gives a folder name of at least one word | `"Logins at a Glance"` |
-| `topic` | What the sheet covers | Text on one line without a final period | `"How logins work, from passwords and passkeys to getting back in"` |
-| `tags` | The words to filter sheets by | A list of one or more distinct words, each in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2) | `["accounts", "security"]` |
-| `language` | The language of the sheet's text | A language tag of [BCP 47](https://www.rfc-editor.org/info/rfc5646) | `"en"` |
-| `paper` | The paper the pages are made for | `a4` or `letter` | `"a4"` |
-| `made` | The date on which the session that made the sheet first handed it over, in UTC | `YYYY-MM-DD` | `"2026-11-01"` |
-| `skill` | The learning-sheet skill that made the sheet | `tiavelum/claude-setup@` and the hash of a commit of that repository, at least 7 lowercase hexadecimal characters | `"tiavelum/claude-setup@4f26fe8"` |
-| `artifact` | The link of the Design canvas that holds the sheet | `https://claude.ai/artifact/` and the canvas's id | `"https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"` |
-| `artifact_version` | The version of the canvas whose files the folder holds | The version as the Artifact tool reports it | `"1793655646-5d0b"` |
+| Field              | Holds                                                                                        | Form                                                                                                                                                     | Example                                                             |
+| ------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `title`            | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact | Text on one line that gives a folder name of at least one word                                                                                           | `"Logins at a Glance"`                                              |
+| `topic`            | What the sheet covers                                                                        | Text on one line without a final period                                                                                                                  | `"How logins work, from passwords and passkeys to getting back in"` |
+| `tags`             | The words to filter sheets by                                                                | A list of one or more distinct words, each in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2) | `["accounts", "security"]`                                          |
+| `language`         | The language of the sheet's text                                                             | A language tag of [BCP 47](https://www.rfc-editor.org/info/rfc5646)                                                                                      | `"en"`                                                              |
+| `paper`            | The paper the pages are made for                                                             | `a4` or `letter`                                                                                                                                         | `"a4"`                                                              |
+| `made`             | The date on which the session that made the sheet first handed it over, in UTC               | `YYYY-MM-DD`                                                                                                                                             | `"2026-11-01"`                                                      |
+| `skill`            | The learning-sheet skill that made the sheet                                                 | `tiavelum/claude-setup@` and the hash of a commit of that repository, at least 7 lowercase hexadecimal characters                                        | `"tiavelum/claude-setup@4f26fe8"`                                   |
+| `artifact`         | The link of the Design canvas that holds the sheet                                           | `https://claude.ai/artifact/` and the canvas's id                                                                                                        | `"https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"`               |
+| `artifact_version` | The version of the canvas whose files the folder holds                                       | The version as the Artifact tool reports it                                                                                                              | `"1793655646-5d0b"`                                                 |
 
 `made` and `skill` keep their values when the sheet changes; `artifact` and `artifact_version` name the canvas and version that the folder's files were last read from.
 
@@ -107,12 +107,12 @@ The folder name follows from `title` in these steps, which give a name in the fo
 4. Drop apostrophes (`'` and `’`), then split the title into words at every character other than `a`-`z` and `0`-`9`; drop the words left empty.
 5. Join the words with single hyphens.
 
-| Title | Folder name |
-|---|---|
-| `Logins at a Glance` | `logins-at-a-glance` |
+| Title                      | Folder name                 |
+| -------------------------- | --------------------------- |
+| `Logins at a Glance`       | `logins-at-a-glance`        |
 | `Drei Säulen der Vorsorge` | `drei-saeulen-der-vorsorge` |
-| `Don't Get Locked Out` | `dont-get-locked-out` |
-| `Straße und Café` | `strasse-und-cafe` |
+| `Don't Get Locked Out`     | `dont-get-locked-out`       |
+| `Straße und Café`          | `strasse-und-cafe`          |
 
 No two sheets share a folder name, and a new sheet never takes the folder of another. A new sheet on a topic already present takes a title that says what sets it apart, such as its scene ("Points of Sail on a Hillside"), and its artifact is given the same title. The listing of `sheets/` is the list of names taken: one directory read shows them all.
 
