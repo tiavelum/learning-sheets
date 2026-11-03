@@ -2,7 +2,7 @@
 // Renders each sheet of a sheets root to one PDF, and optionally a PNG of its
 // first page, from its canvas files and the Fontsource fonts in node_modules.
 
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
@@ -29,6 +29,8 @@ const REPOSITORY = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const ORIGIN = "https://sheet.invalid";
 const FONT_PATH = "/fonts/";
 const NODE_MODULES = path.join(REPOSITORY, "node_modules");
+// Chromium cannot capture a screenshot much wider than this.
+const MAX_PNG_WIDTH = 16384;
 
 export class RenderError extends Error {}
 
@@ -104,8 +106,10 @@ const CONTENT_TYPES = {
 /** How far a page's content runs past its frame, in px, and where. */
 async function overflow(page, board) {
   return page.evaluate(({ w, h }) => {
-    const root = document.body.firstElementChild;
-    if (!root) return null;
+    const roots = [...document.body.children].filter(
+      (element) => getComputedStyle(element).display !== "none",
+    );
+    if (roots.length === 0) return null;
     let top = 0;
     let left = 0;
     let bottom = 0;
@@ -125,7 +129,7 @@ async function overflow(page, board) {
     };
     const walk = (element, clipped) => {
       if (!clipped) take(element.getBoundingClientRect());
-      const clipsChildren = clipped || (element !== root && clips(element));
+      const clipsChildren = clipped || (!roots.includes(element) && clips(element));
       if (clipsChildren || element instanceof SVGElement) return;
       for (const node of element.childNodes) {
         if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== "") {
@@ -137,7 +141,7 @@ async function overflow(page, board) {
         }
       }
     };
-    walk(root, false);
+    for (const root of roots) walk(root, false);
     const past = {
       bottom: Math.ceil(bottom - h),
       right: Math.ceil(right - w),
@@ -179,6 +183,10 @@ export async function renderSheet(browser, root, name, out, { pngWidth, nodeModu
       throw new RenderError(`${file}: printed to ${printed.getPageCount()} pages, not one`);
     }
     const [copied] = await merged.copyPages(printed, [0]);
+    // Chrome rounds the paper to its own units; the page takes the frame's width again.
+    const { height } = copied.getSize();
+    copied.setMediaBox(0, 0, board.w * 0.75, height);
+    copied.setCropBox(0, 0, board.w * 0.75, height);
     merged.addPage(copied);
   }
   merged.setTitle(canvas.title ?? name);
@@ -291,7 +299,14 @@ export async function renderSheets({
   mkdirSync(out, { recursive: true });
   const results = [];
   if (selected.length === 0) return results;
-  const browser = await launchBrowser();
+  let browser;
+  try {
+    browser = await launchBrowser();
+  } catch (error) {
+    throw new RenderError(
+      `no browser: run npx playwright install chromium or set CHROME_PATH (${error.message.split("\n")[0]})`,
+    );
+  }
   try {
     for (const name of selected) {
       try {
@@ -301,6 +316,9 @@ export async function renderSheets({
         });
       } catch (error) {
         if (!(error instanceof RenderError)) throw error;
+        // What an earlier run or the failed one wrote would pass for this sheet's output.
+        rmSync(path.join(out, `${name}.pdf`), { force: true });
+        rmSync(path.join(out, `${name}.png`), { force: true });
         results.push({ name, error: error.message });
       }
     }
@@ -332,13 +350,19 @@ async function main() {
   let pngWidth;
   if (values["png-width"] !== undefined) {
     pngWidth = Number(values["png-width"]);
-    if (!Number.isInteger(pngWidth) || pngWidth < 1) {
+    if (!Number.isInteger(pngWidth) || pngWidth < 1 || pngWidth > MAX_PNG_WIDTH) {
       console.error(
-        `--png-width must be a whole number of px, not ${values["png-width"]}; ${usage}`,
+        `--png-width must be a whole number of px from 1 to ${MAX_PNG_WIDTH}, not ${values["png-width"]}; ${usage}`,
       );
       process.exitCode = 2;
       return;
     }
+  }
+  // A mistyped root would otherwise pass as a root that holds no sheet.
+  if (!existsSync(values.root) || !statSync(values.root).isDirectory()) {
+    console.error(`${values.root} is not a folder; ${usage}`);
+    process.exitCode = 2;
+    return;
   }
   let results;
   try {

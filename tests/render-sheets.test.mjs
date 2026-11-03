@@ -1,12 +1,11 @@
-// The renderer of scripts/render-sheets.mjs, run on the fixture sheet and on
-// copies of it that load from the network or run past their frame.
-
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import {
   cpSync,
   existsSync,
   mkdirSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   rmSync,
   writeFileSync,
@@ -15,16 +14,19 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { after, describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { PDFDict, PDFDocument, PDFName } from "pdf-lib";
+import { inflateSync } from "node:zlib";
+import { PDFArray, PDFDict, PDFDocument, PDFName } from "pdf-lib";
 import { pageHtml, renderSheets } from "../scripts/render-sheets.mjs";
 
-const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "sheets");
+const TESTS = path.dirname(fileURLToPath(import.meta.url));
+const FIXTURES = path.join(TESTS, "fixtures", "sheets");
+const RENDER = path.join(TESTS, "..", "scripts", "render-sheets.mjs");
+const NODE_MODULES = path.join(TESTS, "..", "node_modules");
 const SHEET = "two-pages-of-squares";
 const temporary = mkdtempSync(path.join(tmpdir(), "render-sheets-"));
 after(() => rmSync(temporary, { recursive: true, force: true }));
 
 let copies = 0;
-/** A sheets root and an output folder, with a copy of the fixture whose page one `change` edits. */
 function copyWithMain(change) {
   const base = path.join(temporary, String(copies++));
   const root = path.join(base, "sheets");
@@ -45,10 +47,22 @@ describe("the renderer", () => {
     assert.equal(pdf.getPageCount(), 2);
     for (const page of pdf.getPages()) {
       const { width, height } = page.getSize();
-      // 794 × 1123 CSS px at 72 / 96 pt per px.
-      assert.ok(Math.abs(width - 595.5) < 1, `width ${width}`);
+      // 794 × 1123 CSS px at 72 / 96 pt per px; Chrome rounds the height.
+      assert.equal(width, 595.5);
       assert.ok(Math.abs(height - 842.25) < 1, `height ${height}`);
     }
+    // The fixture lists the second page first in "boards" and "order".
+    const ink = pdf.getPages().map((page) => {
+      const contents = page.node.Contents();
+      const refs = contents instanceof PDFArray ? contents.asArray() : [contents];
+      return refs
+        .map((ref) =>
+          inflateSync(Buffer.from(pdf.context.lookup(ref).getContents())).toString("latin1"),
+        )
+        .join("\n");
+    });
+    assert.match(ink[0], /\.1216 \.3725 \.749 rg/); // #1F5FBF, page one
+    assert.match(ink[1], /\.902 \.6235 0 rg/); // #E69F00, page two
     const png = readFileSync(path.join(out, `${SHEET}.png`));
     assert.equal(png.readUInt32BE(16), 397);
     assert.equal(png.readUInt32BE(20), Math.round((1123 * 397) / 794));
@@ -131,6 +145,47 @@ describe("the renderer", () => {
     assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), false);
   });
 
+  test("measures every element of the body, whatever stands before the page's root", async () => {
+    const { root, out, main } = copyWithMain((text) =>
+      text
+        .replace("<div\n", "<style>p { margin: 0 }</style>\n      <div\n")
+        .replace("overflow: hidden; ", "")
+        .replace("Page 1</h1>", `<span style="white-space: nowrap">${"W".repeat(120)}</span></h1>`),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.match(
+      result.error ?? "",
+      new RegExp(`^${literal(main)}: the content runs past .* at the right$`),
+    );
+  });
+
+  test("removes the PDF and PNG of a sheet that fails, also those of an earlier run", async () => {
+    const { root, out, main } = copyWithMain();
+    const [first] = await renderSheets({ root, out, pngWidth: 100 });
+    assert.equal(first.error, undefined, first.error);
+    writeFileSync(main, readFileSync(main, "utf8").replace("Page 1</h1>", "{{title}}</h1>"));
+    const [second] = await renderSheets({ root, out, pngWidth: 100 });
+    assert.ok(second.error, "the second render failed");
+    assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), false);
+    assert.equal(existsSync(path.join(out, `${SHEET}.png`)), false);
+  });
+
+  test("fails on a font that does not load", async () => {
+    const { root, out, main } = copyWithMain();
+    const modules = path.join(temporary, "broken-fonts", "node_modules");
+    const fontDir = path.join(modules, "@fontsource", "source-sans-3");
+    cpSync(path.join(NODE_MODULES, "@fontsource", "source-sans-3"), fontDir, { recursive: true });
+    for (const file of readdirSync(path.join(fontDir, "files"))) {
+      writeFileSync(path.join(fontDir, "files", file), "not a font");
+    }
+    const [result] = await renderSheets({ root, out, nodeModules: modules });
+    assert.match(
+      result.error ?? "",
+      new RegExp(`^${literal(main)}: the fonts .*Source Sans 3.* did not load$`),
+    );
+    assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), false);
+  });
+
   test("refuses a page that the static rule forbids, naming the page and the URL", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text.replace("<style>", "<style>@import url(https://example.org/a.css);"),
@@ -152,3 +207,64 @@ describe("the renderer", () => {
     assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), false);
   });
 });
+
+describe("the command", () => {
+  const run = (args, env = {}) =>
+    spawnSync(process.execPath, [RENDER, ...args], {
+      encoding: "utf8",
+      env: { ...process.env, ...env },
+    });
+  const out = () => path.join(temporary, `command-${copies++}`);
+
+  test("exits 0 and prints each PDF and the number of sheets rendered", () => {
+    const folder = out();
+    const result = run(["--root", FIXTURES, "--out", folder]);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(
+      result.stdout,
+      `${path.join(folder, `${SHEET}.pdf`)}: 2 pages\n1 of 1 sheet rendered to ${folder}\n`,
+    );
+  });
+
+  test("exits 1 on a name that is not a sheet folder", () => {
+    const result = run(["--root", FIXTURES, "--out", out(), "no-such-sheet"]);
+    assert.equal(result.status, 1);
+    assert.equal(result.stderr, `${FIXTURES} holds no sheet no-such-sheet\n`);
+  });
+
+  test("exits 1 on a sheet that fails", () => {
+    const { root, out: folder } = copyWithMain((text) => text.replace("Page 1</h1>", "{{x}}</h1>"));
+    const result = run(["--root", root, "--out", folder]);
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /is not static: holds a hole/);
+    assert.equal(result.stdout, `0 of 1 sheet rendered to ${folder}\n`);
+  });
+
+  test("exits 1, naming the fix, where no browser starts", () => {
+    const result = run(["--root", FIXTURES, "--out", out()], { CHROME_PATH: "/nonexistent" });
+    assert.equal(result.status, 1);
+    assert.match(
+      result.stderr,
+      /^no browser: run npx playwright install chromium or set CHROME_PATH/,
+    );
+  });
+
+  for (const args of [
+    ["--pages"],
+    ["--png-width", "abc"],
+    ["--png-width", "0"],
+    ["--png-width", "1.5"],
+    ["--png-width", "16385"],
+    ["--root", "no-such-folder"],
+  ]) {
+    test(`exits 2 on ${args.join(" ")}`, () => {
+      const result = run([...args, "--out", out()]);
+      assert.equal(result.status, 2);
+      assert.match(result.stderr, /usage: render-sheets\.mjs/);
+    });
+  }
+});
+
+function literal(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
