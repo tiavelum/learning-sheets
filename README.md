@@ -39,7 +39,7 @@ Check every sheet folder against [its contract](sheets/README.md):
 npm run check
 ```
 
-It prints the number of sheets it checked, such as `18 sheets in sheets, no violation`; [`scripts/README.md`](scripts/README.md#check-sheetsmjs) gives what it prints on a violation and its exit status.
+It prints the number of sheets it checked, such as `12 sheets in sheets, no violation`; [`scripts/README.md`](scripts/README.md#check-sheetsmjs) gives what it prints on a violation and its exit status.
 
 Render the sheet that the tests use, which stands in [`tests/fixtures/sheets/`](tests/README.md) beside the sheets of `sheets/`:
 
@@ -89,7 +89,7 @@ In the repository on GitHub, open Actions, click "Release" in the list of workfl
 
 The run checks and renders every sheet of `main` and publishes one release tagged with the date and time in UTC, to the minute, at which the run began its work, such as `2026-11-03-1430`, and titled "Learning sheets 2026-11-03 14:30 UTC". Open `https://github.com/tiavelum/learning-sheets/releases`: the new release stands at the top, marked "Latest", and holds:
 
-- `<name>.pdf` for each sheet, named after its folder in [`sheets/`](sheets/README.md), such as `logins-at-a-glance.pdf`;
+- `<name>.pdf` for each sheet, named after its folder in [`sheets/`](sheets/README.md), such as `login-methods-and-recovery.pdf`;
 - `learning-sheets-<tag>.zip` with every PDF;
 - `catalog.json`, every sheet's front matter and its links at that release.
 
@@ -113,33 +113,33 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    ls sheets
    ```
 
-   The sheet's folder name is the one that [Folder name](sheets/README.md#folder-name) gives for the canvas's title, here `logins-at-a-glance`. Where the canvas's title does not take the form that [Front matter](sheets/README.md#front-matter) gives for `title`, or `ls sheets` lists its folder name, choose with the person a title in that form whose folder name is free, one that says what sets the new sheet apart as [Folder name](sheets/README.md#folder-name) gives, and give the canvas that title by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
+   The sheet's folder name is the one that [Folder name](sheets/README.md#folder-name) gives for the canvas's title, here `login-methods-and-recovery`. Where the canvas's title does not take the form that [Front matter](sheets/README.md#front-matter) gives for `title`, or `ls sheets` lists its folder name, choose with the person a title in that form whose folder name is free, one that says what sets the new sheet apart as [Folder name](sheets/README.md#folder-name) gives, and give the canvas that title by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
 
-3. Open an issue in this repository titled `Archive the learning sheet logins-at-a-glance`, whose description says what and why and when it is done:
+3. Open an issue in this repository titled `Archive the learning sheet login-methods-and-recovery`, whose description says what and why and when it is done:
 
    ```markdown
-   Archive the learning sheet `logins-at-a-glance` from [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q) in `sheets/logins-at-a-glance/`, so that it outlives its session and its artifact.
+   Archive the learning sheet `login-methods-and-recovery` from [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q) in `sheets/login-methods-and-recovery/`, so that it outlives its session and its artifact.
 
-   Done when the pull request that adds `sheets/logins-at-a-glance/` is merged.
+   Done when the pull request that adds `sheets/login-methods-and-recovery/` is merged.
    ```
 
 4. Create the branch for the issue, here number 21, with the folder name cut to its first four words, since [NAM-12](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-12) allows five words after the number:
 
    ```bash
-   git switch -c "feat/21-add-$(echo logins-at-a-glance | cut -d- -f1-4)"
+   git switch -c "feat/21-add-$(echo login-methods-and-recovery | cut -d- -f1-4)"
    ```
 
-5. With the Artifact tool, `read` the canvas's `project/canvas.json`, with `out_dir` set to the absolute path of the sheet folder, `sheets/logins-at-a-glance`, so that the tool saves it as `sheets/logins-at-a-glance/project/canvas.json`. List the pages it names:
+5. With the Artifact tool, `read` the canvas's `project/canvas.json`, with `out_dir` set to the absolute path of the sheet folder, `sheets/login-methods-and-recovery`, so that the tool saves it as `sheets/login-methods-and-recovery/project/canvas.json`. List the pages it names:
 
    ```bash
-   node -e 'console.log(Object.keys(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).boards).join("\n"))' sheets/logins-at-a-glance/project/canvas.json
+   node -e 'console.log(Object.keys(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).boards).join("\n"))' sheets/login-methods-and-recovery/project/canvas.json
    ```
 
    It prints one file name per page, such as `Main.dc.html` and `Details.dc.html`. `read` each of them as `project/<page>` in one call with the same `out_dir`. Keep the reply's `url`, `title` and `ver`; where the `ver` of the second read differs from the first, the canvas changed between them, so read all its files again. Where the tool takes no `out_dir` and saves the files in the canvas's own folder, the reply's `saved_dir`, copy them from there with the shell, since a file tool would write them anew, here from the folder the Claude app gives the canvas:
 
    ```bash
-   mkdir -p sheets/logins-at-a-glance
-   cp -R /mnt/user-data/outputs/artifacts/Dcqoruumq3zMKKfUJWJ26Q/project sheets/logins-at-a-glance/
+   mkdir -p sheets/login-methods-and-recovery
+   cp -R /mnt/user-data/outputs/artifacts/Dcqoruumq3zMKKfUJWJ26Q/project sheets/login-methods-and-recovery/
    ```
 
    [Page files](sheets/README.md#page-files) gives what these files are and how they are kept.
@@ -147,13 +147,13 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 6. Confirm that the files hold the bytes the canvas holds:
 
    ```bash
-   sha256sum sheets/logins-at-a-glance/project/*
+   sha256sum sheets/login-methods-and-recovery/project/*
    ```
 
    Each line's hash equals the `sha256` that the Artifact tool reported for that path. On a Mac, this prints the same:
 
    ```bash
-   shasum -a 256 sheets/logins-at-a-glance/project/*
+   shasum -a 256 sheets/login-methods-and-recovery/project/*
    ```
 
 7. Find the commit of the skill that made the sheet. Clone tiavelum/claude-setup and save the copy of the learning-sheet skill the session loaded, here from the skills folder of a Claude cloud workspace; elsewhere, save the `SKILL.md` the session read with its file tool:
@@ -165,7 +165,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 
    In `/tmp/claude-setup`, run the command of [Front matter](sheets/README.md#front-matter) that prints the commit, such as `24b49de`, and do what it says where it prints nothing.
 
-8. Write `sheets/logins-at-a-glance/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill` as `tiavelum/claude-setup@` and the commit from step 7, `paper` from the board sizes, `topic`, `tags` and `language` from the sheet, the sentence and the prompt as [The sheet README](sheets/README.md#the-sheet-readme) gives, and `made` as this command prints it on the day of the first hand-over:
+8. Write `sheets/login-methods-and-recovery/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill` as `tiavelum/claude-setup@` and the commit from step 7, `paper` from the board sizes, `topic`, `tags` and `language` from the sheet, the sentence and the prompt as [The sheet README](sheets/README.md#the-sheet-readme) gives, and `made` as this command prints it on the day of the first hand-over:
 
    ```bash
    date -u +%F
@@ -177,10 +177,10 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    npx biome ci .
    npm test
    npm run check
-   npm run render -- logins-at-a-glance
+   npm run render -- login-methods-and-recovery
    ```
 
-   Biome ends with `No fixes applied.`, the tests with `# fail 0`, the check with the number of sheets and `no violation`, and the render with `build/logins-at-a-glance.pdf: 2 pages`, the number of pages the canvas has, and `1 of 1 sheet rendered to build`. Open the PDF: each page shows what the canvas shows. Where Biome reports the sheet's README, this rewrites it in Biome's form and leaves the canvas files as they are:
+   Biome ends with `No fixes applied.`, the tests with `# fail 0`, the check with the number of sheets and `no violation`, and the render with `build/login-methods-and-recovery.pdf: 2 pages`, the number of pages the canvas has, and `1 of 1 sheet rendered to build`. Open the PDF: each page shows what the canvas shows. Where Biome reports the sheet's README, this rewrites it in Biome's form and leaves the canvas files as they are:
 
    ```bash
    npm run format
@@ -191,27 +191,27 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 10. Commit the sheet folder and push the branch:
 
     ```bash
-    git add sheets/logins-at-a-glance
-    git commit -m 'feat: add the learning sheet logins-at-a-glance' -m "Archives version 1793655646-5d0b of the canvas with the sheet's README, so that the sheet outlives its session and its artifact."
-    git push -u origin feat/21-add-logins-at-a-glance
+    git add sheets/login-methods-and-recovery
+    git commit -m 'feat: add the learning sheet login-methods-and-recovery' -m "Archives version 1793715998-6304 of the canvas with the sheet's README, so that the sheet outlives its session and its artifact."
+    git push -u origin feat/21-add-login-methods-and-recovery
     ```
 
-11. Open a pull request from the branch, titled `feat: add the learning sheet logins-at-a-glance`, with this description, and in its `<details>` the lines that step 6 printed:
+11. Open a pull request from the branch, titled `feat: add the learning sheet login-methods-and-recovery`, with this description, and in its `<details>` the lines that step 6 printed:
 
     ````markdown
-    Add the learning sheet `logins-at-a-glance`, read from version 1793655646-5d0b of [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q), so that it outlives its session and its artifact.
+    Add the learning sheet `login-methods-and-recovery`, read from version 1793715998-6304 of [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q), so that it outlives its session and its artifact.
 
-    Closes #21 (Archive the learning sheet logins-at-a-glance)
+    Closes #21 (Archive the learning sheet login-methods-and-recovery)
 
-    To check, open the artifact `sheets` of this pull request's check run: its `logins-at-a-glance.pdf` shows the pages of the canvas.
+    To check, open the artifact `sheets` of this pull request's check run: its `login-methods-and-recovery.pdf` shows the pages of the canvas.
 
     <details>
     <summary>The sha256 of each canvas file</summary>
 
     ```text
-    d170548d32add08f5d084804b920190596453ed49e0ac53cacfab3992e9b7814  sheets/logins-at-a-glance/project/Details.dc.html
-    8612403f9bc281b88832967ae77e3b9d099bb6f7e86c3374899e7c03118e51a2  sheets/logins-at-a-glance/project/Main.dc.html
-    19e2222405727b857c8b14f2299a272f4d82eac95ae8120fea145919b437ad8b  sheets/logins-at-a-glance/project/canvas.json
+    d170548d32add08f5d084804b920190596453ed49e0ac53cacfab3992e9b7814  sheets/login-methods-and-recovery/project/Details.dc.html
+    8612403f9bc281b88832967ae77e3b9d099bb6f7e86c3374899e7c03118e51a2  sheets/login-methods-and-recovery/project/Main.dc.html
+    e77588e8ad482f1eb112172a355a18fee5dd6b059a9ada9b0e2feb66825c95d0  sheets/login-methods-and-recovery/project/canvas.json
     ```
 
     </details>
@@ -236,31 +236,31 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    - **Another version.** Compare the `sha256` the reply gives for `project/canvas.json` and each page with what this prints for the sheet:
 
      ```bash
-     sha256sum sheets/logins-at-a-glance/project/*
+     sha256sum sheets/login-methods-and-recovery/project/*
      ```
 
-     Where all are equal, go to step 3. Otherwise the canvas holds a version that is not archived: archive it first as step 4 gives, with an issue titled `Archive the newer version of the learning sheet logins-at-a-glance`, and go on from step 3 once its pull request is merged.
-   - **No canvas.** The Artifact tool finds no canvas at `artifact`: create a Design canvas with the sheet's `title`, as the Design type's "The canvas exists" says, and publish the archived `project/canvas.json` and every page to it unchanged, as the Design type's "The calls" says. Where the Artifact tool takes a `root`, `root` is the sheet folder, `file_path` is `sheets/logins-at-a-glance/project/canvas.json` and `files` maps each page's `project/<page>` to the same path below the sheet folder; where it takes `files` as a list, copy the sheet's `project/` into the canvas's own folder first. Then `read` the new canvas's `project/canvas.json`: its `title` is the sheet's. The new canvas's link is the sheet's `artifact` from now on.
+     Where all are equal, go to step 3. Otherwise the canvas holds a version that is not archived: archive it first as step 4 gives, with an issue titled `Archive the newer version of the learning sheet login-methods-and-recovery`, and go on from step 3 once its pull request is merged.
+   - **No canvas.** The Artifact tool finds no canvas at `artifact`: create a Design canvas with the sheet's `title`, as the Design type's "The canvas exists" says, and publish the archived `project/canvas.json` and every page to it unchanged, as the Design type's "The calls" says. Where the Artifact tool takes a `root`, `root` is the sheet folder, `file_path` is `sheets/login-methods-and-recovery/project/canvas.json` and `files` maps each page's `project/<page>` to the same path below the sheet folder; where it takes `files` as a list, copy the sheet's `project/` into the canvas's own folder first. Then `read` the new canvas's `project/canvas.json`: its `title` is the sheet's. The new canvas's link is the sheet's `artifact` from now on.
 
 3. Change the pages on the canvas as the person asks, as the Design type's "Revising a canvas" says.
 
 4. Archive the change as "Archive a sheet" gives from step 3 on, with these differences:
    - A change of title changes the folder name too, as [Folder name](sheets/README.md#folder-name) gives. Give the canvas the new title and take its folder name as step 2 of "Archive a sheet" gives, and use that name for the branch and for every later path.
-   - The issue is titled after the change, such as `Archive the recovery codes added to logins-at-a-glance`, and the branch is `feat/<issue>-change-` and the folder name's first four words.
+   - The issue is titled after the change, such as `Archive the recovery codes added to login-methods-and-recovery`, and the branch is `feat/<issue>-change-` and the folder name's first four words.
    - Before step 5, remove the sheet's canvas files, so that a page the canvas no longer has goes too:
 
      ```bash
-     git rm -q -r sheets/logins-at-a-glance/project
+     git rm -q -r sheets/login-methods-and-recovery/project
      ```
 
-     Where the title changes, move the folder after that, here to the folder name `logins-and-recovery-at-a-glance`:
+     Where the title changes, move the folder after that, here to the folder name `login-methods-and-recovery-codes`:
 
      ```bash
-     git mv sheets/logins-at-a-glance sheets/logins-and-recovery-at-a-glance
+     git mv sheets/login-methods-and-recovery sheets/login-methods-and-recovery-codes
      ```
 
    - In the README, `artifact` and `artifact_version` take the canvas's current link and version, and `made`, `skill` and the prompt stay as they are, as [Front matter](sheets/README.md#front-matter) gives; step 7 is left out.
-   - The pull request's title names the change, such as `feat: add the recovery codes to logins-at-a-glance`.
+   - The pull request's title names the change, such as `feat: add the recovery codes to login-methods-and-recovery`.
 
 ## Content and structure
 

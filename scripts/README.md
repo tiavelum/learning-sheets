@@ -36,7 +36,7 @@ It prints one line per violation, the file and the problem, then their number; w
 On a violation it prints, for example for a `made` without quotes:
 
 ```text
-sheets/logins-at-a-glance/README.md: front matter: "made" is not a string in double quotes
+sheets/login-methods-and-recovery/README.md: front matter: "made" is not a string in double quotes
 1 violation in sheets
 ```
 
@@ -112,7 +112,7 @@ It writes into the output folder:
 A root that holds no sheet gives a page that says so. The page loads nothing from another site, so the built folder can be opened as a file. It prints one line per image, one line on the latest release and the number of sheets:
 
 ```text
-build/site/images/logins-at-a-glance.png: page one at 240 px
+build/site/images/login-methods-and-recovery.png: page one at 240 px
 the latest release 2026-11-03-1430 holds the PDF of 1 of 1 sheet
 1 sheet built into build/site
 ```
