@@ -35,6 +35,6 @@ As [issue #29](https://github.com/tiavelum/learning-sheets/issues/29) and [issue
 ## Consequences
 
 - The browse page shows when each sheet was created and last modified, and sorts by the last change, so a sheet built on moves up the list.
-- The check enforces the fields, their order, a `last_modified` not before `created`, and `## Request` as the README's only section with a request of one to three sentences; whether the request matches the prompt is left to the review of the pull request, which holds the prompt.
+- The check enforces the fields, their order, a `last_modified` not before `created`, and `## Request` as the README's only section with a request of two or three sentences; whether the request is in English and matches the prompt is left to the review of the pull request, which holds the prompt.
 - A session that finds a sheet on its topic asks the person whether to build on it or make a variant, before it archives.
-- The prompts of the sheets archived before this decision stand in the description of the pull request that brought in `## Request`.
+- The prompts of the sheets archived before this decision stand in the description of [pull request #31](https://github.com/tiavelum/learning-sheets/pull/31) (feat: record when a sheet was created and last modified, its skill version and its request).

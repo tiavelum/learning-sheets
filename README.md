@@ -117,7 +117,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    - **A new version.** Give the canvas the title of that sheet, as the next paragraph gives, and archive it as step 4 of [Change a sheet](#change-a-sheet) gives, with this canvas as the sheet's `artifact`.
    - **A variant.** Go on as for any new sheet, with a name that says what sets the variant apart.
 
-   The sheet's folder name is the one that [Folder name](sheets/README.md#folder-name) gives for the canvas's title, here `login-methods-and-recovery`. Where the canvas's title does not take the form that [Front matter](sheets/README.md#front-matter) gives for `title`, or the list names its folder name, choose with the person a title in that form whose folder name is free, one that says what sets the new sheet apart as [Folder name](sheets/README.md#folder-name) gives, and give the canvas that title by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
+   The sheet's folder name is the one that [Folder name](sheets/README.md#folder-name) gives for the canvas's title, here `login-methods-and-recovery`. For a new sheet or a variant, where the canvas's title does not take the form that [Front matter](sheets/README.md#front-matter) gives for `title`, or the list names its folder name, choose with the person a title in that form whose folder name is free, one that says what sets the new sheet apart as [Folder name](sheets/README.md#folder-name) gives. For a new version the title is that of the existing sheet, which the list names. Give the canvas the chosen title, or the existing sheet's, by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
 
 3. Open an issue in this repository titled `Archive the learning sheet login-methods-and-recovery`, whose description says what and why and when it is done:
 
@@ -260,7 +260,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 4. Archive the change as "Archive a sheet" gives from step 3 on, with these differences:
    - A change of title changes the folder name too, as [Folder name](sheets/README.md#folder-name) gives. Give the canvas the new title and take its folder name as step 2 of "Archive a sheet" gives, and use that name for the branch and for every later path.
    - The issue is titled after the change, such as `Archive the recovery codes added to login-methods-and-recovery`, and the branch is `feat/<issue>-change-` and the folder name's first four words.
-   - Before step 5, remove the sheet's canvas files, so that a page the canvas no longer has goes too:
+   - Before step 5 of "Archive a sheet", remove the sheet's canvas files, so that a page the canvas no longer has goes too:
 
      ```bash
      git rm -q -r sheets/login-methods-and-recovery/project
@@ -272,7 +272,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
      git mv sheets/login-methods-and-recovery sheets/login-methods-and-recovery-codes
      ```
 
-   - In the README, as [Front matter](sheets/README.md#front-matter) gives, `created` stays as it is, `last_modified` takes the date that step 8's command prints on the day this session hands the change over, `skill_version` takes the commit that step 7 finds for the skill this session loaded, and `artifact` and `artifact_version` take the canvas's current link and version. The request stays as it is, unless the change changes what the sheet is asked to be, such as a further subject or another reader; then rewrite it as [The sheet README](sheets/README.md#the-sheet-readme) gives.
+   - In the README, as [Front matter](sheets/README.md#front-matter) gives, `created` stays as it is, `last_modified` takes the date that the command of step 8 of "Archive a sheet" prints on the day this session hands the change over, `skill_version` takes the commit that step 7 of "Archive a sheet" finds for the skill this session loaded, and `artifact` and `artifact_version` take the canvas's current link and version. The request stays as it is, unless the change changes what the sheet is asked to be, such as a further subject or another reader; then rewrite it as [The sheet README](sheets/README.md#the-sheet-readme) gives.
    - The pull request's title names the change, such as `feat: add the recovery codes to login-methods-and-recovery`, and its description quotes the prompt that asked for the change, as [The prompt](sheets/README.md#the-prompt) gives.
 
 ## Content and structure

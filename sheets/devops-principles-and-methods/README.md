@@ -13,4 +13,4 @@ artifact_version: "1793715790-8e46"
 
 ## Request
 
-A handout on DevOps that the person can give to adults who know nothing about it. It explains what DevOps is, why it exists and what it is good for, and its methods and the principles behind them.
+A handout on DevOps that the person can give to adults who know nothing about it, to explain it to them. It covers what DevOps is, why it exists and what it is good for, and its methods and the principles behind it.
