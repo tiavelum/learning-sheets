@@ -67,7 +67,7 @@ The page is served once GitHub Pages publishes from the workflow `.github/workfl
 gh api --method POST repos/tiavelum/learning-sheets/pages -f build_type=workflow
 ```
 
-It prints the Pages site as JSON, with `"build_type": "workflow"`. If it fails with HTTP 409, Pages is already enabled; switch it to the workflow with [the call that updates the site](https://docs.github.com/en/rest/pages/pages#update-information-about-a-github-pages-site), which prints nothing and exits with status 0:
+It prints the Pages site as JSON, with `"build_type": "workflow"`. If it fails with HTTP 409 (Conflict), a Pages site probably exists already; switch it to the workflow with [the call that updates the site](https://docs.github.com/en/rest/pages/pages#update-information-about-a-github-pages-site), which prints nothing and exits with status 0:
 
 ```bash
 gh api --method PUT repos/tiavelum/learning-sheets/pages -f build_type=workflow
