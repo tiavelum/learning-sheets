@@ -195,32 +195,60 @@ describe("the renderer", () => {
     assert.match(result.error, /example\.org\/a\.css/);
   });
 
-  test("fails on characters its fonts lack, naming each once with its code point", async () => {
+  test("draws the characters its fonts lack from the fallback, in text and generated content", async () => {
+    const { root, out } = copyWithMain((text) =>
+      text
+        .replace("<style>", '<style>h1::after { content: " ✓"; }')
+        .replace("Page 1</h1>", "Page 1 → 2 → 3</h1>")
+        .replace("that loads nothing.", "that loads nothing, ≥ 1 ★ 😀."),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, []);
+    const drawn = await fontCharacters(path.join(out, `${SHEET}.pdf`));
+    assert.deepEqual(drawn.get("NotoSansMath-Regular"), new Set(["→", "≥"]));
+    assert.deepEqual(drawn.get("NotoSansSymbols2-Regular"), new Set(["✓", "★"]));
+    assert.deepEqual(drawn.get("NotoEmoji-Regular"), new Set(["😀"]));
+  });
+
+  test("draws a character the page's fonts hold from them, not from the fallback", async () => {
+    const { root, out } = copyWithMain((text) => text.replace("Page 1</h1>", "Page 1 € •</h1>"));
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    const drawn = await fontCharacters(path.join(out, `${SHEET}.pdf`));
+    assert.ok(
+      [...drawn.keys()].every((font) => !font.startsWith("Noto")),
+      `fonts embedded: ${[...drawn.keys()].join(", ")}`,
+    );
+  });
+
+  test("warns once per page on each character neither its fonts nor the fallback hold, and prints the sheet", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text
-        .replace("Page 1</h1>", "Page 1 → 2 → 3</h1>")
-        .replace("that loads nothing.", "that loads nothing, ≥ 1 → 2."),
+        .replace("Page 1</h1>", "Page 1  </h1>")
+        .replace("that loads nothing.", "that loads nothing  →."),
     );
     const [result] = await renderSheets({ root, out });
-    assert.equal(
-      result.error,
-      [
-        `${main}: draws U+2192 → in a font the page does not load`,
-        `${main}: draws U+2265 ≥ in a font the page does not load`,
-      ].join("\n"),
-    );
-    assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), false);
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, [
+      `${main}: draws U+E000  in a font neither the page nor the fallback loads`,
+      `${main}: draws U+E001  in a font neither the page nor the fallback loads`,
+    ]);
+    assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), true);
   });
 
-  test("fails on a character of generated content that its fonts lack", async () => {
+  test("warns on a character of generated content that neither its fonts nor the fallback hold", async () => {
     const { root, out, main } = copyWithMain((text) =>
-      text.replace("<style>", '<style>h1::before { content: "→ "; }'),
+      text.replace("<style>", '<style>h1::before { content: "\\E000 "; }'),
     );
     const [result] = await renderSheets({ root, out });
-    assert.equal(result.error, `${main}: draws U+2192 → in a font the page does not load`);
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, [
+      `${main}: draws U+E000  in a font neither the page nor the fallback loads`,
+    ]);
   });
 
-  test("fails on a character that falls through the families it loads to a system font", async () => {
+  test("warns on a character that falls through the families it loads, and past the fallback, to a system font", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text
         .replace(
@@ -234,7 +262,10 @@ describe("the renderer", () => {
         .replace("Page 1</h1>", "Page 1 Ω</h1>"),
     );
     const [result] = await renderSheets({ root, out });
-    assert.equal(result.error, `${main}: draws U+03A9 Ω in a font the page does not load`);
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, [
+      `${main}: draws U+03A9 Ω in a font neither the page nor the fallback loads`,
+    ]);
   });
 
   test("passes characters that a later family of the font-family list covers, and those that draw nothing", async () => {
@@ -252,7 +283,20 @@ describe("the renderer", () => {
     );
     const [result] = await renderSheets({ root, out });
     assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, []);
     assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), true);
+  });
+
+  test("looks only at text whose visibility is visible", async () => {
+    const { root, out } = copyWithMain((text) =>
+      text.replace(
+        "Page 1</h1>",
+        'Page 1<span style="visibility: hidden"></span><span style="display: none"></span></h1>',
+      ),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, []);
   });
 
   test("fails on a network request made while the page renders", async () => {
@@ -300,16 +344,23 @@ describe("the command", () => {
     assert.equal(result.stdout, `0 of 1 sheet rendered to ${folder}\n`);
   });
 
-  test("exits 1 on a page that draws a character in a font it does not load", () => {
+  test("exits 0 and warns on stderr where a page draws a character neither its fonts nor the fallback hold", () => {
     const {
       root,
       out: folder,
       main,
-    } = copyWithMain((text) => text.replace("Page 1</h1>", "Page 1 →</h1>"));
+    } = copyWithMain((text) => text.replace("Page 1</h1>", "Page 1  →</h1>"));
     const result = run(["--root", root, "--out", folder]);
-    assert.equal(result.status, 1);
-    assert.equal(result.stderr, `${main}: draws U+2192 → in a font the page does not load\n`);
-    assert.equal(result.stdout, `0 of 1 sheet rendered to ${folder}\n`);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(
+      result.stderr,
+      `${main}: draws U+E000  in a font neither the page nor the fallback loads\n`,
+    );
+    assert.equal(
+      result.stdout,
+      `${path.join(folder, `${SHEET}.pdf`)}: 2 pages\n1 of 1 sheet rendered to ${folder}\n`,
+    );
+    assert.equal(existsSync(path.join(folder, `${SHEET}.pdf`)), true);
   });
 
   test("exits 1, naming the fix, where no browser starts", () => {
@@ -336,6 +387,30 @@ describe("the command", () => {
     });
   }
 });
+
+// The characters each font of a PDF draws, by font name, from its ToUnicode map.
+async function fontCharacters(file) {
+  const pdf = await PDFDocument.load(readFileSync(file));
+  const fonts = new Map();
+  for (const [, object] of pdf.context.enumerateIndirectObjects()) {
+    if (!(object instanceof PDFDict)) continue;
+    const base = object.get(PDFName.of("BaseFont"));
+    const map = object.get(PDFName.of("ToUnicode"));
+    if (!(base instanceof PDFName) || !map) continue;
+    const cmap = inflateSync(Buffer.from(pdf.context.lookup(map).getContents())).toString("latin1");
+    const characters = new Set();
+    for (const [, hex] of cmap.matchAll(/<[0-9A-Fa-f]+>\s*<([0-9A-Fa-f]+)>\s*$/gm)) {
+      const character = Buffer.from(hex, "hex").swap16().toString("utf16le");
+      // A font can map a glyph it never draws to the noncharacter U+FFFF.
+      if (character.codePointAt(0) > 0x7e && !/\p{Noncharacter_Code_Point}/u.test(character)) {
+        characters.add(character);
+      }
+    }
+    const name = base.decodeText().split("+").pop();
+    fonts.set(name, new Set([...(fonts.get(name) ?? []), ...characters]));
+  }
+  return fonts;
+}
 
 function literal(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

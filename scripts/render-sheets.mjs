@@ -26,6 +26,7 @@ const REPOSITORY = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 // request to anything else is one the renderer did not serve itself.
 const ORIGIN = "https://sheet.invalid";
 const FONT_PATH = "/fonts/";
+const FALLBACK_PATH = "/fallback/";
 const NODE_MODULES = path.join(REPOSITORY, "node_modules");
 // Chromium cannot capture a screenshot much wider than this.
 const MAX_PNG_WIDTH = 16384;
@@ -39,6 +40,25 @@ const FONT_PROPERTIES = [
   "font-stretch",
   "font-variant-caps",
   "visibility",
+];
+// The packages that draw what no font of a page holds, in the order Chromium
+// tries them: of the faces of one family whose unicode-range holds a
+// character, it tries the one defined last first, and goes on to the one
+// defined before it where that file lacks the glyph.
+const FALLBACK_PACKAGES = [
+  "@fontsource/noto-sans-symbols-2",
+  "@fontsource/noto-sans-math",
+  "@fontsource/noto-emoji",
+];
+// Superscripts and subscripts, letterlike symbols and number forms, arrows,
+// mathematical signs, technical symbols, enclosed numbers, box drawing,
+// shapes, symbols, dingbats and emoji. The ranges are the fallback's own,
+// since a package declares the ranges of its subsets, and Noto Sans Math
+// declares only Latin although its file holds the arrows and signs.
+const FALLBACK_RANGES = [
+  [0x2070, 0x209f],
+  [0x2100, 0x2bff],
+  [0x1f000, 0x1fbff],
 ];
 
 export class RenderError extends Error {}
@@ -76,12 +96,14 @@ export function pageHtml(text, board, nodeModules = NODE_MODULES) {
   const title = page.head?.childNodes.find((node) => node.nodeName === "title");
   const lang = attribute(page.html, "lang");
   const frame = `@page{size:${board.w}px ${board.h}px;margin:0}html,body{margin:0;padding:0}`;
+  const fallback = fallbackFaces(fonts, nodeModules);
   const html = [
     "<!doctype html>",
     `<html${lang ? ` lang="${lang.replaceAll('"', "&quot;")}"` : ""}>`,
     '<head><meta charset="utf-8">',
     title ? serializeOuter(title) : "",
     ...links,
+    fallback ? `<style>${fallback}</style>` : "",
     helmet,
     `<style>${frame}</style>`,
     "</head>",
@@ -95,6 +117,101 @@ export function pageHtml(text, board, nodeModules = NODE_MODULES) {
 function fontCss(file, family) {
   const css = readFileSync(file, "utf8");
   return css.replace(/font-family:\s*'([^']+) Variable';/g, `font-family: '${family}';`);
+}
+
+// A page's font-family lists end in system fonts, so the fallback joins every
+// family the page loads, as further faces of it with the same descriptors.
+// Its range leaves out every character that a face of the page declares,
+// so that a character a family of the page holds is drawn as without it.
+export function fallbackFaces(fonts, nodeModules = NODE_MODULES) {
+  const faces = [...fonts].flatMap(([sheet, family]) =>
+    fontFaces(fontCss(path.join(nodeModules, sheet), family)),
+  );
+  const declared = faces.map((face) => face["unicode-range"] ?? "U+0-10FFFF").join(",");
+  const range = formatRanges(subtractRanges(FALLBACK_RANGES, parseRanges(declared)));
+  if (range === "") return "";
+  const descriptors = new Map();
+  for (const face of faces) {
+    const kept = ["font-family", "font-style", "font-weight", "font-stretch"]
+      .filter((name) => face[name] !== undefined)
+      .map((name) => `${name}:${face[name]};`)
+      .join("");
+    descriptors.set(kept, kept);
+  }
+  const files = [...fallbackFiles()].reverse();
+  return [...descriptors.keys()]
+    .flatMap((kept) =>
+      files.map(
+        (file) =>
+          `@font-face{${kept}src:url(${FALLBACK_PATH}${file}) format('woff2');unicode-range:${range};}`,
+      ),
+    )
+    .join("\n");
+}
+
+let fallbackFileList;
+// The files of each package's regular weight, in the order of FALLBACK_PACKAGES.
+function fallbackFiles() {
+  if (fallbackFileList) return fallbackFileList;
+  const files = [];
+  for (const name of FALLBACK_PACKAGES) {
+    const css = path.join(NODE_MODULES, name, "400.css");
+    if (!isFile(css)) {
+      throw new RenderError(`the fallback font package ${name} is not installed; run npm ci`);
+    }
+    for (const [, file] of readFileSync(css, "utf8").matchAll(
+      /url\(\.\/(files\/[^)]+\.woff2)\)/g,
+    )) {
+      files.push(`${name}/${file}`);
+    }
+  }
+  fallbackFileList = files;
+  return files;
+}
+
+function fontFaces(css) {
+  return [...css.matchAll(/@font-face\s*\{([^}]*)\}/g)].map(([, body]) =>
+    Object.fromEntries(
+      [...body.matchAll(/([a-z-]+)\s*:\s*([^;]+);/g)].map(([, name, value]) => [
+        name,
+        value.trim(),
+      ]),
+    ),
+  );
+}
+
+function parseRanges(text) {
+  return text
+    .split(",")
+    .map((part) => part.trim().replace(/^U\+/i, ""))
+    .filter((part) => part !== "")
+    .map((part) => {
+      const [start, end = start] = part.includes("?")
+        ? [part.replaceAll("?", "0"), part.replaceAll("?", "F")]
+        : part.split("-");
+      return [Number.parseInt(start, 16), Number.parseInt(end, 16)];
+    });
+}
+
+function subtractRanges(ranges, taken) {
+  let left = ranges;
+  for (const [start, end] of taken) {
+    left = left.flatMap(([from, to]) => {
+      if (end < from || start > to) return [[from, to]];
+      return [
+        [from, start - 1],
+        [end + 1, to],
+      ].filter(([a, b]) => a <= b);
+    });
+  }
+  return left;
+}
+
+function formatRanges(ranges) {
+  const hex = (point) => point.toString(16).toUpperCase().padStart(4, "0");
+  return ranges
+    .map(([start, end]) => (start === end ? `U+${hex(start)}` : `U+${hex(start)}-${hex(end)}`))
+    .join(",");
 }
 
 const CONTENT_TYPES = {
@@ -178,7 +295,9 @@ export async function renderSheet(browser, root, name, out, { pngWidth, nodeModu
       nodeModules: nodeModules ?? NODE_MODULES,
     });
     for (const character of characters) {
-      uncovered.push(`${file}: draws ${character} in a font the page does not load`);
+      uncovered.push(
+        `${file}: draws ${character} in a font neither the page nor the fallback loads`,
+      );
     }
     const printed = await PDFDocument.load(pdf);
     if (printed.getPageCount() !== 1) {
@@ -191,9 +310,6 @@ export async function renderSheet(browser, root, name, out, { pngWidth, nodeModu
     copied.setCropBox(0, 0, board.w * 0.75, height);
     merged.addPage(copied);
   }
-  // A character drawn in a font the page does not load fails the sheet, as
-  // every other problem of a page does, once every page has been looked at.
-  if (uncovered.length > 0) throw new RenderError(uncovered.join("\n"));
   merged.setTitle(canvas.title ?? name);
   merged.setCreator("learning-sheets render-sheets.mjs");
   merged.setProducer("pdf-lib");
@@ -202,7 +318,9 @@ export async function renderSheet(browser, root, name, out, { pngWidth, nodeModu
   merged.setModificationDate(new Date(0));
   const target = path.join(out, `${name}.pdf`);
   writeFileSync(target, await merged.save());
-  return { pdf: target, pages: pages.length };
+  // A character that neither the page's fonts nor the fallback hold still
+  // prints, in a font of the machine, so it warns rather than fails the sheet.
+  return { pdf: target, pages: pages.length, warnings: uncovered };
 }
 
 async function printPage(browser, html, fonts, board, file, { png, pngWidth, nodeModules }) {
@@ -221,6 +339,16 @@ async function printPage(browser, html, fonts, board, file, { png, pngWidth, nod
       }
       if (url.pathname === "/") {
         return route.fulfill({ status: 200, contentType: "text/html; charset=utf-8", body: html });
+      }
+      if (url.pathname.startsWith(FALLBACK_PATH)) {
+        const relative = decodeURIComponent(url.pathname.slice(FALLBACK_PATH.length));
+        if (fallbackFiles().includes(relative)) {
+          return route.fulfill({
+            status: 200,
+            contentType: "font/woff2",
+            body: readFileSync(path.join(NODE_MODULES, relative)),
+          });
+        }
       }
       if (url.pathname.startsWith(FONT_PATH)) {
         const relative = decodeURIComponent(url.pathname.slice(FONT_PATH.length));
@@ -489,6 +617,7 @@ async function main() {
   for (const result of results) {
     if (result.error) console.error(result.error);
     else console.log(`${result.pdf}: ${result.pages} page${result.pages === 1 ? "" : "s"}`);
+    for (const warning of result.warnings ?? []) console.error(warning);
   }
   const failed = results.filter((result) => result.error).length;
   if (failed > 0) process.exitCode = 1;
