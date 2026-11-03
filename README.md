@@ -252,15 +252,15 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 
    Where this session archived the sheet itself and has changed its canvas since, wait until the pull request that archived it is merged, bring `main` up to date as step 1 of "Archive a sheet" gives, and go to step 4.
 
-2. With the Artifact tool, `list` the files of the canvas at `artifact`, and compare the reply's `ver` with `artifact_version`:
+2. With the Artifact tool, `list` the files of the canvas at `artifact`, and compare the version that the reply names with `artifact_version`:
    - **The same version.** The canvas holds the archived files: go to step 3.
-   - **Another version.** Compare the `sha256` the reply gives for `project/canvas.json` and each page with what this prints for the sheet:
+   - **Another version.** The reply gives each file's path, type and size but no sha256, so take the sha256 from a `read`: `read` the canvas's `project/canvas.json` and then each page it names, as step 5 of "Archive a sheet" gives, with `out_dir` set to a folder outside the clone, such as `/tmp/canvas-check`, so that the committed files stay as they are. Compare the `sha256` that the read reports for each path with what this prints for the sheet:
 
      ```bash
      sha256sum sheets/login-methods-and-recovery/project/*
      ```
 
-     Where all are equal, go to step 3. Otherwise the canvas holds a version that is not archived: archive it first as step 4 gives, with an issue titled `Archive the newer version of the learning sheet login-methods-and-recovery`, and go on from step 3 once its pull request is merged.
+     Where the read gives the same paths as this prints and every hash is equal, the canvas holds the archived files under a newer version, such as the one a `read` gives a canvas when it moves it to the newest release of the Design type: keep `artifact_version` as it is and go to step 3. Otherwise the canvas holds files that are not archived: archive them first as step 4 gives, with an issue titled `Archive the newer version of the learning sheet login-methods-and-recovery`, and go on from step 3 once its pull request is merged.
    - **No canvas.** The Artifact tool finds no canvas at `artifact`: create a Design canvas with the sheet's `title`, as the Design type's "The canvas exists" says, and publish the archived `project/canvas.json` and every page to it unchanged, as the Design type's "The calls" says. Where the Artifact tool takes a `root`, `root` is the sheet folder, `file_path` is `sheets/login-methods-and-recovery/project/canvas.json` and `files` maps each page's `project/<page>` to the same path below the sheet folder; where it takes `files` as a list, copy the sheet's `project/` into the canvas's own folder first. Then `read` the new canvas's `project/canvas.json`: its `title` is the sheet's. The new canvas's link is the sheet's `artifact` from now on.
 
 3. Change the pages on the canvas as the person asks, as the Design type's "Revising a canvas" says.
