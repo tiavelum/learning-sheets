@@ -160,7 +160,7 @@ describe("the check", () => {
     ["made", "created"],
     ["skill", "skill_version"],
   ]) {
-    test(`reports the field ${old}, which ${field} replaces`, () => {
+    test(`reports ${old} as no field of a sheet and ${field} as missing`, () => {
       const root = brokenCopy((_, sheet) =>
         edit(path.join(sheet, "README.md"), `${field}: `, `${old}: `),
       );
@@ -297,10 +297,13 @@ describe("the check", () => {
     "A two-page test sheet with a square on each page, which the tests of the checks, the renderer and the browse page read. It is for whoever changes those scripts.";
 
   for (const request of [
-    "A sheet of two coloured squares for Dr. Smith and her class.",
+    "A sheet of two coloured squares for Dr. Smith and her class. It has two pages.",
     "A sheet of squares for those who test scripts, e.g. Alice and Bob. It has two pages. Each holds one square.",
-    "A sheet of squares (for whoever changes the scripts.)",
-    "A sheet of squares\nfor whoever changes the scripts, written over two lines.",
+    "A sheet of squares for those who test scripts (e.g. Alice and Bob). It has two pages. Each holds one square.",
+    "A sheet of squares for those who test scripts, z. B. Alice and Bob. It has two pages.",
+    "A sheet of squares that costs 3.5 Francs to print. It is for whoever changes the scripts.",
+    "A sheet of squares. It is (for whoever changes the scripts.)",
+    "A sheet of squares\nfor whoever changes the scripts. It is written over two lines.",
   ]) {
     test(`allows the request ${JSON.stringify(request)}`, () => {
       const root = brokenCopy((_, sheet) => edit(path.join(sheet, "README.md"), REQUEST, request));
@@ -310,10 +313,34 @@ describe("the check", () => {
 
   for (const [what, from, to, pattern] of [
     [
+      "one sentence",
+      REQUEST,
+      "A two-page test sheet for whoever changes the scripts.",
+      /the request is 1 sentence, not two or three/,
+    ],
+    [
       "four sentences",
       "those scripts.",
       "those scripts. It has two pages. Each holds a square.",
-      /the request is 4 sentences, not one to three/,
+      /the request is 4 sentences, not two or three/,
+    ],
+    [
+      "four sentences, one of which starts with a digit",
+      REQUEST,
+      "A test sheet of squares. 2 pages hold them. One is blue. One is orange.",
+      /the request is 4 sentences, not two or three/,
+    ],
+    [
+      "four sentences, one of which starts with a quotation mark",
+      REQUEST,
+      'A test sheet of squares. "Squares" is its subject. One is blue. One is orange.',
+      /the request is 4 sentences, not two or three/,
+    ],
+    [
+      "four sentences, one of which starts with a bracket",
+      REQUEST,
+      "A test sheet of squares. (It has two pages.) One is blue. One is orange.",
+      /the request is 4 sentences, not two or three/,
     ],
     ["no request", REQUEST, "", /has no request below "## Request"/],
     [

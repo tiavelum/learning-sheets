@@ -202,13 +202,15 @@ function isDate(text) {
   return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(text);
 }
 
-// A full stop after one of these ends no sentence, though a capital follows it.
-const ABBREVIATION = /^(?:Dr|Mr|Mrs|Ms|Prof|St|vs|e\.g|i\.e|etc)\.$/i;
+// A full stop after one of these ends no sentence, though a capital or a digit follows it.
+const ABBREVIATION = /^(?:Dr|Mr|Mrs|Ms|Prof|St|vs|e\.g|i\.e|etc|z\.B)\.$/i;
 
 function sentenceCount(paragraph) {
+  // "z. B." is one abbreviation, though a space and a capital stand inside it.
+  const text = paragraph.replace(/(?<![\p{L}\p{N}])z\. B\./gu, "z.B.");
   let count = 1;
-  for (const match of paragraph.matchAll(/(\S+[.!?])["'”’)\]]*\s+(?=\p{Lu})/gu)) {
-    if (!ABBREVIATION.test(match[1])) count++;
+  for (const match of text.matchAll(/(\S+[.!?])["'”’)\]]*\s+(?=["'“‘([]*[\p{Lu}\p{N}])/gu)) {
+    if (!ABBREVIATION.test(match[1].replace(/^["'“‘([]+/u, ""))) count++;
   }
   return count;
 }
@@ -249,11 +251,14 @@ function checkBody(file, body, report) {
     report(file, `the request below "${REQUEST_HEADING}" is not one paragraph of prose`);
   } else if (!/[.!?]["'”’)\]*_]*$/.test(request)) {
     report(file, "the request does not end with the end of a sentence");
-  } else if (sentenceCount(request) > 3) {
-    report(
-      file,
-      `the request is ${sentenceCount(request)} sentences, not one to three on what the sheet was asked to cover, for whom and what for`,
-    );
+  } else {
+    const sentences = sentenceCount(request);
+    if (sentences < 2 || sentences > 3) {
+      report(
+        file,
+        `the request is ${sentences} sentence${sentences === 1 ? "" : "s"}, not two or three on what the sheet was asked to cover, for whom and what for`,
+      );
+    }
   }
   skipBlank();
   if (index < lines.length) {
