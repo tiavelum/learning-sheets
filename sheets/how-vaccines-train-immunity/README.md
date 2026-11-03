@@ -1,5 +1,5 @@
 ---
-title: "vaccine-police-drill"
+title: "how-vaccines-train-immunity"
 topic: "How vaccines train the immune system, and why boosters, herd immunity and side effects matter"
 tags: ["health", "vaccines"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-01"
 skill: "tiavelum/claude-setup@4f26fe8"
 artifact: "https://claude.ai/artifact/2S4qhnhSkk688V2gY1Gxib"
-artifact_version: "1793710663-f10f"
+artifact_version: "1793716012-a677"
 ---
 
 A two-page learning sheet that pictures vaccination as a police drill in a town, with the town as one person, its police as the immune system and a gang as a germ, for a lay adult who wants to understand and memorise how vaccines work.

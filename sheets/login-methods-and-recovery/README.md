@@ -1,5 +1,5 @@
 ---
-title: "logins-at-a-glance"
+title: "login-methods-and-recovery"
 topic: "How logins work, from passwords and passkeys to getting back in"
 tags: ["accounts", "security"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-01"
 skill: "tiavelum/claude-setup@669bb79"
 artifact: "https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"
-artifact_version: "1793710770-1cc3"
+artifact_version: "1793715998-6304"
 ---
 
 A two-page learning sheet that pictures logins as getting into houses, for anyone with online accounts who wants to see how passwords, passkeys and recovery fit together.
