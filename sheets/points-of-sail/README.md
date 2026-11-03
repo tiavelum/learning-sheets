@@ -1,5 +1,5 @@
 ---
-title: "points-of-sail-hillside"
+title: "points-of-sail"
 topic: "The points of sail of a sailing boat, how the sails are trimmed on each, and tacking and gybing"
 tags: ["sailing"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-01"
 skill: "tiavelum/claude-setup@4f26fe8"
 artifact: "https://claude.ai/artifact/HycyugmSWoUamr95tCwcvS"
-artifact_version: "1793710729-7a96"
+artifact_version: "1793716145-bd5e"
 ---
 
 A two-page learning sheet that pictures the wind as a hillside, with sailing towards the wind as climbing and away from it as walking downhill, for a new crew member on a charter yacht.

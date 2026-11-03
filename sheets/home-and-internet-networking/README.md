@@ -1,5 +1,5 @@
 ---
-title: "how-networks-work"
+title: "home-and-internet-networking"
 topic: "How networking technologies work, from the devices at home to the internet"
 tags: ["internet", "networking"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-03"
 skill: "tiavelum/claude-setup@24b49de"
 artifact: "https://claude.ai/artifact/K3US5qBbQ1ibYNtU4nZLxJ"
-artifact_version: "1793710849-0693"
+artifact_version: "1793716148-9116"
 ---
 
 A two-page learning sheet that pictures a network as a postal service whose cards leave your house through its porter and travel to a library that answers, for an adult who knows nothing about networks.
