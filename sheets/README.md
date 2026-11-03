@@ -4,7 +4,7 @@ This folder holds one folder per learning sheet, and this file states what a she
 
 ## What this folder holds
 
-This folder holds one folder per sheet, named as [Folder name](#folder-name) gives, with the sheet's README and its canvas files. A sheet folder keeps a sheet made as a Design canvas; a sheet made in another form has no `project/canvas.json` and does not fit this contract. Beside the sheet folders it holds no file other than this `README.md` and `LICENSE`, the license of the sheets. Why a sheet is kept this way, and not as a PDF or with a catalog file beside it, is recorded in [decision 0001](../docs/decisions/0001-keep-each-sheet-as-its-canvas-files.md).
+This folder holds one folder per sheet, named as [Folder name](#folder-name) gives, with the sheet's README and its canvas files. A sheet folder keeps a sheet made as a Design canvas; a sheet made in another form has no `project/canvas.json` and does not fit this contract. Beside the sheet folders it holds no file other than this `README.md` and `LICENSE`, the license of the sheets. Why a sheet is kept this way, and not as a PDF or with a catalog file beside it, is recorded in [decision 0001](../docs/decisions/0001-keep-each-sheet-as-its-canvas-files.md); why its README records its versions as it does, and how a new sheet on a topic already present is kept, in [decision 0006](../docs/decisions/0006-version-a-sheet-in-its-folder-and-record-its-request.md).
 
 ## A sheet folder
 
@@ -12,7 +12,7 @@ A sheet folder holds exactly these files, here for the sheet `login-methods-and-
 
 ```
 sheets/login-methods-and-recovery/
-  README.md              the sheet's facts, what it covers and its prompt
+  README.md              the sheet's facts and its request
   project/
     canvas.json          the canvas's index of its pages
     Main.dc.html         page one
@@ -21,63 +21,81 @@ sheets/login-methods-and-recovery/
 
 `project/` holds the canvas's own files, as [Page files](#page-files) describes; the Design type expects them in a `project/` folder under the folder it publishes from, so a session can publish them back to a canvas as they are.
 
+A sheet can have several versions, each made by a session and handed over to the person. The folder holds the files of the latest version; git and the pull requests that archived them hold the earlier ones.
+
 ## The sheet README
 
 The README of a sheet holds, in this order:
 
 1. YAML front matter between two `---` lines, with every field of [Front matter](#front-matter) and no other.
-2. One sentence saying what the sheet covers and for whom.
-3. A heading `## Prompt`, then the prompt in a fenced block marked `text`, whose fence has at least three backticks and is longer than any run of backticks in the prompt.
+2. A heading `## Request`, the README's only section, then the request: one paragraph of prose, two or three sentences in English, saying what the sheet was asked to cover, for whom and what for, as the session that made it understood the person's prompt.
 
-The prompt is the person's request that started the sheet, as written, with names of people and private details left out, since the repository is public. Each place where something is left out is marked in square brackets with what kind of thing it was, such as `[left out: a name]`.
+The request says what the sheet was asked to be: it names the scene that the pages picture only where the prompt asked for one, since the scene belongs to the sheet's story and not to what it covers. Where the prompt refers to an earlier conversation, such as "all those items", the request says what it refers to. A later version keeps the request, and rewrites it where its own prompt changes what the sheet is asked to be, such as a further subject or another reader. The prompt as written does not stand in the README; [The prompt](#the-prompt) gives where it stands.
 
-A sheet's README is a document about the repository's content, so under [WR-1](https://github.com/tiavelum/engineering-standards/blob/main/standards/writing.md#wr-1) its sentence, its `topic` and its `tags` are in English, whatever the sheet's `language`; its `title` alone is not translated, since it is the sheet's name that [Folder name](#folder-name) gives. The prompt is quoted as the person wrote it, in the language they wrote it in, since it is the person's words and not text of the repository.
+A sheet's README is a document about the repository's content, so under [WR-1](https://github.com/tiavelum/engineering-standards/blob/main/standards/writing.md#wr-1) its request, its `topic` and its `tags` are in English, whatever the sheet's `language` and whatever language the prompt was written in; its `title` alone is not translated, since it is the sheet's name that [Folder name](#folder-name) gives.
 
-This example uses the facts of the canvas `login-methods-and-recovery`; its prompt is an illustration:
+This example uses the facts of the sheet `login-methods-and-recovery` as its first version had them:
 
-````markdown
+```markdown
 ---
 title: "login-methods-and-recovery"
 topic: "How logins work, from passwords and passkeys to getting back in"
 tags: ["accounts", "security"]
 language: "en"
 paper: "a4"
-made: "2026-11-01"
-skill: "tiavelum/claude-setup@4f26fe8"
+created: "2026-11-01"
+last_modified: "2026-11-01"
+skill_version: "tiavelum/claude-setup@669bb79"
 artifact: "https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"
 artifact_version: "1793715998-6304"
 ---
 
-A two-page learning sheet that pictures logins as getting into houses, for anyone with online accounts who wants to see how passwords, passkeys and recovery fit together.
+## Request
 
-## Prompt
+A printable handout, rather than a Markdown list, on the ways of logging in that an earlier conversation went through, from passwords and passkeys to getting back into an account. It explains each way and how they relate, and gives each an everyday analogy in two or three sentences, for anyone with online accounts who wants to see how they fit together.
+```
+
+## The prompt
+
+The prompt is the person's request that started a version of a sheet, as written. The description of the pull request that archives the version quotes it, so that the sheet can be made again from it, such as with a newer skill, and its request checked against it. It stands there in a collapsed `<details>` section, as [WR-10](https://github.com/tiavelum/engineering-standards/blob/main/standards/writing.md#wr-10) asks of what follows a description's opening, in a fenced block marked `text` whose fence has at least three backticks and is longer than any run of backticks in the prompt.
+
+Since the repository and its pull requests are public, the prompt leaves out names of people and private details. Each place where something is left out is marked in square brackets with what kind of thing it was, such as `[left out: a name]`. The prompt is quoted in the language the person wrote it in, since it is the person's words and not text of the pull request.
+
+This example is an illustration:
+
+````markdown
+<details>
+<summary>The prompt</summary>
 
 ```text
 Make me a learning sheet on how logins work: passwords, passkeys, the codes
 from an app and what to do when I'm locked out. It's for [left out: a name],
 who keeps forgetting her passwords.
 ```
+
+</details>
 ````
 
 ## Front matter
 
-Every field is required, and they stand in the order of this table. Every value is a YAML string in double quotes, with `\"` for a quote and `\\` for a backslash inside it, and so is each item of `tags`; unquoted, YAML 1.1 reads `made` as [a date](https://yaml.org/type/timestamp.html) and `language: no` as [a boolean](https://yaml.org/type/bool.html), and a topic with a colon does not parse.
+Every field is required, and they stand in the order of this table. Every value is a YAML string in double quotes, with `\"` for a quote and `\\` for a backslash inside it, and so is each item of `tags`; unquoted, YAML 1.1 reads `created` as [a date](https://yaml.org/type/timestamp.html) and `language: no` as [a boolean](https://yaml.org/type/bool.html), and a topic with a colon does not parse.
 
-| Field              | Holds                                                                                        | Form                                                                                                                                                     | Example                                                             |
-| ------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `title`            | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact | The sheet's folder name, in the form that [Folder name](#folder-name) gives                                                                              | `"login-methods-and-recovery"`                                      |
-| `topic`            | What the sheet covers                                                                        | Text on one line without a final period                                                                                                                  | `"How logins work, from passwords and passkeys to getting back in"` |
-| `tags`             | The words to filter sheets by                                                                | A list of one or more distinct words, each in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2) | `["accounts", "security"]`                                          |
-| `language`         | The language of the sheet's text                                                             | A language tag of [BCP 47](https://www.rfc-editor.org/info/rfc5646)                                                                                      | `"en"`                                                              |
-| `paper`            | The paper the pages are made for                                                             | `a4` or `letter`                                                                                                                                         | `"a4"`                                                              |
-| `made`             | The date on which the session that made the sheet first handed it over, in UTC               | `YYYY-MM-DD`                                                                                                                                             | `"2026-11-01"`                                                      |
-| `skill`            | The learning-sheet skill that made the sheet                                                 | `tiavelum/claude-setup@` and the hash of a commit of that repository, at least 7 lowercase hexadecimal characters                                        | `"tiavelum/claude-setup@4f26fe8"`                                   |
-| `artifact`         | The link of the Design canvas that holds the sheet                                           | `https://claude.ai/artifact/` and the canvas's id                                                                                                        | `"https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"`               |
-| `artifact_version` | The version of the canvas whose files the folder holds                                       | The version as the Artifact tool reports it                                                                                                              | `"1793715998-6304"`                                                 |
+| Field              | Holds                                                                                                                              | Form                                                                                                                                                     | Example                                                             |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `title`            | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact                                       | The sheet's folder name, in the form that [Folder name](#folder-name) gives                                                                              | `"login-methods-and-recovery"`                                      |
+| `topic`            | What the sheet covers                                                                                                              | Text on one line without a final period                                                                                                                  | `"How logins work, from passwords and passkeys to getting back in"` |
+| `tags`             | The words to filter sheets by                                                                                                      | A list of one or more distinct words, each in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2) | `["accounts", "security"]`                                          |
+| `language`         | The language of the sheet's text                                                                                                   | A language tag of [BCP 47](https://www.rfc-editor.org/info/rfc5646)                                                                                      | `"en"`                                                              |
+| `paper`            | The paper the pages are made for                                                                                                   | `a4` or `letter`                                                                                                                                         | `"a4"`                                                              |
+| `created`          | The date on which the session that made the sheet's first version handed it over, in UTC                                           | `YYYY-MM-DD`                                                                                                                                             | `"2026-11-01"`                                                      |
+| `last_modified`    | The date on which the session that made the sheet's latest version handed it over, in UTC; for a sheet with one version, `created` | `YYYY-MM-DD`, not before `created`                                                                                                                       | `"2026-11-01"`                                                      |
+| `skill_version`    | The learning-sheet skill that made the sheet's latest version                                                                      | `tiavelum/claude-setup@` and the hash of a commit of that repository, at least 7 lowercase hexadecimal characters                                        | `"tiavelum/claude-setup@669bb79"`                                   |
+| `artifact`         | The link of the Design canvas that holds the sheet                                                                                 | `https://claude.ai/artifact/` and the canvas's id                                                                                                        | `"https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"`               |
+| `artifact_version` | The version of the canvas whose files the folder holds                                                                             | The version as the Artifact tool reports it                                                                                                              | `"1793715998-6304"`                                                 |
 
-`made` and `skill` keep their values when the sheet changes; `artifact` and `artifact_version` name the canvas and version that the folder's files were last read from.
+`created` is written when the sheet's first version is archived and never changes. `last_modified` and `skill_version` follow the sheet's latest version: the pull request that archives a version sets them to the date on which its session handed it over and to the skill that session loaded. A change made on the sheet's own canvas is such a version, so they then take the hand-over date and the skill of the session that made the change. `artifact` and `artifact_version` name the canvas and version that the folder's files were last read from.
 
-The skill has no released version, so `skill` names the commit of tiavelum/claude-setup that first holds, in `skills/learning-sheet/SKILL.md`, the same text as the copy the session loaded. In a clone of tiavelum/claude-setup, with that copy saved as `/tmp/learning-sheet-skill.md`, this prints the commit:
+The skill has no released version, so `skill_version` names the commit of tiavelum/claude-setup that first holds, in `skills/learning-sheet/SKILL.md`, the same text as the copy the session loaded. In a clone of tiavelum/claude-setup, with that copy saved as `/tmp/learning-sheet-skill.md`, this prints the commit:
 
 ```bash
 git log --reverse --format=%h --find-object="$(git hash-object /tmp/learning-sheet-skill.md)" -- skills/learning-sheet/SKILL.md | head -n 1
@@ -101,7 +119,14 @@ The files are written byte for byte as the Artifact tool reads them, and no form
 
 A sheet's name is its folder name, and its README's `title`, the `title` of its canvas and so the title of its artifact are the same string. The name is lowercase words of `a`-`z` and `0`-`9` joined by single hyphens, the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2), such as `login-methods-and-recovery`. A topic written with other letters or characters is turned into such words: `ä`, `ö`, `ü`, `ß`, `æ`, `œ`, `ø` and `ł` become `ae`, `oe`, `ue`, `ss`, `ae`, `oe`, `o` and `l`, other accents and apostrophes are dropped, and any other character separates two words, so that "Drei Säulen der Vorsorge" becomes `drei-saeulen-der-vorsorge`, "Straße und Café" becomes `strasse-und-cafe` and "Don't Get Locked Out" becomes `dont-get-locked-out`. The name leaves out the words `learning sheet` and `learning sheets`, since every sheet here is one: `points-of-sail`, not `points-of-sail-learning-sheet`.
 
-No two sheets share a folder name, and a new sheet never takes the folder of another. A new sheet on a topic already present takes a name that says what sets it apart, such as its scene (`points-of-sail-hillside`), and its artifact is given the same title. The listing of `sheets/` is the list of names taken: one directory read shows them all.
+No two sheets share a folder name, and a new sheet never takes the folder of another. The listing of `sheets/` is the list of names taken: one directory read shows them all.
+
+Where `sheets/` already holds a sheet on the topic of a new one, the person chooses which of the two the new one is:
+
+- **A new version** of that sheet, kept in its folder under its name, as "Change a sheet" in [the repository's README](../README.md#change-a-sheet) gives.
+- **A variant** beside it: a sheet of its own on a related topic, with a name of its own that says what sets it apart, such as `points-of-sail-for-racing` beside `points-of-sail`, and never its scene, which belongs to the sheet's story and not to what it covers. Only where no such name is found does the variant take the topic's name with `-2`, `-3` and so on, in the order the variants are made, such as `points-of-sail-2`. These numbers count variants, not versions, so they carry no `v`.
+
+Either way the canvas is given the sheet's name as its title, and so its artifact too.
 
 A sheet keeps its folder as long as its title stays. A pull request that retitles a sheet changes its README's `title`, the `title` of its canvas and its folder name together. A pull request that removes a sheet deletes its folder, and a session opens one only when the person asks for it.
 
@@ -109,5 +134,5 @@ A sheet keeps its folder as long as its title stays. A pull request that retitle
 
 - A PDF, an image or any other file that a tool generates from the sheet; the releases hold the PDFs.
 - Any file of the canvas other than `project/canvas.json` and its pages, such as the Design type's own files that the Artifact tool lists beside `project/` (`SKILL.md`, `index.html`, `artifact-type/`), design system files under `project/ds/` and uploaded assets.
-- Names of people and private details, in the prompt as anywhere else in the sheet's README.
+- Names of people and private details, anywhere in the sheet's README, as in the prompt that [The prompt](#the-prompt) places in a pull request.
 - Secrets, credentials and tokens, in any form.

@@ -2,7 +2,7 @@
 
 This record states how this repository keeps a learning sheet and why, for whoever archives, changes, checks or publishes a sheet.
 
-Status: accepted.
+Status: accepted; superseded by [decision 0006](0006-version-a-sheet-in-its-folder-and-record-its-request.md) in what stands below the front matter and in how a new sheet on a topic already present is named.
 
 ## Context
 
