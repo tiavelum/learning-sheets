@@ -1,13 +1,14 @@
 # Scripts
 
-This folder holds the scripts that check the sheet folders, render the sheets to PDF and build the browse page, and this file describes what each does, its options, its output and its exit status, for whoever runs or changes them.
+This folder holds the scripts that check the sheet folders, render the sheets to PDF, build the browse page and write the notes and catalog of a release, and this file describes what each does, its options, its output and its exit status, for whoever runs or changes them.
 
-| File                | Does                                                                                                                                               |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `check-sheets.mjs`  | Checks every sheet folder against [the contract of a sheet folder](../sheets/README.md), run by `npm run check`                                    |
-| `render-sheets.mjs` | Renders each sheet to one PDF, and on request a PNG of its first page, run by `npm run render`                                                     |
-| `build-site.mjs`    | Builds the browse page from the page's source in [`site/`](../site/README.md), the sheet READMEs and the images of page one, run by `npm run site` |
-| `sheet-files.mjs`   | What the scripts read from a sheet folder: the folder-name rule, the front matter, the page order, the static rule and the fonts                   |
+| File                  | Does                                                                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `check-sheets.mjs`    | Checks every sheet folder against [the contract of a sheet folder](../sheets/README.md), run by `npm run check`                                    |
+| `render-sheets.mjs`   | Renders each sheet to one PDF, and on request a PNG of its first page, run by `npm run render`                                                     |
+| `build-site.mjs`      | Builds the browse page from the page's source in [`site/`](../site/README.md), the sheet READMEs and the images of page one, run by `npm run site` |
+| `prepare-release.mjs` | Writes the notes and `catalog.json` of a release, run by [the release workflow](../README.md#release-the-pdfs)                                     |
+| `sheet-files.mjs`     | What the scripts read from a sheet folder: the folder-name rule, the front matter, the page order, the static rule and the fonts                   |
 
 The scripts run from the root of the repository, on Node 22 after `npm ci`.
 
@@ -121,3 +122,34 @@ Where the release cannot be read, the middle line gives the reason, such as `the
 | 0           | The page is built                                                                                                                                                 |
 | 1           | A sheet's README has no valid front matter, a sheet failed to render, or, with `--require-release-lookup`, the latest release could not be read; no page is built |
 | 2           | An option it does not know                                                                                                                                        |
+
+## prepare-release.mjs
+
+```bash
+node scripts/prepare-release.mjs --tag 2026-11-03-1430 --root tests/fixtures/sheets
+```
+
+| Option             | Default                             | Effect                                                |
+| ------------------ | ----------------------------------- | ----------------------------------------------------- |
+| `--tag <tag>`      | none, required                      | The tag of the release, in the form `YYYY-MM-DD-HHMM` |
+| `--root <path>`    | `sheets`                            | The folder whose sheet folders the release holds      |
+| `--notes <file>`   | `build/release/notes.md`            | The file it writes the release notes to               |
+| `--catalog <file>` | `build/release/assets/catalog.json` | The file it writes the catalog of the release to      |
+
+It reads the latest release of tiavelum/learning-sheets as `build-site.mjs` does, with the token in `GITHUB_TOKEN` where that variable is set. The notes say how many sheets the release holds and list by title the sheets added, changed and removed since the latest release, comparing the root at that release's tag with the commit checked out, so it runs in a clone that holds the tag: a sheet is added where its folder is new, changed where any file of its folder differs and removed where its folder is gone, so a retitled sheet, whose folder name changes with its title, shows as one removed and one added. With no release yet, they list every sheet as added. The catalog holds what the browse page's `catalog.json` holds, without the image of page one, which only the page has, and with each sheet's source and PDF linked at the new tag, so its links stay valid after later releases.
+
+It prints the latest release, then a line for each file it wrote:
+
+```text
+no release yet: this is the first
+build/release/notes.md: notes on 1 sheet, 1 added, 0 changed, 0 removed
+build/release/assets/catalog.json: 1 sheet
+```
+
+Where the latest release cannot be read, it fails rather than write notes that would list every sheet as added.
+
+| Exit status | Means                                                                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 0           | The notes and the catalog are written                                                                                                 |
+| 1           | The root holds no sheet, a sheet's README has no valid front matter, the latest release or its tag cannot be read; nothing is written |
+| 2           | An option it does not know, or a tag that is missing or out of form                                                                   |
