@@ -13,58 +13,58 @@ Both scripts run from the root of the repository, on Node 22 after `npm ci`.
 ## check-sheets.mjs
 
 ```bash
-npm run check -- --root sheets
+npm run check -- --root tests/fixtures/sheets
 ```
 
 | Option          | Default  | Effect                                   |
 | --------------- | -------- | ---------------------------------------- |
 | `--root <path>` | `sheets` | The folder whose sheet folders it checks |
 
-It checks each subfolder of the root as a sheet, and allows beside them only `README.md` and `LICENSE`. In a git work tree it looks only at files git would commit, so a file that `.gitignore` leaves out, such as `.DS_Store`, is no violation. For each sheet it checks:
+It checks the root and each of its subfolders against the rules of [the contract of a sheet folder](../sheets/README.md) that a script can decide, those of [What this folder holds](../sheets/README.md#what-this-folder-holds), [A sheet folder](../sheets/README.md#a-sheet-folder), [The sheet README](../sheets/README.md#the-sheet-readme), [Front matter](../sheets/README.md#front-matter), [Page files](../sheets/README.md#page-files) and [Folder name](../sheets/README.md#folder-name); what needs a reader, such as whether the prompt leaves out names and private details, is left to the review. Beyond the contract:
 
-- the folder holds exactly `README.md` and `project/`, and `project/` holds `canvas.json` and one page file per board, and no other file;
-- the front matter holds every field in the order of the contract, each a string in double quotes, with `title`, `topic`, `tags`, `language`, `paper`, `made`, `skill` and `artifact` in their form;
-- the README holds, below the front matter, one sentence, the heading `## Prompt` and the prompt in a fenced block marked `text`, whose fence is longer than any run of backticks in the prompt;
-- the folder name is the name the title gives, and no two sheets' titles give the same name;
-- the canvas's `title` equals the README's, its `order` lists the same files as its `boards`, and the first page in reading order (by `y`, then `x`) is `Main.dc.html`;
-- every board measures 794 × 1123 px for `paper: "a4"` and 816 × 1056 px for `paper: "letter"`;
-- every page is static and loads nothing over the network but what the contract allows;
-- every font family a page asks for has its Fontsource package in `package.json`, and the installed package holds every weight, style and axis the page asks for.
+- In a git work tree it looks only at files git would commit, so a file that `.gitignore` leaves out, such as `.DS_Store`, is no violation.
+- It reads which fonts a package holds from the `metadata.json` of the installed package. A font family whose package is missing from `package.json` is a violation that names the command adding it; a package that `package.json` names and `npm ci` has not installed is left to the renderer, which fails on it.
 
-It prints one line per violation, the file and the problem, then their number; with no violation it prints the number of sheets:
+It prints one line per violation, the file and the problem, then their number; with no violation it prints the number of sheets. The command above prints:
+
+```text
+1 sheet in tests/fixtures/sheets, no violation
+```
+
+On a violation it prints, for example for a `made` without quotes:
 
 ```text
 sheets/logins-at-a-glance/README.md: front matter: "made" is not a string in double quotes
 1 violation in sheets
 ```
 
-| Exit status | Means                      |
-| ----------- | -------------------------- |
-| 0           | No violation               |
-| 1           | At least one violation     |
-| 2           | An option it does not know |
+| Exit status | Means                                                   |
+| ----------- | ------------------------------------------------------- |
+| 0           | No violation                                            |
+| 1           | At least one violation                                  |
+| 2           | An option it does not know, or a root that is no folder |
 
 ## render-sheets.mjs
 
 ```bash
-npm run render -- --root sheets --out build --png-width 400 logins-at-a-glance
+npm run render -- --root tests/fixtures/sheets --out build --png-width 400 two-pages-of-squares
 ```
 
-| Option             | Default  | Effect                                                                  |
-| ------------------ | -------- | ----------------------------------------------------------------------- |
-| `--root <path>`    | `sheets` | The folder whose sheet folders it renders                               |
-| `--out <path>`     | `build`  | The folder it writes the PDFs and PNGs to, made where it does not exist |
-| `--png-width <px>` | none     | Also writes `<out>/<name>.png`, the first page at this width in px      |
-| `<name> ...`       | all      | The sheet folders to render; without a name it renders every sheet      |
+| Option             | Default  | Effect                                                                           |
+| ------------------ | -------- | -------------------------------------------------------------------------------- |
+| `--root <path>`    | `sheets` | The folder whose sheet folders it renders                                        |
+| `--out <path>`     | `build`  | The folder it writes the PDFs and PNGs to, made where it does not exist          |
+| `--png-width <px>` | none     | Also writes `<out>/<name>.png`, the first page at this width, from 1 to 16384 px |
+| `<name> ...`       | all      | The sheet folders to render; without a name it renders every sheet               |
 
-For each sheet it prints the pages in the reading order of their frames in `canvas.json`, by `y`, then `x`. For each page it puts the `<helmet>` into `<head>` and what `<x-dc>` holds into `<body>`, drops the canvas runtime and the Google Fonts links, links the Fontsource stylesheets of the same families from `node_modules` instead, sets `@page` to the board's size with no margin and prints one page with backgrounds. A family requested with an axis other than `ital` and `wght`, or with a range, comes from the variable package `@fontsource-variable/<id>` with that axis, under the family name the page uses; every other family comes from the static package `@fontsource/<id>`. It merges the pages into `<out>/<name>.pdf`.
+For each sheet it prints the pages in the reading order of their frames, as [Page files](../sheets/README.md#page-files) gives. For each page it puts the `<helmet>` into `<head>` and what `<x-dc>` holds into `<body>`, drops the canvas runtime and the Google Fonts links, links the Fontsource stylesheets of the same families from `node_modules` instead, sets `@page` to the board's size with no margin and prints one page with backgrounds, as wide as the board. It takes each family from the package that [Page files](../sheets/README.md#page-files) names. From a variable package it links one of the stylesheets that [the Fontsource guide to variable fonts](https://fontsource.org/docs/getting-started/variable) describes, with `-italic` before `.css` for italic: `wght.css` where the page asks for no axis but `ital` and `wght`, `<axis>.css` where it asks for one other axis and the package holds that file, and `standard.css` otherwise. The family of a variable package takes the name the page uses, as [decision 0002](../docs/decisions/0002-render-with-chromium-and-fontsource.md) gives. It merges the pages into `<out>/<name>.pdf`.
 
-A sheet fails, and leaves no PDF, where:
+A sheet fails, and leaves neither its PDF nor its PNG in the output folder, also none of an earlier run, where:
 
 - a page is not static under [the contract](../sheets/README.md#page-files), or asks for a font its installed package does not hold;
 - a page requests anything other than its own HTML and the Fontsource files, a request the renderer blocks;
 - a font does not load;
-- the content of a page's root runs past its frame, which it reports by side and by how many px.
+- the content of a page's body runs past its frame, which it reports by side and by how many px.
 
 It renders with the Chrome at `CHROME_PATH` where that variable is set, and otherwise with Playwright's Chromium, which this command installs:
 
@@ -72,15 +72,17 @@ It renders with the Chrome at `CHROME_PATH` where that variable is set, and othe
 npx playwright install chromium
 ```
 
-It prints one line per sheet, the PDF and its number of pages or the reason it failed, then how many sheets rendered:
+Where neither starts, it prints a line that begins with `no browser:` and names this command, and exits with status 1.
+
+It prints one line per sheet, the PDF and its number of pages or the reason it failed, then how many sheets rendered. The command above prints:
 
 ```text
-build/logins-at-a-glance.pdf: 2 pages
+build/two-pages-of-squares.pdf: 2 pages
 1 of 1 sheet rendered to build
 ```
 
-| Exit status | Means                                                      |
-| ----------- | ---------------------------------------------------------- |
-| 0           | Every sheet rendered, or the root holds no sheet           |
-| 1           | At least one sheet failed, or a name is not a sheet folder |
-| 2           | An option it does not know, or a `--png-width` out of form |
+| Exit status | Means                                                                                         |
+| ----------- | --------------------------------------------------------------------------------------------- |
+| 0           | Every sheet rendered, or the root holds no sheet                                              |
+| 1           | At least one sheet failed, a name is not a sheet folder, or no browser starts                 |
+| 2           | An option it does not know, a `--png-width` out of form or range, or a root that is no folder |

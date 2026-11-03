@@ -1,7 +1,3 @@
-// What the check and the renderer both need to know about a sheet folder:
-// its name rule, its front matter, its canvas index and its page files, as
-// sheets/README.md states them.
-
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
@@ -32,7 +28,6 @@ const PRECONNECT_HOSTS = ["https://fonts.googleapis.com", "https://fonts.gstatic
 const SUPPORT_SCRIPT = "./support.js";
 const RUNTIME_SCRIPT_TYPE = "text/x-dc";
 
-/** The folder name a title gives, in the form of NAM-2. */
 export function nameFromTitle(title) {
   return title
     .normalize("NFC")
@@ -53,16 +48,12 @@ export function nameFromTitle(title) {
     .join("-");
 }
 
-/** Whether a name has the form of NAM-2: lowercase words joined by single hyphens. */
 export function isNam2(name) {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(name);
 }
 
-/**
- * The entries directly below a folder, as names, with folders marked by a
- * trailing slash. In a git work tree it lists what git would commit, so files
- * that .gitignore leaves out, such as .DS_Store, are not taken for content.
- */
+// In a git work tree only what git would commit counts, so a file that .gitignore
+// leaves out, such as .DS_Store, is not taken for part of a sheet.
 export function listEntries(dir) {
   const fromGit = listEntriesFromGit(dir);
   if (fromGit) return fromGit;
@@ -91,7 +82,6 @@ function listEntriesFromGit(dir) {
   return [...entries].sort();
 }
 
-/** The sheet folders of a sheets root, by name; an absent root holds none. */
 export function listSheetFolders(root) {
   if (!existsSync(root)) return [];
   return listEntries(root)
@@ -99,11 +89,8 @@ export function listSheetFolders(root) {
     .map((entry) => entry.slice(0, -1));
 }
 
-/**
- * The front matter of a sheet README as its fields, with every problem of
- * form found while reading it. Values must be YAML strings in double quotes,
- * since an unquoted `made` reads as a date and `language: no` as a boolean.
- */
+// Only double-quoted values pass, since unquoted YAML reads `made` as a date and
+// `language: no` as a boolean.
 export function readFrontMatter(text) {
   const problems = [];
   const match = /^---\n([\s\S]*?)\n---\n/.exec(text);
@@ -156,6 +143,10 @@ export function readFrontMatter(text) {
       fields[key] = isScalar(node) && node.value !== null ? String(node.value) : "";
       continue;
     }
+    // A double-quoted scalar may be folded over lines, which its value no longer shows.
+    if (/\n/.test(match[1].slice(node.range[0], node.range[1]))) {
+      problems.push(`front matter: "${key}" is not on one line`);
+    }
     fields[key] = node.value;
   }
   const missing = FRONT_MATTER_FIELDS.filter((field) => !keys.includes(field));
@@ -173,7 +164,6 @@ export function readFrontMatter(text) {
   return { fields, body, problems };
 }
 
-/** The canvas index of a sheet, or the problem that keeps it from being read. */
 export function readCanvas(file) {
   let canvas;
   try {
@@ -187,16 +177,13 @@ export function readCanvas(file) {
   return { canvas, problem: null };
 }
 
-/**
- * The board file names of a canvas in print order: the reading order of
- * their frames, top to bottom by `y`, then left to right by `x`.
- */
+// `order` in canvas.json stacks the frames back to front, so the reading order
+// comes from their positions.
 export function pagesInPrintOrder(canvas) {
   const boards = canvas.boards ?? {};
   return Object.keys(boards).sort((a, b) => boards[a].y - boards[b].y || boards[a].x - boards[b].x);
 }
 
-/** A page file parsed into the parts the check and the renderer look at. */
 export function readPage(text) {
   const document = parseHtml(text);
   const html = childElements(document).find((node) => node.nodeName === "html");
@@ -236,13 +223,11 @@ function isInside(element, ancestor) {
   return false;
 }
 
-/** Whether a script element is the canvas runtime that a page may carry. */
 export function isRuntimeScript(element, page) {
   if (attribute(element, "type") === RUNTIME_SCRIPT_TYPE) return true;
   return attribute(element, "src") === SUPPORT_SCRIPT && element.parentNode === page.head;
 }
 
-/** Whether a link element is one a page may carry: the Google Fonts css2 stylesheet or its preconnects. */
 export function isFontLink(element, page) {
   if (!page.helmet || !isInside(element, page.helmet)) return false;
   const rel = (attribute(element, "rel") ?? "").toLowerCase().split(/\s+/);
@@ -276,14 +261,14 @@ function cssLoads(css) {
   for (const match of css.matchAll(/@import\s+(?:url\()?\s*['"]?([^'")\s;]+)/gi)) {
     loads.push(match[1]);
   }
+  for (const set of css.matchAll(/image-set\(([^)]*)\)/gi)) {
+    for (const match of set[1].matchAll(/(['"])(.*?)\1/g)) {
+      if (loadsSomething(match[2])) loads.push(match[2]);
+    }
+  }
   return loads;
 }
 
-/**
- * Every problem that keeps a page from being static: a hole, a repeat, a
- * branch or a child component, an uploaded asset, a script other than the
- * canvas runtime, and anything else it would load over the network.
- */
 export function staticProblems(text, page) {
   const problems = [];
   if (text.includes("{{")) problems.push("holds a hole {{…}}");
@@ -329,8 +314,10 @@ export function staticProblems(text, page) {
       ) {
         problems.push(`loads ${attr.value} through the ${attrName} of <${name}>`);
       }
-      if (attrName === "style") {
-        for (const url of cssLoads(attr.value)) problems.push(`loads ${url} from an inline style`);
+      if (attrName === "style" || /url\(|image-set\(/i.test(attr.value)) {
+        for (const url of cssLoads(attr.value)) {
+          problems.push(`loads ${url} from the ${attrName} of <${name}>`);
+        }
       }
     }
     if (name === "style") {
@@ -341,11 +328,6 @@ export function staticProblems(text, page) {
   return problems;
 }
 
-/**
- * The font requests of a page's Google Fonts css2 stylesheets: per family,
- * the axes and the tuples it asks for, and whether only a variable font can
- * serve it, as an axis other than ital and wght or a range requires.
- */
 export function fontRequests(page) {
   const requests = [];
   const problems = [];
@@ -378,23 +360,18 @@ function parseFamily(spec) {
   if (axes.some((axis) => axis === "") || tuples.some((tuple) => tuple.length !== axes.length)) {
     return null;
   }
+  // A static package holds single weights in normal and italic, nothing else.
   const variable =
     axes.some((axis) => axis !== "ital" && axis !== "wght") ||
     tuples.some((tuple) => tuple.some((value) => value.includes("..")));
   return { family, axes, tuples, variable };
 }
 
-/** The Fontsource package that serves a font request. */
 export function fontPackage(request) {
   const id = request.family.toLowerCase().trim().replace(/\s+/g, "-");
   return request.variable ? `@fontsource-variable/${id}` : `@fontsource/${id}`;
 }
 
-/**
- * The Fontsource stylesheets, as paths below node_modules, that serve one font
- * request, and every problem that keeps the installed package from serving it:
- * a package that is missing, or a weight, style or axis it does not hold.
- */
 export function fontStylesheets(request, nodeModules) {
   const name = fontPackage(request);
   const dir = path.join(nodeModules, name);
@@ -471,7 +448,6 @@ export function fontStylesheets(request, nodeModules) {
   return { sheets: [...new Set(files)], problems: [...new Set(problems)] };
 }
 
-/** The paper size of a front matter value, or undefined for another value. */
 export function paperSize(paper) {
   return Object.hasOwn(PAPER_SIZES, paper) ? PAPER_SIZES[paper] : undefined;
 }
