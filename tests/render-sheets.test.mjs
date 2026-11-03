@@ -23,8 +23,10 @@ const FIXTURES = path.join(TESTS, "fixtures", "sheets");
 const RENDER = path.join(TESTS, "..", "scripts", "render-sheets.mjs");
 const NODE_MODULES = path.join(TESTS, "..", "node_modules");
 const SHEET = "two-pages-of-squares";
-// Characters of the private use area, which no font of the repository holds,
-// and characters that draw nothing, written as code points so that they show.
+// Characters of the private use area, which no font of the repository holds
+// and the fonts of a machine may or may not hold, and characters that draw
+// nothing, written as code points so that they show. The tests that warn on
+// them pass both where a font of the machine draws them and where none does.
 const PRIVATE_USE = String.fromCodePoint(0xe000);
 const PRIVATE_USE_2 = String.fromCodePoint(0xe001);
 const ZERO_WIDTH_SPACE = String.fromCodePoint(0x200b);
@@ -204,7 +206,10 @@ describe("the renderer", () => {
   test("draws the characters its fonts lack from the fallback, in text and generated content", async () => {
     const { root, out } = copyWithMain((text) =>
       text
-        .replace("<style>", '<style>h1::after { content: " ✓"; }')
+        .replace(
+          "<style>",
+          '<style>h1::after { content: " ✓"; } p::before { content: "⇒ "; font-family: \'Source Sans 3\', Arial, sans-serif; }',
+        )
         .replace("Page 1</h1>", "Page 1 → 2 → 3</h1>")
         .replace("that loads nothing.", "that loads nothing, ≥ 1 ★ 😀."),
     );
@@ -212,20 +217,49 @@ describe("the renderer", () => {
     assert.equal(result.error, undefined, result.error);
     assert.deepEqual(result.warnings, []);
     const drawn = await fontCharacters(path.join(out, `${SHEET}.pdf`));
-    assert.deepEqual(drawn.get("NotoSansMath-Regular"), new Set(["→", "≥"]));
+    assert.deepEqual(drawn.get("NotoSansMath-Regular"), new Set(["→", "≥", "⇒"]));
     assert.deepEqual(drawn.get("NotoSansSymbols2-Regular"), new Set(["✓", "★"]));
     assert.deepEqual(drawn.get("NotoEmoji-Regular"), new Set(["😀"]));
+    assert.ok(
+      [...drawn.keys()].every((font) => /^(SourceSans3|Noto)/.test(font)),
+      `fonts embedded: ${[...drawn.keys()].join(", ")}`,
+    );
   });
 
   test("draws a character the page's fonts hold from them, not from the fallback", async () => {
-    const { root, out } = copyWithMain((text) => text.replace("Page 1</h1>", "Page 1 € •</h1>"));
+    // Source Sans 3 and the fallback both hold each of these characters.
+    const { root, out } = copyWithMain((text) => text.replace("Page 1</h1>", "Page 1 ′ • ™</h1>"));
     const [result] = await renderSheets({ root, out });
     assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, []);
     const drawn = await fontCharacters(path.join(out, `${SHEET}.pdf`));
+    assert.deepEqual(drawn.get("SourceSans3ExtraLight-Bold"), new Set(["′", "•", "™"]));
     assert.ok(
       [...drawn.keys()].every((font) => !font.startsWith("Noto")),
       `fonts embedded: ${[...drawn.keys()].join(", ")}`,
     );
+  });
+
+  test("draws a character from a later family of the font-family list that holds it, before the fallback", async () => {
+    // Zilla Slab lacks these characters, Source Sans 3 and Noto Sans Math hold them.
+    const { root, out } = copyWithMain((text) =>
+      text
+        .replace(
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400",
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400&amp;family=Zilla+Slab:wght@700",
+        )
+        .replace(
+          '<h1 style="margin: 0;',
+          "<h1 style=\"margin: 0; font-family: 'Zilla Slab', 'Source Sans 3', serif;",
+        )
+        .replace("Page 1</h1>", "Page 1 ′ ″ ∕ →</h1>"),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, []);
+    const drawn = await fontCharacters(path.join(out, `${SHEET}.pdf`));
+    assert.deepEqual(drawn.get("SourceSans3ExtraLight-Bold"), new Set(["′", "″", "∕"]));
+    assert.deepEqual(drawn.get("NotoSansMath-Regular"), new Set(["→"]));
   });
 
   test("warns once per page on each character neither its fonts nor the fallback hold, and prints the sheet", async () => {
@@ -254,7 +288,7 @@ describe("the renderer", () => {
     ]);
   });
 
-  test("warns on a character that falls through the families it loads, and past the fallback, to a system font", async () => {
+  test("warns on a character that none of the families it loads nor the fallback hold, whatever the fonts of the machine", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text
         .replace(
@@ -405,8 +439,22 @@ async function fontCharacters(file) {
     if (!(base instanceof PDFName) || !map) continue;
     const cmap = inflateSync(Buffer.from(pdf.context.lookup(map).getContents())).toString("latin1");
     const characters = new Set();
-    for (const [, hex] of cmap.matchAll(/<[0-9A-Fa-f]+>\s*<([0-9A-Fa-f]+)>\s*$/gm)) {
-      const character = Buffer.from(hex, "hex").swap16().toString("utf16le");
+    const text = (hex) => Buffer.from(hex, "hex").swap16().toString("utf16le");
+    // A bfchar line maps one glyph, a bfrange line consecutive glyphs to
+    // consecutive characters, such as <0101> <0102> <2032> for ′ and ″.
+    const mapped = [];
+    for (const [, hex] of cmap.matchAll(/^<[0-9A-Fa-f]+>\s*<([0-9A-Fa-f]+)>\s*$/gm)) {
+      mapped.push(text(hex));
+    }
+    for (const [, low, high, hex] of cmap.matchAll(
+      /^<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*$/gm,
+    )) {
+      const first = text(hex).codePointAt(0);
+      for (let glyph = 0; glyph <= Number.parseInt(high, 16) - Number.parseInt(low, 16); glyph++) {
+        mapped.push(String.fromCodePoint(first + glyph));
+      }
+    }
+    for (const character of mapped) {
       // A font can map a glyph it never draws to the noncharacter U+FFFF.
       if (character.codePointAt(0) > 0x7e && !/\p{Noncharacter_Code_Point}/u.test(character)) {
         characters.add(character);

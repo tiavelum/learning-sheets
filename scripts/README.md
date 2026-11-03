@@ -9,6 +9,7 @@ This folder holds the scripts that check the sheet folders, render the sheets to
 | `build-site.mjs`      | Builds the browse page from the page's source in [`site/`](../site/README.md), the sheet READMEs and the images of page one, run by `npm run site` |
 | `prepare-release.mjs` | Writes the notes and `catalog.json` of a release, run by [the release workflow](../README.md#release-the-pdfs)                                     |
 | `sheet-files.mjs`     | What the scripts read from a sheet folder: the form of a name, the front matter, the page order, the static rule and the fonts                     |
+| `font-files.mjs`      | What `render-sheets.mjs` reads from a WOFF2 font file: its PostScript name and the characters it holds                                             |
 
 The scripts run from the root of the repository, on Node 22 after `npm ci`.
 
