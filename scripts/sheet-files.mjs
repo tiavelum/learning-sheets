@@ -28,26 +28,6 @@ const PRECONNECT_HOSTS = ["https://fonts.googleapis.com", "https://fonts.gstatic
 const SUPPORT_SCRIPT = "./support.js";
 const RUNTIME_SCRIPT_TYPE = "text/x-dc";
 
-export function nameFromTitle(title) {
-  return title
-    .normalize("NFC")
-    .toLowerCase()
-    .replaceAll("ä", "ae")
-    .replaceAll("ö", "oe")
-    .replaceAll("ü", "ue")
-    .replaceAll("ß", "ss")
-    .replaceAll("æ", "ae")
-    .replaceAll("œ", "oe")
-    .replaceAll("ø", "o")
-    .replaceAll("ł", "l")
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .replace(/['’]/g, "")
-    .split(/[^a-z0-9]+/)
-    .filter((word) => word !== "")
-    .join("-");
-}
-
 export function isNam2(name) {
   return /^[a-z0-9]+(-[a-z0-9]+)*$/.test(name);
 }

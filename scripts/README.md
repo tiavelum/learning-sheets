@@ -2,11 +2,11 @@
 
 This folder holds the scripts that check the sheet folders and render the sheets to PDF, and this file describes what each does, its options, its output and its exit status, for whoever runs or changes them.
 
-| File                | Does                                                                                                                      |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `check-sheets.mjs`  | Checks every sheet folder against [the contract of a sheet folder](../sheets/README.md), run by `npm run check`           |
-| `render-sheets.mjs` | Renders each sheet to one PDF, and on request a PNG of its first page, run by `npm run render`                            |
-| `sheet-files.mjs`   | What both read from a sheet folder: the folder-name rule, the front matter, the page order, the static rule and the fonts |
+| File                | Does                                                                                                                    |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `check-sheets.mjs`  | Checks every sheet folder against [the contract of a sheet folder](../sheets/README.md), run by `npm run check`         |
+| `render-sheets.mjs` | Renders each sheet to one PDF, and on request a PNG of its first page, run by `npm run render`                          |
+| `sheet-files.mjs`   | What both read from a sheet folder: the form of a name, the front matter, the page order, the static rule and the fonts |
 
 Both scripts run from the root of the repository, on Node 22 after `npm ci`.
 
