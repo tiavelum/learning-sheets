@@ -7,6 +7,8 @@ print or change a sheet and for the sessions that archive them.
 
 ## Getting started
 
+The repository holds no sheet yet; [issue #1](https://github.com/tiavelum/learning-sheets/issues/1) tracks the work that adds the sheets, the releases of their PDFs and a page to browse them. What a sheet folder holds, field by field, is in [`sheets/README.md`](sheets/README.md).
+
 This section checks and renders the sheets on your machine. It needs Node.js 22, the version CI pins being 22.23.4, npm 10, which comes with it, and git. Playwright's Chromium runs on macOS and Linux; on Linux it also needs [the system packages that `npx playwright install --with-deps chromium` installs](https://playwright.dev/docs/browsers#install-system-dependencies), a command run as root.
 
 Clone the repository and install its dependencies at the versions `package-lock.json` pins:
@@ -54,5 +56,11 @@ It prints `build/two-pages-of-squares.pdf: 2 pages` and `1 of 1 sheet rendered t
 | `package.json`                  | The npm scripts `check`, `render`, `test`, `lint` and `format`, and the dependencies, with `package-lock.json` pinning their versions                                                                 |
 | `biome.json`                    | The configuration of Biome, which formats and lints every file but the canvas files below `sheets/*/project/`                                                                                         |
 | `deviations.md`                 | The rules of tiavelum/engineering-standards that this repository deviates from, with the reason for each                                                                                              |
+| `LICENSE`                       | The MIT license of everything outside `sheets/`                                                                                                                                                       |
 | `.editorconfig`                 | The formatting rules that editors apply to every file                                                                                                                                                 |
 | `.gitignore`                    | The files that tools write into the repository and that are not committed, such as `node_modules/` and the rendered PDFs in `build/`                                                                  |
+
+## License
+
+The sheets in [`sheets/`](sheets/README.md) are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode.txt): anyone may print, share and adapt them when they credit the source, link the license and mark any change. See [sheets/LICENSE](sheets/LICENSE).
+Everything else is licensed under MIT. See [LICENSE](LICENSE).
