@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-// Renders each sheet of a sheets root to one PDF, and optionally a PNG of its
-// first page, from its canvas files and the Fontsource fonts in node_modules.
 
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -34,11 +32,6 @@ const MAX_PNG_WIDTH = 16384;
 
 export class RenderError extends Error {}
 
-/**
- * The HTML that prints one page: the helmet in the head, the content of
- * <x-dc> as the body, the canvas runtime and the Google Fonts links dropped,
- * the Fontsource stylesheets linked instead and @page set to the frame.
- */
 export function pageHtml(text, board, nodeModules = NODE_MODULES) {
   const page = readPage(text);
   if (!page.xdc) throw new RenderError("holds no <x-dc> element");
@@ -87,11 +80,7 @@ export function pageHtml(text, board, nodeModules = NODE_MODULES) {
   return { html, fonts };
 }
 
-/**
- * The stylesheet of a Fontsource package as the page loads it: a variable
- * package names its family "<family> Variable", so the family the page asks
- * for is put in its place.
- */
+// A variable package names its family "<family> Variable", while the page asks for "<family>".
 function fontCss(file, family) {
   const css = readFileSync(file, "utf8");
   return css.replace(/font-family:\s*'([^']+) Variable';/g, `font-family: '${family}';`);
@@ -103,7 +92,6 @@ const CONTENT_TYPES = {
   ".woff": "font/woff",
 };
 
-/** How far a page's content runs past its frame, in px, and where. */
 async function overflow(page, board) {
   return page.evaluate(({ w, h }) => {
     const roots = [...document.body.children].filter(
@@ -153,7 +141,6 @@ async function overflow(page, board) {
   }, board);
 }
 
-/** Renders one sheet folder to <out>/<name>.pdf and, with pngWidth, <out>/<name>.png. */
 export async function renderSheet(browser, root, name, out, { pngWidth, nodeModules } = {}) {
   const projectDir = path.join(root, name, "project");
   const { canvas, problem } = readCanvas(path.join(projectDir, "canvas.json"));
@@ -278,13 +265,12 @@ async function printPage(browser, html, fonts, board, file, { png, pngWidth, nod
   }
 }
 
-/** Launches Chrome from CHROME_PATH where it is set, else Playwright's Chromium. */
+// A Claude cloud workspace cannot download Playwright's Chromium but has a Chrome.
 export function launchBrowser() {
   const executablePath = process.env.CHROME_PATH || undefined;
   return chromium.launch({ executablePath });
 }
 
-/** Renders the named sheets of a root, or all of them, and returns what each gave. */
 export async function renderSheets({
   root = "sheets",
   out = "build",

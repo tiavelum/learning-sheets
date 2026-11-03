@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-// Checks every sheet folder of a sheets root against the contract in
-// sheets/README.md and prints one line per violation.
 
 import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
@@ -30,7 +28,6 @@ const NODE_MODULES = path.join(REPOSITORY, "node_modules");
 const PAGE_NAME = /^[A-Za-z0-9_][A-Za-z0-9_.-]*\.dc\.html$/;
 const FIRST_PAGE = "Main.dc.html";
 
-/** Every violation of the sheets below a root, each as "<file>: <problem>". */
 export function checkSheets(
   root,
   { packageFile = path.join(REPOSITORY, "package.json"), nodeModules = NODE_MODULES } = {},
@@ -77,7 +74,6 @@ function readDependencies(packageFile) {
   return new Set(Object.keys(manifest.dependencies ?? {}));
 }
 
-/** Checks one sheet folder and returns its title, where its README gives one. */
 function checkSheet(root, name, fonts, report) {
   const folder = path.join(root, name);
   if (!isNam2(name)) {

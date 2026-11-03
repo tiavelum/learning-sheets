@@ -1,6 +1,3 @@
-// Each check of scripts/check-sheets.mjs, run on a copy of the fixture sheet
-// that one change breaks.
-
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -23,7 +20,6 @@ const temporary = mkdtempSync(path.join(tmpdir(), "check-sheets-"));
 after(() => rmSync(temporary, { recursive: true, force: true }));
 
 let copies = 0;
-/** A sheets root holding a copy of the fixture sheet, changed by `change`. */
 function brokenCopy(change) {
   const root = path.join(temporary, String(copies++), "sheets");
   mkdirSync(root, { recursive: true });
@@ -45,7 +41,6 @@ function editCanvas(sheet, change) {
   writeFileSync(file, JSON.stringify(canvas));
 }
 
-/** Asserts that the check reports exactly one violation, on `file`, matching `pattern`. */
 function assertViolation(root, file, pattern) {
   const { violations } = checkSheets(root);
   assert.equal(violations.length, 1, violations.join("\n"));
