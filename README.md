@@ -192,7 +192,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    npm run render -- login-methods-and-recovery
    ```
 
-   Biome ends with `No fixes applied.`, the tests with `# fail 0`, the check with the number of sheets and `no violation`, and the render with `build/login-methods-and-recovery.pdf: 2 pages`, the number of pages the canvas has, and `1 of 1 sheet rendered to build`. Open the PDF: each page shows what the canvas shows. Where Biome reports the sheet's README, this rewrites it in Biome's form and leaves the canvas files as they are:
+   Biome ends with `No fixes applied.`, the tests with a summary that holds `fail 0`, the check with the number of sheets and `no violation`, and the render with `build/login-methods-and-recovery.pdf: 2 pages`, the number of pages the canvas has, and `1 of 1 sheet rendered to build`. Open the PDF: each page shows what the canvas shows. Where Biome reports the sheet's README, this rewrites it in Biome's form and leaves the canvas files as they are:
 
    ```bash
    npm run format
