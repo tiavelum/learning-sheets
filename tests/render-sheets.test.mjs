@@ -23,6 +23,12 @@ const FIXTURES = path.join(TESTS, "fixtures", "sheets");
 const RENDER = path.join(TESTS, "..", "scripts", "render-sheets.mjs");
 const NODE_MODULES = path.join(TESTS, "..", "node_modules");
 const SHEET = "two-pages-of-squares";
+// Characters of the private use area, which no font of the repository holds,
+// and characters that draw nothing, written as code points so that they show.
+const PRIVATE_USE = String.fromCodePoint(0xe000);
+const PRIVATE_USE_2 = String.fromCodePoint(0xe001);
+const ZERO_WIDTH_SPACE = String.fromCodePoint(0x200b);
+const SOFT_HYPHEN = String.fromCodePoint(0xad);
 const temporary = mkdtempSync(path.join(tmpdir(), "render-sheets-"));
 after(() => rmSync(temporary, { recursive: true, force: true }));
 
@@ -225,14 +231,14 @@ describe("the renderer", () => {
   test("warns once per page on each character neither its fonts nor the fallback hold, and prints the sheet", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text
-        .replace("Page 1</h1>", "Page 1  </h1>")
-        .replace("that loads nothing.", "that loads nothing  →."),
+        .replace("Page 1</h1>", `Page 1 ${PRIVATE_USE_2} ${PRIVATE_USE}</h1>`)
+        .replace("that loads nothing.", `that loads nothing ${PRIVATE_USE} →.`),
     );
     const [result] = await renderSheets({ root, out });
     assert.equal(result.error, undefined, result.error);
     assert.deepEqual(result.warnings, [
-      `${main}: draws U+E000  in a font neither the page nor the fallback loads`,
-      `${main}: draws U+E001  in a font neither the page nor the fallback loads`,
+      `${main}: draws U+E000 ${PRIVATE_USE} in a font neither the page nor the fallback loads`,
+      `${main}: draws U+E001 ${PRIVATE_USE_2} in a font neither the page nor the fallback loads`,
     ]);
     assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), true);
   });
@@ -244,7 +250,7 @@ describe("the renderer", () => {
     const [result] = await renderSheets({ root, out });
     assert.equal(result.error, undefined, result.error);
     assert.deepEqual(result.warnings, [
-      `${main}: draws U+E000  in a font neither the page nor the fallback loads`,
+      `${main}: draws U+E000 ${PRIVATE_USE} in a font neither the page nor the fallback loads`,
     ]);
   });
 
@@ -279,7 +285,7 @@ describe("the renderer", () => {
           '<h1 style="margin: 0;',
           "<h1 style=\"margin: 0; font-family: 'Zilla Slab', 'Source Sans 3', serif;",
         )
-        .replace("Page 1</h1>", "“Page 1” Ω&nbsp;​­</h1>"),
+        .replace("Page 1</h1>", `“Page 1” Ω&nbsp;${ZERO_WIDTH_SPACE}${SOFT_HYPHEN}</h1>`),
     );
     const [result] = await renderSheets({ root, out });
     assert.equal(result.error, undefined, result.error);
@@ -291,7 +297,7 @@ describe("the renderer", () => {
     const { root, out } = copyWithMain((text) =>
       text.replace(
         "Page 1</h1>",
-        'Page 1<span style="visibility: hidden"></span><span style="display: none"></span></h1>',
+        `Page 1<span style="visibility: hidden">${PRIVATE_USE}</span><span style="display: none">${PRIVATE_USE_2}</span></h1>`,
       ),
     );
     const [result] = await renderSheets({ root, out });
@@ -349,12 +355,12 @@ describe("the command", () => {
       root,
       out: folder,
       main,
-    } = copyWithMain((text) => text.replace("Page 1</h1>", "Page 1  →</h1>"));
+    } = copyWithMain((text) => text.replace("Page 1</h1>", `Page 1 ${PRIVATE_USE} →</h1>`));
     const result = run(["--root", root, "--out", folder]);
     assert.equal(result.status, 0, result.stderr);
     assert.equal(
       result.stderr,
-      `${main}: draws U+E000  in a font neither the page nor the fallback loads\n`,
+      `${main}: draws U+E000 ${PRIVATE_USE} in a font neither the page nor the fallback loads\n`,
     );
     assert.equal(
       result.stdout,
