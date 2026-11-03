@@ -59,7 +59,7 @@ It prints the same two lines.
 
 ## Archive a sheet
 
-1. In a clone set up as "Getting started" shows, with push access to this repository, start from the latest `main`:
+1. In a clone set up as [Getting started](#getting-started) shows, with push access to this repository, start from the latest `main`:
 
    ```bash
    git switch main
@@ -73,18 +73,12 @@ It prints the same two lines.
    ls sheets
    ```
 
-   Then print the folder name that the canvas's title gives, here for "Logins at a Glance", with the rule of [Folder name](sheets/README.md#folder-name) as [`scripts/`](scripts/README.md) implements it:
+   The sheet's folder name is the one that [Folder name](sheets/README.md#folder-name) gives for the canvas's title, here `logins-at-a-glance`. Where the canvas's title does not take the form that [Front matter](sheets/README.md#front-matter) gives for `title`, or `ls sheets` lists its folder name, choose with the person a title in that form whose folder name is free, one that says what sets the new sheet apart as [Folder name](sheets/README.md#folder-name) gives, and give the canvas that title by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
 
-   ```bash
-   node --input-type=module -e 'import { nameFromTitle } from "./scripts/sheet-files.mjs"; console.log(nameFromTitle(process.argv[1]))' "Logins at a Glance"
-   ```
-
-   It prints `logins-at-a-glance`. Where `ls sheets` lists that name, the title is taken: choose with the person a title that says what sets the new sheet apart, as [Folder name](sheets/README.md#folder-name) gives, and give the canvas that title by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
-
-3. Open an issue in this repository titled `Archive the learning sheet "Logins at a Glance"`, whose description says what and why and when it is done:
+3. Open an issue in this repository titled `Archive the learning sheet logins-at-a-glance`, whose description says what and why and when it is done:
 
    ```markdown
-   Archive the learning sheet "Logins at a Glance" from [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q) in `sheets/logins-at-a-glance/`, so that it outlives its session and its artifact.
+   Archive the learning sheet `logins-at-a-glance` from [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q) in `sheets/logins-at-a-glance/`, so that it outlives its session and its artifact.
 
    Done when the pull request that adds `sheets/logins-at-a-glance/` is merged.
    ```
@@ -131,7 +125,7 @@ It prints the same two lines.
 
    In `/tmp/claude-setup`, run the command of [Front matter](sheets/README.md#front-matter) that prints the commit, such as `24b49de`, and do what it says where it prints nothing.
 
-8. Write `sheets/logins-at-a-glance/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill` from step 7, and `made` as this command prints it on the day of the first hand-over:
+8. Write `sheets/logins-at-a-glance/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill` as `tiavelum/claude-setup@` and the commit from step 7, `paper` from the board sizes, `topic`, `tags` and `language` from the sheet, the sentence and the prompt as [The sheet README](sheets/README.md#the-sheet-readme) gives, and `made` as this command prints it on the day of the first hand-over:
 
    ```bash
    date -u +%F
@@ -158,16 +152,16 @@ It prints the same two lines.
 
     ```bash
     git add sheets/logins-at-a-glance
-    git commit -m 'feat: add the learning sheet "Logins at a Glance"' -m "Archives version 1793655646-5d0b of the canvas with the sheet's README, so that the sheet outlives its session and its artifact."
+    git commit -m 'feat: add the learning sheet logins-at-a-glance' -m "Archives version 1793655646-5d0b of the canvas with the sheet's README, so that the sheet outlives its session and its artifact."
     git push -u origin feat/21-add-logins-at-a-glance
     ```
 
-11. Open a pull request from the branch, titled `feat: add the learning sheet "Logins at a Glance"`, with this description, and in its `<details>` the lines that step 6 printed:
+11. Open a pull request from the branch, titled `feat: add the learning sheet logins-at-a-glance`, with this description, and in its `<details>` the lines that step 6 printed:
 
     ````markdown
-    Add the learning sheet "Logins at a Glance", read from version 1793655646-5d0b of [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q), so that it outlives its session and its artifact.
+    Add the learning sheet `logins-at-a-glance`, read from version 1793655646-5d0b of [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q), so that it outlives its session and its artifact.
 
-    Closes #21 (Archive the learning sheet "Logins at a Glance")
+    Closes #21 (Archive the learning sheet logins-at-a-glance)
 
     To check, open the artifact `sheets` of this pull request's check run: its `logins-at-a-glance.pdf` shows the pages of the canvas.
 
@@ -183,7 +177,7 @@ It prints the same two lines.
     </details>
     ````
 
-    The title follows [GW-6](https://github.com/tiavelum/engineering-standards/blob/main/standards/git-workflow.md#gw-6) and [GW-7](https://github.com/tiavelum/engineering-standards/blob/main/standards/git-workflow.md#gw-7) and stays within 105 characters. The check run renders every sheet and attaches the PDFs, as [`.github/workflows/check.yml`](.github/workflows/check.yml) does on every pull request.
+    The title follows [GW-6](https://github.com/tiavelum/engineering-standards/blob/main/standards/git-workflow.md#gw-6) and [GW-7](https://github.com/tiavelum/engineering-standards/blob/main/standards/git-workflow.md#gw-7) and stays within 105 characters as [WR-5](https://github.com/tiavelum/engineering-standards/blob/main/standards/writing.md#wr-5) gives. The pull request's check run renders the sheet and attaches its PDF, as [Content and structure](#content-and-structure) gives for `.github/workflows/check.yml`.
 
 ## Change a sheet
 
@@ -195,6 +189,8 @@ It prints the same two lines.
 
    It prints the `title` and `topic` of every sheet, each after its README's path. Read the sheet's README and keep its `artifact` and `artifact_version`.
 
+   Where this session archived the sheet itself and has changed its canvas since, wait until the pull request that archived it is merged, bring `main` up to date as step 1 of "Archive a sheet" gives, and go to step 4.
+
 2. With the Artifact tool, `list` the files of the canvas at `artifact`, and compare the reply's `ver` with `artifact_version`:
    - **The same version.** The canvas holds the archived files: go to step 3.
    - **Another version.** Compare the `sha256` the reply gives for `project/canvas.json` and each page with what this prints for the sheet:
@@ -203,41 +199,47 @@ It prints the same two lines.
      sha256sum sheets/logins-at-a-glance/project/*
      ```
 
-     Where all are equal, go to step 3. Otherwise the canvas holds a version that is not archived: archive it first as step 4 gives, with an issue titled `Archive the newer version of the learning sheet "Logins at a Glance"`, and go on from step 3 once its pull request is merged.
+     Where all are equal, go to step 3. Otherwise the canvas holds a version that is not archived: archive it first as step 4 gives, with an issue titled `Archive the newer version of the learning sheet logins-at-a-glance`, and go on from step 3 once its pull request is merged.
    - **No canvas.** The Artifact tool finds no canvas at `artifact`: create a Design canvas with the sheet's `title`, as the Design type's "The canvas exists" says, and publish the archived `project/canvas.json` and every page to it unchanged, as the Design type's "The calls" says. Where the Artifact tool takes a `root`, `root` is the sheet folder, `file_path` is `sheets/logins-at-a-glance/project/canvas.json` and `files` maps each page's `project/<page>` to the same path below the sheet folder; where it takes `files` as a list, copy the sheet's `project/` into the canvas's own folder first. Then `read` the new canvas's `project/canvas.json`: its `title` is the sheet's. The new canvas's link is the sheet's `artifact` from now on.
 
 3. Change the pages on the canvas as the person asks, as the Design type's "Revising a canvas" says.
 
 4. Archive the change as "Archive a sheet" gives from step 3 on, with these differences:
-   - The issue is titled after the change, such as `Archive the recovery codes added to "Logins at a Glance"`, and the branch is `feat/<issue>-change-` and the folder name's first four words.
+   - A change of title changes the folder name too, as [Folder name](sheets/README.md#folder-name) gives. Give the canvas the new title and take its folder name as step 2 of "Archive a sheet" gives, and use that name for the branch and for every later path.
+   - The issue is titled after the change, such as `Archive the recovery codes added to logins-at-a-glance`, and the branch is `feat/<issue>-change-` and the folder name's first four words.
    - Before step 5, remove the sheet's canvas files, so that a page the canvas no longer has goes too:
 
      ```bash
      git rm -q -r sheets/logins-at-a-glance/project
      ```
 
+     Where the title changes, move the folder after that, here to the folder name `logins-and-recovery-at-a-glance`:
+
+     ```bash
+     git mv sheets/logins-at-a-glance sheets/logins-and-recovery-at-a-glance
+     ```
+
    - In the README, `artifact` and `artifact_version` take the canvas's current link and version, and `made`, `skill` and the prompt stay as they are, as [Front matter](sheets/README.md#front-matter) gives; step 7 is left out.
-   - A change of title changes the folder name too, as [Folder name](sheets/README.md#folder-name) gives.
-   - The pull request's title names the change, such as `feat: add the recovery codes to "Logins at a Glance"`.
+   - The pull request's title names the change, such as `feat: add the recovery codes to logins-at-a-glance`.
 
 ## Content and structure
 
-| Path                            | Holds                                                                                                                                                                                                 |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `README.md`                     | This description                                                                                                                                                                                      |
-| `project-instructions.md`       | The rules a Claude session follows in this repository; after each change to it, the maintainer pastes its whole text into the instructions field of the claude.ai project "Learning Sheet"            |
-| `CLAUDE.md`                     | The file Claude Code reads in this repository: it imports `project-instructions.md` and adds what only Claude Code needs                                                                              |
-| [`sheets/`](sheets/README.md)   | One folder per learning sheet, with its README and its canvas files; its [README](sheets/README.md) states what a sheet folder holds and how it is named                                              |
-| [`scripts/`](scripts/README.md) | The scripts that check the sheet folders and render the sheets to PDF; its [README](scripts/README.md) gives their options, output and exit status                                                    |
-| [`tests/`](tests/README.md)     | The tests of the scripts and the fixture sheet they run on; its [README](tests/README.md) lists them                                                                                                  |
-| `docs/`                         | The documentation beyond the READMEs: in `docs/decisions/`, the decision records that say why the sheets are kept, rendered, released, browsed and archived as they are                               |
-| `.github/workflows/check.yml`   | The checks every pull request and every push to `main` run: formatting and lint, the tests, the sheet check and the render of every sheet, whose PDFs it attaches to the run as the artifact `sheets` |
-| `package.json`                  | The npm scripts `check`, `render`, `test`, `lint` and `format`, and the dependencies, with `package-lock.json` pinning their versions                                                                 |
-| `biome.json`                    | The configuration of Biome, the formatter and linter of every file other than the canvas files that [Page files](sheets/README.md#page-files) keeps as the canvas wrote them                          |
-| `deviations.md`                 | The rules of tiavelum/engineering-standards that this repository deviates from, with the reason for each                                                                                              |
-| `LICENSE`                       | The MIT license of everything outside `sheets/`                                                                                                                                                       |
-| `.editorconfig`                 | The formatting rules that editors apply to every file                                                                                                                                                 |
-| `.gitignore`                    | The files that tools write into the repository and that are not committed, such as `node_modules/` and the rendered PDFs in `build/`                                                                  |
+| Path                            | Holds                                                                                                                                                                                                                                                |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `README.md`                     | This description                                                                                                                                                                                                                                     |
+| `project-instructions.md`       | The rules a Claude session follows in this repository; after each change to it, the maintainer pastes its whole text into the instructions field of the claude.ai project "Learning Sheet", whose description field stays empty or holds a few words |
+| `CLAUDE.md`                     | The file Claude Code reads in this repository: it imports `project-instructions.md` and adds what only Claude Code needs                                                                                                                             |
+| [`sheets/`](sheets/README.md)   | One folder per learning sheet, with its README and its canvas files; its [README](sheets/README.md) states what a sheet folder holds and how it is named                                                                                             |
+| [`scripts/`](scripts/README.md) | The scripts that check the sheet folders and render the sheets to PDF; its [README](scripts/README.md) gives their options, output and exit status                                                                                                   |
+| [`tests/`](tests/README.md)     | The tests of the scripts and the fixture sheet they run on; its [README](tests/README.md) lists them                                                                                                                                                 |
+| `docs/`                         | The documentation beyond the READMEs: in `docs/decisions/`, the decision records that say why the sheets are kept, rendered, released, browsed and archived as they are                                                                              |
+| `.github/workflows/check.yml`   | The checks every pull request and every push to `main` run: formatting and lint, the tests, the sheet check and the render of every sheet, whose PDFs it attaches to the run as the artifact `sheets`                                                |
+| `package.json`                  | The npm scripts `check`, `render`, `test`, `lint` and `format`, and the dependencies, with `package-lock.json` pinning their versions                                                                                                                |
+| `biome.json`                    | The configuration of Biome, the formatter and linter of every file other than the canvas files that [Page files](sheets/README.md#page-files) keeps as the canvas wrote them                                                                         |
+| `deviations.md`                 | The rules of tiavelum/engineering-standards that this repository deviates from, with the reason for each                                                                                                                                             |
+| `LICENSE`                       | The MIT license of everything outside `sheets/`                                                                                                                                                                                                      |
+| `.editorconfig`                 | The formatting rules that editors apply to every file                                                                                                                                                                                                |
+| `.gitignore`                    | The files that tools write into the repository and that are not committed, such as `node_modules/` and the rendered PDFs in `build/`                                                                                                                 |
 
 ## License
 
