@@ -21,5 +21,12 @@ What a sheet folder holds, field by field, is in [`sheets/README.md`](sheets/REA
 | [`sheets/`](sheets/README.md) | One folder per learning sheet, with its README and its canvas files; its [README](sheets/README.md) states what a sheet folder holds and how it is named |
 | `docs/` | The documentation beyond the READMEs: in `docs/decisions/`, the decision records that say why the sheets are kept, rendered, released, browsed and archived as they are |
 | `deviations.md` | The rules of tiavelum/engineering-standards that this repository deviates from, with the reason for each |
+| `LICENSE` | The MIT license of everything outside `sheets/` |
 | `.editorconfig` | The formatting rules that editors apply to every file |
 | `.gitignore` | The files that tools write into the repository and that are not committed |
+
+## License
+
+The sheets in [`sheets/`](sheets/README.md) are licensed under CC BY 4.0: anyone may
+print, share and adapt them when they credit them. See [sheets/LICENSE](sheets/LICENSE).
+Everything else is licensed under MIT. See [LICENSE](LICENSE).
