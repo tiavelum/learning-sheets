@@ -8,7 +8,7 @@ This folder holds one folder per sheet, named as [Folder name](#folder-name) giv
 
 ## A sheet folder
 
-A sheet folder holds exactly these files, here for the sheet "Logins at a Glance":
+A sheet folder holds exactly these files, here for the sheet `logins-at-a-glance`:
 
 ```
 sheets/logins-at-a-glance/
@@ -31,13 +31,13 @@ The README of a sheet holds, in this order:
 
 The prompt is the person's request that started the sheet, as written, with names of people and private details left out, since the repository is public. Each place where something is left out is marked in square brackets with what kind of thing it was, such as `[left out: a name]`.
 
-A sheet's README is a document about the repository's content, so under [WR-1](https://github.com/tiavelum/engineering-standards/blob/main/standards/writing.md#wr-1) its sentence, its `topic` and its `tags` are in English, whatever the sheet's `language`; its `title` alone is not translated, since it equals the canvas's. The prompt is quoted as the person wrote it, in the language they wrote it in, since it is the person's words and not text of the repository.
+A sheet's README is a document about the repository's content, so under [WR-1](https://github.com/tiavelum/engineering-standards/blob/main/standards/writing.md#wr-1) its sentence, its `topic` and its `tags` are in English, whatever the sheet's `language`; its `title` alone is not translated, since it is the sheet's name that [Folder name](#folder-name) gives. The prompt is quoted as the person wrote it, in the language they wrote it in, since it is the person's words and not text of the repository.
 
-This example uses the facts of the canvas "Logins at a Glance"; its prompt is an illustration:
+This example uses the facts of the canvas `logins-at-a-glance`; its prompt is an illustration:
 
 ````markdown
 ---
-title: "Logins at a Glance"
+title: "logins-at-a-glance"
 topic: "How logins work, from passwords and passkeys to getting back in"
 tags: ["accounts", "security"]
 language: "en"
@@ -61,19 +61,19 @@ who keeps forgetting her passwords.
 
 ## Front matter
 
-Every field is required, and they stand in the order of this table. Every value is a YAML string in double quotes, with `\"` for a quote and `\\` for a backslash inside it, and so is each item of `tags`; unquoted, YAML 1.1 reads `made` as [a date](https://yaml.org/type/timestamp.html) and `language: no` as [a boolean](https://yaml.org/type/bool.html), and a title with a colon does not parse.
+Every field is required, and they stand in the order of this table. Every value is a YAML string in double quotes, with `\"` for a quote and `\\` for a backslash inside it, and so is each item of `tags`; unquoted, YAML 1.1 reads `made` as [a date](https://yaml.org/type/timestamp.html) and `language: no` as [a boolean](https://yaml.org/type/bool.html), and a topic with a colon does not parse.
 
-| Field | Holds | Form | Example |
-|---|---|---|---|
-| `title` | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact | Text on one line that gives a folder name of at least one word | `"Logins at a Glance"` |
-| `topic` | What the sheet covers | Text on one line without a final period | `"How logins work, from passwords and passkeys to getting back in"` |
-| `tags` | The words to filter sheets by | A list of one or more distinct words, each in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2) | `["accounts", "security"]` |
-| `language` | The language of the sheet's text | A language tag of [BCP 47](https://www.rfc-editor.org/info/rfc5646) | `"en"` |
-| `paper` | The paper the pages are made for | `a4` or `letter` | `"a4"` |
-| `made` | The date on which the session that made the sheet first handed it over, in UTC | `YYYY-MM-DD` | `"2026-11-01"` |
-| `skill` | The learning-sheet skill that made the sheet | `tiavelum/claude-setup@` and the hash of a commit of that repository, at least 7 lowercase hexadecimal characters | `"tiavelum/claude-setup@4f26fe8"` |
-| `artifact` | The link of the Design canvas that holds the sheet | `https://claude.ai/artifact/` and the canvas's id | `"https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"` |
-| `artifact_version` | The version of the canvas whose files the folder holds | The version as the Artifact tool reports it | `"1793655646-5d0b"` |
+| Field              | Holds                                                                                        | Form                                                                                                                                                     | Example                                                             |
+| ------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `title`            | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact | The sheet's folder name, in the form that [Folder name](#folder-name) gives                                                                              | `"logins-at-a-glance"`                                              |
+| `topic`            | What the sheet covers                                                                        | Text on one line without a final period                                                                                                                  | `"How logins work, from passwords and passkeys to getting back in"` |
+| `tags`             | The words to filter sheets by                                                                | A list of one or more distinct words, each in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2) | `["accounts", "security"]`                                          |
+| `language`         | The language of the sheet's text                                                             | A language tag of [BCP 47](https://www.rfc-editor.org/info/rfc5646)                                                                                      | `"en"`                                                              |
+| `paper`            | The paper the pages are made for                                                             | `a4` or `letter`                                                                                                                                         | `"a4"`                                                              |
+| `made`             | The date on which the session that made the sheet first handed it over, in UTC               | `YYYY-MM-DD`                                                                                                                                             | `"2026-11-01"`                                                      |
+| `skill`            | The learning-sheet skill that made the sheet                                                 | `tiavelum/claude-setup@` and the hash of a commit of that repository, at least 7 lowercase hexadecimal characters                                        | `"tiavelum/claude-setup@4f26fe8"`                                   |
+| `artifact`         | The link of the Design canvas that holds the sheet                                           | `https://claude.ai/artifact/` and the canvas's id                                                                                                        | `"https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"`               |
+| `artifact_version` | The version of the canvas whose files the folder holds                                       | The version as the Artifact tool reports it                                                                                                              | `"1793655646-5d0b"`                                                 |
 
 `made` and `skill` keep their values when the sheet changes; `artifact` and `artifact_version` name the canvas and version that the folder's files were last read from.
 
@@ -93,28 +93,15 @@ A page file is a page of the canvas in its own HTML: it loads the canvas runtime
 - Each page is one `project/<page>.dc.html`, one per key of `boards` and none besides. The first page in reading order is `Main.dc.html`, the name the Design type gives a canvas's first page; the others keep the names the session that made the sheet gave them, such as `Details.dc.html`, `Facts.dc.html` or `Page-2.dc.html`, as [the deviation from NAM-2](../deviations.md#nam-2-page-files-below-sheetsproject) records.
 - Every page's board measures 794 × 1123 px for `paper: a4` and 816 × 1056 px for `paper: letter`, the sizes at which [the learning-sheet skill](https://github.com/tiavelum/claude-setup/blob/main/skills/learning-sheet/SKILL.md#lay-out-the-pages) makes one artboard per page.
 - Every page is static: the file holds no hole `{{…}}`, no `<sc-for>`, `<sc-if>` or `<dc-import>`, and no uploaded asset (`/_blob/…`). It loads over the network only `./support.js` in `<head>` (the canvas runtime) and, in `<helmet>`, the Google Fonts `css2` stylesheet with the `<link rel="preconnect">` elements for `https://fonts.googleapis.com` and `https://fonts.gstatic.com`. A URL in an `<a href>`, in an `xmlns` or in the page's text loads nothing and is allowed.
-- Every font family a page loads has its Fontsource package among the repository's npm dependencies, since the renderer takes the fonts from there ([decision 0002](../docs/decisions/0002-render-with-chromium-and-fontsource.md)): `@fontsource/<id>`, or `@fontsource-variable/<id>` ([the Fontsource guide to variable fonts](https://fontsource.org/docs/getting-started/variable)) where the `css2` URL asks for an axis other than `ital` and `wght`, with `<id>` the family in lowercase and its spaces as hyphens, and every weight and style the URL asks for is among the package's.
+- Every font family a page loads has its Fontsource package among the repository's npm dependencies, since the renderer takes the fonts from there ([decision 0002](../docs/decisions/0002-render-with-chromium-and-fontsource.md)): `@fontsource/<id>`, or `@fontsource-variable/<id>` ([the Fontsource guide to variable fonts](https://fontsource.org/docs/getting-started/variable)) where the `css2` URL asks for an axis other than `ital` and `wght`, or for a range of values, with `<id>` the family in lowercase and its spaces as hyphens, and every weight and style the URL asks for is among the package's.
 
 The files are written byte for byte as the Artifact tool reads them, and no formatter or linter changes them.
 
 ## Folder name
 
-The folder name follows from `title` in these steps, which give a name in the form of NAM-2:
+A sheet's name is its folder name, and its README's `title`, the `title` of its canvas and so the title of its artifact are the same string. The name is lowercase words of `a`-`z` and `0`-`9` joined by single hyphens, the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2), such as `logins-at-a-glance`. A topic written with other letters or characters is turned into such words: `ä`, `ö`, `ü`, `ß`, `æ`, `œ`, `ø` and `ł` become `ae`, `oe`, `ue`, `ss`, `ae`, `oe`, `o` and `l`, other accents and apostrophes are dropped, and any other character separates two words, so that "Drei Säulen der Vorsorge" becomes `drei-saeulen-der-vorsorge`, "Straße und Café" becomes `strasse-und-cafe` and "Don't Get Locked Out" becomes `dont-get-locked-out`. The name leaves out the words `learning sheet` and `learning sheets`, since every sheet here is one: `points-of-sail`, not `points-of-sail-learning-sheet`.
 
-1. Write the title in Unicode form NFC and every letter in lowercase.
-2. Write `ä`, `ö`, `ü`, `ß`, `æ`, `œ`, `ø` and `ł` as `ae`, `oe`, `ue`, `ss`, `ae`, `oe`, `o` and `l`.
-3. Decompose what is left (NFD) and drop the combining marks, so that `é` becomes `e`.
-4. Drop apostrophes (`'` and `’`), then split the title into words at every character other than `a`-`z` and `0`-`9`; drop the words left empty.
-5. Join the words with single hyphens.
-
-| Title | Folder name |
-|---|---|
-| `Logins at a Glance` | `logins-at-a-glance` |
-| `Drei Säulen der Vorsorge` | `drei-saeulen-der-vorsorge` |
-| `Don't Get Locked Out` | `dont-get-locked-out` |
-| `Straße und Café` | `strasse-und-cafe` |
-
-No two sheets share a folder name, and a new sheet never takes the folder of another. A new sheet on a topic already present takes a title that says what sets it apart, such as its scene ("Points of Sail on a Hillside"), and its artifact is given the same title. The listing of `sheets/` is the list of names taken: one directory read shows them all.
+No two sheets share a folder name, and a new sheet never takes the folder of another. A new sheet on a topic already present takes a name that says what sets it apart, such as its scene (`points-of-sail-hillside`), and its artifact is given the same title. The listing of `sheets/` is the list of names taken: one directory read shows them all.
 
 A sheet keeps its folder as long as its title stays. A pull request that retitles a sheet changes its README's `title`, the `title` of its canvas and its folder name together. A pull request that removes a sheet deletes its folder, and a session opens one only when the person asks for it.
 

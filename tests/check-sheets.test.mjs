@@ -1,22 +1,25 @@
-// Each check of scripts/check-sheets.mjs, run on a copy of the fixture sheet
-// that one change breaks.
-
 import assert from "node:assert/strict";
+import { execFileSync, spawnSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { after, describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { checkSheets } from "../scripts/check-sheets.mjs";
-import { isNam2, nameFromTitle, pagesInPrintOrder } from "../scripts/sheet-files.mjs";
+import { pagesInPrintOrder } from "../scripts/sheet-files.mjs";
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "sheets");
+const CHECK = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "scripts",
+  "check-sheets.mjs",
+);
 const SHEET = "two-pages-of-squares";
 const temporary = mkdtempSync(path.join(tmpdir(), "check-sheets-"));
 after(() => rmSync(temporary, { recursive: true, force: true }));
 
 let copies = 0;
-/** A sheets root holding a copy of the fixture sheet, changed by `change`. */
 function brokenCopy(change) {
   const root = path.join(temporary, String(copies++), "sheets");
   mkdirSync(root, { recursive: true });
@@ -38,7 +41,6 @@ function editCanvas(sheet, change) {
   writeFileSync(file, JSON.stringify(canvas));
 }
 
-/** Asserts that the check reports exactly one violation, on `file`, matching `pattern`. */
 function assertViolation(root, file, pattern) {
   const { violations } = checkSheets(root);
   assert.equal(violations.length, 1, violations.join("\n"));
@@ -49,33 +51,6 @@ function assertViolation(root, file, pattern) {
 const readme = [SHEET, "README.md"];
 const canvasFile = [SHEET, "project", "canvas.json"];
 const mainPage = [SHEET, "project", "Main.dc.html"];
-
-describe("the name rule", () => {
-  const cases = [
-    ["Logins at a Glance", "logins-at-a-glance"],
-    ["How a web page reaches your screen", "how-a-web-page-reaches-your-screen"],
-    ["Logins, Keys and Recovery", "logins-keys-and-recovery"],
-    ["Säule 3a für Selbständige", "saeule-3a-fuer-selbstaendige"],
-    ["Drei Säulen der Vorsorge", "drei-saeulen-der-vorsorge"],
-    ["Don't Get Locked Out", "dont-get-locked-out"],
-    ["Don’t Get Locked Out", "dont-get-locked-out"],
-    ["Straße und Café", "strasse-und-cafe"],
-    ["Input/Output", "input-output"],
-    ["Ærø, Œuvre und Łódź", "aero-oeuvre-und-lodz"],
-    ["ÖL und ÄRGER", "oel-und-aerger"],
-    ["Säule", "saeule"],
-    ["  Points -- of   Sail  ", "points-of-sail"],
-  ];
-  for (const [title, name] of cases) {
-    test(`${JSON.stringify(title)} gives ${name}`, () => {
-      assert.equal(nameFromTitle(title), name);
-      assert.ok(isNam2(name));
-    });
-  }
-  test("a title of no letter or digit gives no name", () => {
-    assert.equal(nameFromTitle("— ? —"), "");
-  });
-});
 
 describe("the print order", () => {
   test("pages print by y, then x, whatever order lists", () => {
@@ -247,39 +222,140 @@ describe("the check", () => {
     assertViolation(root, readme, /"artifact_version" is empty/);
   });
 
-  test("reports a folder name that is not the title's", () => {
+  test("reports a title folded over two lines", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(path.join(sheet, "README.md"), '"two-pages-of-squares"', '"two-pages-\\\n  of-squares"'),
+    );
+    assertViolation(root, readme, /"title" is not on one line/);
+  });
+
+  test("allows a skill commit hash of 40 and of 64 hexadecimal characters", () => {
+    for (const hash of ["a".repeat(40), "b".repeat(64)]) {
+      const root = brokenCopy((_, sheet) =>
+        edit(path.join(sheet, "README.md"), "@4f26fe8", `@${hash}`),
+      );
+      assert.deepEqual(checkSheets(root).violations, []);
+    }
+  });
+
+  for (const sentence of [
+    "A sheet for Dr. Smith and her class, on two coloured squares.",
+    "A sheet of squares for those who test scripts, e.g. Alice and Bob.",
+    "A sheet of squares (for whoever changes the scripts.)",
+  ]) {
+    test(`allows the one sentence ${JSON.stringify(sentence)}`, () => {
+      const root = brokenCopy((_, sheet) =>
+        edit(
+          path.join(sheet, "README.md"),
+          "A two-page sheet of coloured squares that the tests of the checks and the renderer read, for whoever changes those scripts.",
+          sentence,
+        ),
+      );
+      assert.deepEqual(checkSheets(root).violations, []);
+    });
+  }
+
+  test("reports two sentences below the front matter", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(path.join(sheet, "README.md"), "those scripts.", "those scripts. It has two pages."),
+    );
+    assertViolation(root, readme, /is not one sentence/);
+  });
+
+  for (const title of [
+    "Two Pages of Squares",
+    "two pages of squares",
+    "Two-Pages-of-Squares",
+    "two_pages_of_squares",
+    "two-pages--of-squares",
+    "-two-pages-of-squares",
+    "two-pages-of-squares-",
+    "two-pages-of-carrés",
+  ]) {
+    test(`reports the title ${JSON.stringify(title)}, which is not in the form of a name`, () => {
+      const root = brokenCopy((_, sheet) => {
+        edit(path.join(sheet, "README.md"), '"two-pages-of-squares"', JSON.stringify(title));
+        editCanvas(sheet, (canvas) => {
+          canvas.title = title;
+        });
+      });
+      assertViolation(
+        root,
+        readme,
+        /the title .* is not a sheet's name, lowercase words of a-z and 0-9 joined by single hyphens \(Folder name, NAM-2\)$/,
+      );
+    });
+  }
+
+  for (const title of ["squares-learning-sheet", "learning-sheets-of-squares"]) {
+    test(`reports the title ${title}, which holds the words learning sheet`, () => {
+      const root = brokenCopy((root) => {
+        cpSync(path.join(root, SHEET), path.join(root, title), { recursive: true });
+        rmSync(path.join(root, SHEET), { recursive: true });
+        edit(path.join(root, title, "README.md"), '"two-pages-of-squares"', `"${title}"`);
+        editCanvas(path.join(root, title), (canvas) => {
+          canvas.title = title;
+        });
+      });
+      assertViolation(root, [title, "README.md"], /holds the words "learning sheet"/);
+    });
+  }
+
+  for (const title of [
+    "machine-learning-on-sheets",
+    "relearning-sheet",
+    "learning-sheetmusic",
+    "saeule-3a",
+    "3a",
+    "squares",
+  ]) {
+    test(`allows the title ${title}`, () => {
+      const root = brokenCopy((root) => {
+        cpSync(path.join(root, SHEET), path.join(root, title), { recursive: true });
+        rmSync(path.join(root, SHEET), { recursive: true });
+        edit(path.join(root, title, "README.md"), '"two-pages-of-squares"', `"${title}"`);
+        editCanvas(path.join(root, title), (canvas) => {
+          canvas.title = title;
+        });
+      });
+      assert.deepEqual(checkSheets(root).violations, []);
+    });
+  }
+
+  test("reports a folder name that is not the title", () => {
     const root = brokenCopy((_, sheet) => {
-      edit(path.join(sheet, "README.md"), "Two Pages of Squares", "Two Pages of Circles");
+      edit(path.join(sheet, "README.md"), "two-pages-of-squares", "two-pages-of-circles");
       editCanvas(sheet, (canvas) => {
-        canvas.title = "Two Pages of Circles";
+        canvas.title = "two-pages-of-circles";
       });
     });
-    assertViolation(root, readme, /is not the name the title gives, two-pages-of-circles/);
+    assertViolation(
+      root,
+      readme,
+      /the folder name two-pages-of-squares is not the title, two-pages-of-circles$/,
+    );
+  });
+
+  test("reports a second sheet that takes the title of another", () => {
+    const root = brokenCopy((root) =>
+      cpSync(path.join(root, SHEET), path.join(root, "two-pages-of-squares-again"), {
+        recursive: true,
+      }),
+    );
+    assertViolation(
+      root,
+      ["two-pages-of-squares-again", "README.md"],
+      /the folder name two-pages-of-squares-again is not the title, two-pages-of-squares$/,
+    );
   });
 
   test("reports a canvas title other than the README's", () => {
     const root = brokenCopy((_, sheet) =>
       editCanvas(sheet, (canvas) => {
-        canvas.title = "Two pages of squares";
+        canvas.title = "Two Pages of Squares";
       }),
     );
     assertViolation(root, canvasFile, /is not the title of the README/);
-  });
-
-  test("reports two sheets whose titles give one folder name", () => {
-    const root = brokenCopy((root) => {
-      const other = path.join(root, "two-pages-of-squares-again");
-      cpSync(path.join(root, SHEET), other, { recursive: true });
-      edit(path.join(other, "README.md"), "Two Pages of Squares", "Two Pages of Squares!");
-      editCanvas(other, (canvas) => {
-        canvas.title = "Two Pages of Squares!";
-      });
-    });
-    const { violations } = checkSheets(root);
-    assert.ok(
-      violations.some((line) => line.includes("no two sheets share a folder name")),
-      violations.join("\n"),
-    );
   });
 
   test("reports a board whose file is missing", () => {
@@ -367,6 +443,24 @@ describe("the check", () => {
       /not static: loads https:\/\/example.org\/b.png from a <style>/,
     ],
     [
+      "a url() in a presentation attribute",
+      "<h1 ",
+      '<svg width="1" height="1" aria-hidden="true"><rect width="1" height="1" fill="url(https://example.org/g.svg#a)"/></svg><h1 ',
+      /not static: loads https:\/\/example.org\/g.svg#a from the fill of <rect>/,
+    ],
+    [
+      "an image-set() in an inline style",
+      "<h1 ",
+      "<p style=\"background-image: image-set('https://example.org/i.png' 1x)\">x</p><h1 ",
+      /not static: loads https:\/\/example.org\/i.png from the style of <p>/,
+    ],
+    [
+      "a -webkit-image-set() in a <style>",
+      "<style>",
+      '<style>h1{background-image:-webkit-image-set("https://example.org/w.png" 1x)}',
+      /not static: loads https:\/\/example.org\/w.png from a <style>/,
+    ],
+    [
       "another stylesheet",
       "<style>",
       '<link rel="stylesheet" href="https://example.org/c.css"><style>',
@@ -403,6 +497,18 @@ describe("the check", () => {
       ),
     );
     assert.deepEqual(checkSheets(root).violations, []);
+  });
+
+  test("in a git work tree, ignores a file git leaves out and reports one it would commit", () => {
+    const root = brokenCopy((root, sheet) => {
+      execFileSync("git", ["init", "-q"], { cwd: root });
+      writeFileSync(path.join(root, ".git", "info", "exclude"), ".DS_Store\n");
+      writeFileSync(path.join(sheet, ".DS_Store"), "x");
+      writeFileSync(path.join(sheet, "project", ".DS_Store"), "x");
+    });
+    assert.deepEqual(checkSheets(root).violations, []);
+    writeFileSync(path.join(root, SHEET, "notes.txt"), "x");
+    assertViolation(root, [SHEET, "notes.txt"], /holds exactly README.md and project\//);
   });
 
   test("reports a font family without its package in package.json", () => {
@@ -450,5 +556,35 @@ describe("the check", () => {
       mainPage,
       /requests Source Sans 3 at weight 950, which @fontsource\/source-sans-3 does not hold/,
     );
+  });
+});
+
+describe("the command", () => {
+  const run = (...args) => spawnSync(process.execPath, [CHECK, ...args], { encoding: "utf8" });
+
+  test("exits 0 and counts the sheets where there is no violation", () => {
+    const result = run("--root", FIXTURES);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout, `1 sheet in ${FIXTURES}, no violation\n`);
+  });
+
+  test("exits 1 and prints each violation and their number", () => {
+    const root = brokenCopy((root) => writeFileSync(path.join(root, "catalog.json"), "{}\n"));
+    const result = run("--root", root);
+    assert.equal(result.status, 1);
+    assert.match(result.stdout, /catalog\.json: is not a sheet folder/);
+    assert.match(result.stdout, new RegExp(`\n1 violation in ${root.replaceAll("\\", "\\\\")}\n$`));
+  });
+
+  test("exits 2 on an option it does not know", () => {
+    const result = run("--roots", FIXTURES);
+    assert.equal(result.status, 2);
+    assert.match(result.stderr, /usage: check-sheets\.mjs/);
+  });
+
+  test("exits 2 on a root that is not a folder", () => {
+    const result = run("--root", path.join(temporary, "none"));
+    assert.equal(result.status, 2);
+    assert.match(result.stderr, /is not a folder/);
   });
 });

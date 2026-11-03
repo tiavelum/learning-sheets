@@ -148,7 +148,7 @@ describe("the build", () => {
       sheets: [
         {
           name: SHEET,
-          title: "Two Pages of Squares",
+          title: SHEET,
           topic: "A fixture for the tests of the checks and the renderer",
           tags: ["fixture", "test"],
           language: "en",
@@ -209,7 +209,7 @@ describe("the build", () => {
     writeFileSync(
       readme,
       readFileSync(readme, "utf8")
-        .replace('"Two Pages of Squares"', '"Two Pages of Circles"')
+        .replace(`"${SHEET}"`, '"two-pages-of-circles"')
         .replace('["fixture", "test"]', '["other"]')
         .replace('"2026-11-03"', '"2026-11-02"'),
     );
@@ -225,22 +225,20 @@ describe("the build", () => {
         if (!request.url().startsWith("file:")) outside.push(request.url());
       });
       await page.goto(pathToFileURL(path.join(site, "index.html")).href);
-      const sheet = page.getByRole("article", { name: "Two Pages of Squares" });
+      const sheet = page.getByRole("article", { name: SHEET });
       await sheet.waitFor();
       assert.equal(await page.locator("#count").textContent(), "2 sheets");
       assert.deepEqual(await page.locator("#sheets h2").allTextContents(), [
-        "Two Pages of Squares",
-        "Two Pages of Circles",
+        SHEET,
+        "two-pages-of-circles",
       ]);
       assert.match(await sheet.textContent(), /PDF not released yet/);
       assert.equal(
-        await sheet
-          .getByRole("link", { name: "Source of Two Pages of Squares" })
-          .getAttribute("href"),
+        await sheet.getByRole("link", { name: `Source of ${SHEET}` }).getAttribute("href"),
         `${REPO}/tree/main/sheets/${SHEET}`,
       );
       const loaded = await sheet
-        .getByRole("img", { name: "Page one of Two Pages of Squares" })
+        .getByRole("img", { name: `Page one of ${SHEET}` })
         .evaluate((image) => image.complete && image.naturalWidth);
       assert.equal(loaded, IMAGE_WIDTH);
 
@@ -252,14 +250,12 @@ describe("the build", () => {
       await page.getByLabel("Search titles and topics").fill("");
       await page.getByLabel("Sort by").selectOption("title");
       assert.deepEqual(await page.locator("#sheets h2").allTextContents(), [
-        "Two Pages of Circles",
-        "Two Pages of Squares",
+        "two-pages-of-circles",
+        SHEET,
       ]);
 
       await page.getByRole("checkbox", { name: /fixture/ }).check();
-      assert.deepEqual(await page.locator("#sheets h2").allTextContents(), [
-        "Two Pages of Squares",
-      ]);
+      assert.deepEqual(await page.locator("#sheets h2").allTextContents(), [SHEET]);
       assert.equal(await page.locator("#count").textContent(), "1 of 2 sheets match");
       assert.match(page.url(), /\?tag=fixture&sort=title$/);
       await page.getByLabel("Search titles and topics").fill("no such words");
