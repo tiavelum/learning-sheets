@@ -26,5 +26,18 @@
     "parser": {
       "frontmatter": true
     }
-  }
+  },
+  "html": {
+    "formatter": {
+      "enabled": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["sheets/README.md"],
+      "formatter": {
+        "enabled": false
+      }
+    }
+  ]
 }

@@ -1,32 +1,44 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Two pages of squares, page 1</title>
-<script src="./support.js"></script>
-</head>
-<body>
-<x-dc>
-<helmet>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&amp;display=swap">
-<style>
-body{margin:0;background:#ffffff}
-</style>
-</helmet>
-<div style="width: 794px; height: 1123px; box-sizing: border-box; padding: 48px; overflow: hidden; background: #ffffff; color: #1a1a1a; font-family: 'Source Sans 3', sans-serif">
-<h1 style="margin: 0; font-size: 40px; font-weight: 700">Page 1</h1>
-<p style="margin: 12px 0 0; font-size: 16px">A square in <i>one</i> colour, and a <a href="https://example.org/">link to example.org</a> that loads nothing.</p>
-<div style="width: 400px; height: 400px; margin-top: 40px; background: #1F5FBF"></div>
-</div>
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+  <head>
+    <meta charset="utf-8">
+    <title>Two pages of squares, page 1</title>
+    <script src="./support.js"></script>
+  </head>
+  <body>
+    <x-dc>
+      <helmet>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&amp;display=swap"
+        >
+        <style>
+        body {
+          margin: 0;
+          background: #ffffff;
+        }
+        </style>
+      </helmet>
+      <div
+        style="width: 794px; height: 1123px; box-sizing: border-box; padding: 48px; overflow: hidden; background: #ffffff; color: #1a1a1a; font-family: 'Source Sans 3', sans-serif"
+      >
+        <h1 style="margin: 0; font-size: 40px; font-weight: 700">Page 1</h1>
+        <p style="margin: 12px 0 0; font-size: 16px">
+          A square in <i>one</i> colour, and a
+          <a href="https://example.org/">link to example.org</a>
+          that loads nothing.
+        </p>
+        <div style="width: 400px; height: 400px; margin-top: 40px; background: #1F5FBF"></div>
+      </div>
+    </x-dc>
+    <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
 class Component extends DCLogic {
 renderVals() {
 return {};
 }
 }
 </script>
-</body>
+  </body>
 </html>

@@ -5,10 +5,10 @@
   "launch": { "view": "canvas" },
   "pages": [],
   "boards": {
-    "Back.dc.html": { "x": 874, "y": 0, "w": 794, "h": 1123, "title": "Page 2" },
+    "back.dc.html": { "x": 874, "y": 0, "w": 794, "h": 1123, "title": "Page 2" },
     "Main.dc.html": { "x": 0, "y": 0, "w": 794, "h": 1123, "title": "Page 1" }
   },
-  "order": ["Back.dc.html", "Main.dc.html"],
+  "order": ["back.dc.html", "Main.dc.html"],
   "notes": {},
   "designSystems": []
 }

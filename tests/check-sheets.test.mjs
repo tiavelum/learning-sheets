@@ -61,6 +61,7 @@ describe("the name rule", () => {
     ["Don’t Get Locked Out", "dont-get-locked-out"],
     ["Straße und Café", "strasse-und-cafe"],
     ["Input/Output", "input-output"],
+    ["Ærø, Œuvre und Łódź", "aero-oeuvre-und-lodz"],
     ["ÖL und ÄRGER", "oel-und-aerger"],
     ["Säule", "saeule"],
     ["  Points -- of   Sail  ", "points-of-sail"],
@@ -282,14 +283,14 @@ describe("the check", () => {
   });
 
   test("reports a board whose file is missing", () => {
-    const root = brokenCopy((_, sheet) => rmSync(path.join(sheet, "project", "Back.dc.html")));
-    assertViolation(root, [SHEET, "project", "Back.dc.html"], /the file is missing/);
+    const root = brokenCopy((_, sheet) => rmSync(path.join(sheet, "project", "back.dc.html")));
+    assertViolation(root, [SHEET, "project", "back.dc.html"], /the file is missing/);
   });
 
   test("reports a page file that is not a board", () => {
     const root = brokenCopy((_, sheet) =>
       cpSync(
-        path.join(sheet, "project", "Back.dc.html"),
+        path.join(sheet, "project", "back.dc.html"),
         path.join(sheet, "project", "Extra.dc.html"),
       ),
     );
@@ -315,10 +316,10 @@ describe("the check", () => {
   test("reports a first page in print order other than Main.dc.html", () => {
     const root = brokenCopy((_, sheet) =>
       editCanvas(sheet, (canvas) => {
-        canvas.boards["Back.dc.html"].x = -900;
+        canvas.boards["back.dc.html"].x = -900;
       }),
     );
-    assertViolation(root, canvasFile, /the first page in print order is Back.dc.html/);
+    assertViolation(root, canvasFile, /the first page in print order is back.dc.html/);
   });
 
   test("reports a board size that does not match paper", () => {
@@ -361,8 +362,8 @@ describe("the check", () => {
     ],
     [
       "a CSS url()",
-      "body{margin:0;",
-      "body{margin:0;background:url(https://example.org/b.png);",
+      "<style>",
+      "<style>body{background:url(https://example.org/b.png)}",
       /not static: loads https:\/\/example.org\/b.png from a <style>/,
     ],
     [

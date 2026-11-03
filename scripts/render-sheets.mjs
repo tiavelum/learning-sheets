@@ -311,20 +311,32 @@ export async function renderSheets({
 }
 
 async function main() {
-  const { values, positionals } = parseArgs({
-    allowPositionals: true,
-    options: {
-      root: { type: "string", default: "sheets" },
-      out: { type: "string", default: "build" },
-      "png-width": { type: "string" },
-    },
-  });
+  const usage =
+    "usage: render-sheets.mjs [--root <folder>] [--out <folder>] [--png-width <px>] [<name> ...]";
+  let values;
+  let positionals;
+  try {
+    ({ values, positionals } = parseArgs({
+      allowPositionals: true,
+      options: {
+        root: { type: "string", default: "sheets" },
+        out: { type: "string", default: "build" },
+        "png-width": { type: "string" },
+      },
+    }));
+  } catch (error) {
+    console.error(`${error.message}; ${usage}`);
+    process.exitCode = 2;
+    return;
+  }
   let pngWidth;
   if (values["png-width"] !== undefined) {
     pngWidth = Number(values["png-width"]);
     if (!Number.isInteger(pngWidth) || pngWidth < 1) {
-      console.error(`--png-width must be a whole number of px, not ${values["png-width"]}`);
-      process.exitCode = 1;
+      console.error(
+        `--png-width must be a whole number of px, not ${values["png-width"]}; ${usage}`,
+      );
+      process.exitCode = 2;
       return;
     }
   }

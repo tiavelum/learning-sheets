@@ -15,7 +15,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { after, describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { PDFDocument } from "pdf-lib";
+import { PDFDict, PDFDocument, PDFName } from "pdf-lib";
 import { pageHtml, renderSheets } from "../scripts/render-sheets.mjs";
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "sheets");
@@ -82,6 +82,38 @@ describe("the renderer", () => {
     assert.match(html, /href="\/fonts\/@fontsource-variable\/bricolage-grotesque\/opsz.css"/);
   });
 
+  test("prints a family from a variable package under the name the page asks for", async () => {
+    const { root, out } = copyWithMain((text) =>
+      text
+        .replace(
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400",
+          "family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=Source+Sans+3:ital,wght@0,400;0,700;1,400",
+        )
+        .replace(
+          '<h1 style="margin: 0;',
+          "<h1 style=\"margin: 0; font-family: 'Bricolage Grotesque', serif;",
+        ),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    const pdf = await PDFDocument.load(readFileSync(path.join(out, `${SHEET}.pdf`)));
+    // A font's name stands in BaseFont, or for a Type 3 font in the Name of
+    // its dictionary and the FontName of its descriptor.
+    const fonts = pdf.context
+      .enumerateIndirectObjects()
+      .map(([, object]) => object)
+      .filter((object) => object instanceof PDFDict)
+      .flatMap((object) =>
+        ["BaseFont", "Name", "FontName"].map((key) => object.get(PDFName.of(key))),
+      )
+      .filter((value) => value instanceof PDFName)
+      .map((value) => value.decodeText());
+    assert.ok(
+      fonts.some((name) => name.includes("BricolageGrotesque")),
+      `fonts embedded: ${fonts.join(", ")}`,
+    );
+  });
+
   test("fails on content past the frame, naming the page and by how many px", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text
@@ -111,8 +143,8 @@ describe("the renderer", () => {
   test("fails on a network request made while the page renders", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text.replace(
-        "body{margin:0;",
-        'h1{background-image:image-set("https://example.org/e.png" 1x)}body{margin:0;',
+        "<style>",
+        '<style>h1{background-image:image-set("https://example.org/e.png" 1x)}',
       ),
     );
     const [result] = await renderSheets({ root, out });

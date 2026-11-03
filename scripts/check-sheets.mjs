@@ -368,7 +368,14 @@ function checkPage(file, { dependencies, nodeModules }, report) {
 }
 
 function main() {
-  const { values } = parseArgs({ options: { root: { type: "string", default: "sheets" } } });
+  let values;
+  try {
+    ({ values } = parseArgs({ options: { root: { type: "string", default: "sheets" } } }));
+  } catch (error) {
+    console.error(`${error.message}; usage: check-sheets.mjs [--root <folder>]`);
+    process.exitCode = 2;
+    return;
+  }
   const { violations, sheets } = checkSheets(values.root);
   for (const line of violations) console.log(line);
   if (violations.length > 0) {
