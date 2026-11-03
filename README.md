@@ -12,8 +12,8 @@ the work that adds the sheets, the releases of their PDFs and a page to browse t
 
 ## Content and structure
 
-| Path | Holds |
-|---|---|
-| `README.md` | This description |
-| `.editorconfig` | The formatting rules that editors apply to every file |
-| `.gitignore` | The files that tools write into the repository and that are not committed |
+| Path            | Holds                                                                     |
+| --------------- | ------------------------------------------------------------------------- |
+| `README.md`     | This description                                                          |
+| `.editorconfig` | The formatting rules that editors apply to every file                     |
+| `.gitignore`    | The files that tools write into the repository and that are not committed |
