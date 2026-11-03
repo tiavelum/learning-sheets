@@ -46,9 +46,16 @@ function languageName(tag) {
   }
 }
 
-function dateText(made) {
-  const date = new Date(`${made}T00:00:00Z`);
-  return Number.isNaN(date.getTime()) ? made : dateFormat.format(date);
+function dateText(day) {
+  const date = new Date(`${day}T00:00:00Z`);
+  return Number.isNaN(date.getTime()) ? day : dateFormat.format(date);
+}
+
+function dateFact(term, day) {
+  return element("div", {}, [
+    element("dt", { text: term }),
+    element("dd", {}, [element("time", { datetime: day, text: dateText(day) })]),
+  ]);
 }
 
 /** A link whose visible label is short and whose name, for a screen reader, names the sheet. */
@@ -70,12 +77,8 @@ function card(sheet) {
       element("dt", { text: "Paper" }),
       element("dd", { text: PAPERS[sheet.paper] ?? sheet.paper }),
     ]),
-    element("div", {}, [
-      element("dt", { text: "Made" }),
-      element("dd", {}, [
-        element("time", { datetime: sheet.created, text: dateText(sheet.created) }),
-      ]),
-    ]),
+    dateFact("Created", sheet.created),
+    dateFact("Last modified", sheet.last_modified),
   ]);
   const tags = element(
     "ul",

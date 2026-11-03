@@ -226,7 +226,12 @@ describe("the build", () => {
       readFileSync(readme, "utf8")
         .replace(`"${SHEET}"`, '"two-pages-of-circles"')
         .replace('["fixture", "test"]', '["other"]')
-        .replace('"2026-11-03"', '"2026-11-02"'),
+        // Made after the fixture, but last modified before it, so that the
+        // default order shows which date it sorts by.
+        .replace(
+          'created: "2026-11-01"\nlast_modified: "2026-11-03"',
+          'created: "2026-11-02"\nlast_modified: "2026-11-02"',
+        ),
     );
     const { fetch } = stubFetch(404, { message: "Not Found" });
     const site = path.join(temporary, "two-sheets-site");
@@ -248,6 +253,21 @@ describe("the build", () => {
         "two-pages-of-circles",
       ]);
       assert.match(await sheet.textContent(), /PDF not released yet/);
+      assert.deepEqual(
+        await sheet
+          .locator(".facts time")
+          .evaluateAll((times) =>
+            times.map((time) => [
+              time.closest("div").querySelector("dt").textContent,
+              time.dateTime,
+              time.textContent,
+            ]),
+          ),
+        [
+          ["Created", "2026-11-01", "1 November 2026"],
+          ["Last modified", "2026-11-03", "3 November 2026"],
+        ],
+      );
       assert.equal(
         await page.locator("#release").textContent(),
         "No sheet links to a PDF: the latest release is missing or could not be read.",
