@@ -50,16 +50,13 @@ const FALLBACK_PACKAGES = [
   "@fontsource/noto-sans-math",
   "@fontsource/noto-emoji",
 ];
-// Superscripts and subscripts, letterlike symbols and number forms, arrows,
-// mathematical signs, technical symbols, enclosed numbers, box drawing,
-// shapes, symbols, dingbats and emoji. The ranges are the fallback's own,
-// since a package declares the ranges of its subsets, and Noto Sans Math
-// declares only Latin although its file holds the arrows and signs.
-const FALLBACK_RANGES = [
-  [0x2070, 0x209f],
-  [0x2100, 0x2bff],
-  [0x1f000, 0x1fbff],
-];
+// General punctuation, superscripts and subscripts, combining marks for
+// symbols, letterlike symbols, number forms, arrows, mathematical signs,
+// technical symbols, enclosed numbers, box drawing, shapes, symbols,
+// dingbats and emoji. The range is the fallback's own, not the packages':
+// Noto Sans Math declares only Latin although its file holds the arrows and
+// signs, and Noto Sans Symbols 2 declares Greek, which stays with a page's fonts.
+const FALLBACK_RANGE = "U+2000-209F,U+20D0-20FF,U+2100-2BFF,U+1F000-1FBFF";
 
 export class RenderError extends Error {}
 
@@ -102,8 +99,9 @@ export function pageHtml(text, board, nodeModules = NODE_MODULES) {
     `<html${lang ? ` lang="${lang.replaceAll('"', "&quot;")}"` : ""}>`,
     '<head><meta charset="utf-8">',
     title ? serializeOuter(title) : "",
-    ...links,
+    // Before the page's own faces, so that Chromium tries those first.
     fallback ? `<style>${fallback}</style>` : "",
+    ...links,
     helmet,
     `<style>${frame}</style>`,
     "</head>",
@@ -120,30 +118,28 @@ function fontCss(file, family) {
 }
 
 // A page's font-family lists end in system fonts, so the fallback joins every
-// family the page loads, as further faces of it with the same descriptors.
-// Its range leaves out every character that a face of the page declares,
-// so that a character a family of the page holds is drawn as without it.
+// family the page loads, as further faces of it with the same descriptors,
+// defined before the page's faces: Chromium draws a character from a face of
+// the page wherever that face's file holds it, and from the fallback only
+// where none does.
 export function fallbackFaces(fonts, nodeModules = NODE_MODULES) {
-  const faces = [...fonts].flatMap(([sheet, family]) =>
-    fontFaces(fontCss(path.join(nodeModules, sheet), family)),
-  );
-  const declared = faces.map((face) => face["unicode-range"] ?? "U+0-10FFFF").join(",");
-  const range = formatRanges(subtractRanges(FALLBACK_RANGES, parseRanges(declared)));
-  if (range === "") return "";
-  const descriptors = new Map();
-  for (const face of faces) {
-    const kept = ["font-family", "font-style", "font-weight", "font-stretch"]
-      .filter((name) => face[name] !== undefined)
-      .map((name) => `${name}:${face[name]};`)
-      .join("");
-    descriptors.set(kept, kept);
+  const descriptors = new Set();
+  for (const [sheet, family] of fonts) {
+    for (const face of fontFaces(fontCss(path.join(nodeModules, sheet), family))) {
+      descriptors.add(
+        ["font-family", "font-style", "font-weight", "font-stretch"]
+          .filter((name) => face[name] !== undefined)
+          .map((name) => `${name}:${face[name]};`)
+          .join(""),
+      );
+    }
   }
   const files = [...fallbackFiles()].reverse();
-  return [...descriptors.keys()]
+  return [...descriptors]
     .flatMap((kept) =>
       files.map(
         (file) =>
-          `@font-face{${kept}src:url(${FALLBACK_PATH}${file}) format('woff2');unicode-range:${range};}`,
+          `@font-face{${kept}src:url(${FALLBACK_PATH}${file}) format('woff2');unicode-range:${FALLBACK_RANGE};}`,
       ),
     )
     .join("\n");
@@ -178,40 +174,6 @@ function fontFaces(css) {
       ]),
     ),
   );
-}
-
-function parseRanges(text) {
-  return text
-    .split(",")
-    .map((part) => part.trim().replace(/^U\+/i, ""))
-    .filter((part) => part !== "")
-    .map((part) => {
-      const [start, end = start] = part.includes("?")
-        ? [part.replaceAll("?", "0"), part.replaceAll("?", "F")]
-        : part.split("-");
-      return [Number.parseInt(start, 16), Number.parseInt(end, 16)];
-    });
-}
-
-function subtractRanges(ranges, taken) {
-  let left = ranges;
-  for (const [start, end] of taken) {
-    left = left.flatMap(([from, to]) => {
-      if (end < from || start > to) return [[from, to]];
-      return [
-        [from, start - 1],
-        [end + 1, to],
-      ].filter(([a, b]) => a <= b);
-    });
-  }
-  return left;
-}
-
-function formatRanges(ranges) {
-  const hex = (point) => point.toString(16).toUpperCase().padStart(4, "0");
-  return ranges
-    .map(([start, end]) => (start === end ? `U+${hex(start)}` : `U+${hex(start)}-${hex(end)}`))
-    .join(",");
 }
 
 const CONTENT_TYPES = {
@@ -400,7 +362,7 @@ async function printPage(browser, html, fonts, board, file, { png, pngWidth, nod
       preferCSSPageSize: true,
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
-    // After the PDF, since it adds elements to the page to test each character.
+    // After the PDF, since the probe adds elements to the page.
     const characters = await uncoveredCharacters(page);
     if (blocked.length > 0) {
       throw new RenderError(
@@ -413,16 +375,26 @@ async function printPage(browser, html, fonts, board, file, { png, pngWidth, nod
   }
 }
 
-// Chromium reports, for each text and pseudo-element it lays out, the fonts it
-// drew it with, and whether each is a web font, which here only Fontsource is.
+// Only Chromium knows which font drew a character, once the cascade, the
+// font-family list and each @font-face unicode-range have run; it reports
+// fonts per text, and a font it did not download is one of the machine.
 async function uncoveredCharacters(page) {
   const session = await page.context().newCDPSession(page);
   try {
     await session.send("DOM.enable");
     await session.send("CSS.enable");
     await session.send("DOM.getDocument", { depth: -1 });
-    const fontsOf = async (nodeId) =>
-      (await session.send("CSS.getPlatformFontsForNode", { nodeId })).fonts;
+    // The protocol documents the call for an element; Chromium also takes a
+    // text node, and a Chromium that refused it would name the call here.
+    const fontsOf = async (nodeId) => {
+      try {
+        return (await session.send("CSS.getPlatformFontsForNode", { nodeId })).fonts;
+      } catch (error) {
+        throw new RenderError(
+          `this Chromium cannot say which fonts drew a text (CSS.getPlatformFontsForNode: ${error.message.split("\n")[0]})`,
+        );
+      }
+    };
     const { documents, strings } = await session.send("DOMSnapshot.captureSnapshot", {
       computedStyles: FONT_PROPERTIES,
     });
@@ -443,9 +415,10 @@ async function uncoveredCharacters(page) {
     const found = new Set();
     for (const [at, { index, text, style }] of texts.entries()) {
       const fonts = await fontsOf(nodeIds[at]);
+      // A text with no font named is not painted (a closed <details>), so it counts as covered.
       if (fonts.every((font) => font.isCustomFont)) continue;
-      // The text holds a character from a system font; each character of it is
-      // drawn alone, with the same font properties, to find which.
+      // Chromium reports fonts per text, not per character, so a text that
+      // took a system font is drawn again one character at a time to find which.
       const graphemes = [...new Set(graphemesOf(text))].filter((g) => !DRAWS_NOTHING.test(g));
       const parent = nodes.backendNodeId[nodes.parentIndex[index]];
       const { object } = await session.send("DOM.resolveNode", { backendNodeId: parent });
@@ -473,8 +446,8 @@ async function uncoveredCharacters(page) {
   }
 }
 
-// Runs in the page on the element that holds the text: appends each character
-// in an element of its own that takes the text's font properties.
+// Runs in the page, on the element that holds the text: an element of its own
+// per character, with the text's font properties, gets fonts of its own.
 const DRAW_ALONE = `async function (graphemes, style) {
   const svg = this.namespaceURI === "http://www.w3.org/2000/svg";
   const probes = graphemes.map((grapheme) => {
