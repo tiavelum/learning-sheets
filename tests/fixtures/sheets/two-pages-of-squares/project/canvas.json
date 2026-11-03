@@ -1,0 +1,14 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-11-03T00:00:00Z" },
+  "title": "Two Pages of Squares",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "back.dc.html": { "x": 874, "y": 0, "w": 794, "h": 1123, "title": "Page 2" },
+    "Main.dc.html": { "x": 0, "y": 0, "w": 794, "h": 1123, "title": "Page 1" }
+  },
+  "order": ["back.dc.html", "Main.dc.html"],
+  "notes": {},
+  "designSystems": []
+}
