@@ -87,6 +87,14 @@ It prints `build/site/images/two-pages-of-squares.png: page one at 240 px`, a li
 
 In the repository on GitHub, open Actions, click "Release" in the list of workflows on the left, then click "Run workflow" above the list of its runs, leave the branch at `main` and click "Run workflow" in the menu that opens, as [GitHub's guide to running a workflow by hand](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow) shows; it takes write access to the repository. The run appears at the top of the list and, when it is done after a few minutes, shows a green check mark.
 
+From a terminal where the GitHub CLI `gh` is logged in with write access to the repository, [`gh workflow run`](https://cli.github.com/manual/gh_workflow_run) starts the same run:
+
+```bash
+gh workflow run release.yml --repo tiavelum/learning-sheets --ref main
+```
+
+It prints `✓ Created workflow_dispatch event for release.yml at main`, and the run then appears under Actions as one started with the button.
+
 The run checks and renders every sheet of `main` and publishes one release tagged with the date and time in UTC, to the minute, at which the run began its work, such as `2026-11-03-1430`, and titled "Learning sheets 2026-11-03 14:30 UTC". Open `https://github.com/tiavelum/learning-sheets/releases`: the new release stands at the top, marked "Latest", and holds:
 
 - `<name>.pdf` for each sheet, named after its folder in [`sheets/`](sheets/README.md), such as `login-methods-and-recovery.pdf`;
