@@ -225,7 +225,8 @@ function releaseText() {
       ".",
     );
   } else {
-    release.textContent = "No release holds a PDF yet, so no sheet links to one.";
+    release.textContent =
+      "No sheet links to a PDF: the latest release is missing or could not be read.";
   }
 }
 

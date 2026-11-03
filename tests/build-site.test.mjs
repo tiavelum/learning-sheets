@@ -178,7 +178,7 @@ describe("the build", () => {
     assert.equal(png.readUInt32BE(16), IMAGE_WIDTH);
   });
 
-  test("builds a page that says so where the root holds no sheet", async () => {
+  test("builds a page that says so where the root holds no sheet, across the page's width", async () => {
     const root = path.join(temporary, "empty-root");
     mkdirSync(root);
     const { fetch } = stubFetch(404, { message: "Not Found" });
@@ -188,6 +188,20 @@ describe("the build", () => {
       "no release yet: every sheet shows as not released yet",
       `0 sheets built into ${path.join(temporary, "empty")}`,
     ]);
+
+    const browser = await launchBrowser();
+    try {
+      const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+      await page.goto(pathToFileURL(path.join(temporary, "empty", "index.html")).href);
+      assert.match(await page.locator("#empty").textContent(), /holds no sheet yet/);
+      // With no filters beside it, the notice takes the width of both columns.
+      const [main, layout] = await page.evaluate(() =>
+        ["#main", ".layout"].map((selector) => document.querySelector(selector).clientWidth),
+      );
+      assert.equal(main, layout);
+    } finally {
+      await browser.close();
+    }
   });
 
   test("fails where the release lookup is required and the API cannot be reached", async () => {
@@ -234,6 +248,10 @@ describe("the build", () => {
       ]);
       assert.match(await sheet.textContent(), /PDF not released yet/);
       assert.equal(
+        await page.locator("#release").textContent(),
+        "No sheet links to a PDF: the latest release is missing or could not be read.",
+      );
+      assert.equal(
         await sheet.getByRole("link", { name: `Source of ${SHEET}` }).getAttribute("href"),
         `${REPO}/tree/main/sheets/${SHEET}`,
       );
@@ -264,6 +282,77 @@ describe("the build", () => {
       await page.getByRole("button", { name: "Clear the filters" }).click();
       assert.equal(await page.locator("#sheets > li").count(), 2);
       assert.deepEqual(outside, []);
+    } finally {
+      await browser.close();
+    }
+  });
+
+  test("filters by every tick, by language and from the URL, links only https, and fits a phone", async () => {
+    const root = path.join(temporary, "filter-sheets");
+    mkdirSync(root);
+    const make = (name, tags, language, artifact) => {
+      const folder = path.join(root, name);
+      cpSync(path.join(FIXTURES, SHEET), folder, { recursive: true });
+      const readme = path.join(folder, "README.md");
+      writeFileSync(
+        readme,
+        readFileSync(readme, "utf8")
+          .replace(`"${SHEET}"`, `"${name}"`)
+          .replace('["fixture", "test"]', JSON.stringify(tags))
+          .replace('language: "en"', `language: "${language}"`)
+          .replace("https://claude.ai/artifact/Fixture0000000000000000", artifact),
+      );
+    };
+    make("sheet-a", ["red", "blue"], "en", "https://claude.ai/artifact/AAA");
+    make("sheet-b", ["red"], "de", "javascript:alert(1)");
+    const { fetch } = stubFetch(200, { ...RELEASE, assets: [{ name: "sheet-a.pdf" }] });
+    const site = path.join(temporary, "filter-site");
+    await buildSite({ root, out: site, fetch, token: "" });
+    const url = pathToFileURL(path.join(site, "index.html")).href;
+    const titles = (page) => page.locator("#sheets h2").allTextContents();
+
+    const browser = await launchBrowser();
+    try {
+      const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+      await page.goto(url);
+      await page.locator("#sheets > li").first().waitFor();
+      const a = page.getByRole("article", { name: "sheet-a" });
+      const b = page.getByRole("article", { name: "sheet-b" });
+      assert.equal(
+        await a.getByRole("link", { name: "PDF of sheet-a" }).getAttribute("href"),
+        `${REPO}/releases/latest/download/sheet-a.pdf`,
+      );
+      assert.equal(await b.getByRole("link", { name: /^PDF/ }).count(), 0);
+      assert.match(await b.textContent(), /PDF not released yet/);
+      assert.equal(
+        await a.getByRole("link", { name: "Canvas of sheet-a" }).getAttribute("href"),
+        "https://claude.ai/artifact/AAA",
+      );
+      assert.equal(await b.getByRole("link", { name: /^Canvas/ }).count(), 0);
+      assert.equal(await page.locator("#release a").getAttribute("href"), RELEASE.html_url);
+      const widths = await page.evaluate(() => [
+        document.documentElement.scrollWidth,
+        document.documentElement.clientWidth,
+      ]);
+      assert.equal(widths[0], widths[1]);
+
+      await page.getByText("Filter and sort").click();
+      await page.getByRole("checkbox", { name: /red/ }).press("Space");
+      assert.deepEqual(await titles(page), ["sheet-a", "sheet-b"]);
+      await page.getByRole("checkbox", { name: /blue/ }).press("Space");
+      assert.deepEqual(await titles(page), ["sheet-a"]);
+      await page.getByRole("button", { name: "Clear the filters" }).click();
+      await page.getByLabel("Language").selectOption("de");
+      assert.deepEqual(await titles(page), ["sheet-b"]);
+
+      for (const [query, expected] of [
+        ["?tag=blue", ["sheet-a"]],
+        ["?lang=de", ["sheet-b"]],
+        ["?q=sheet%20b", ["sheet-b"]],
+      ]) {
+        await page.goto(`${url}${query}`);
+        assert.deepEqual(await titles(page), expected, query);
+      }
     } finally {
       await browser.close();
     }
