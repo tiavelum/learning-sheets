@@ -1,5 +1,5 @@
 ---
-title: "Two Pages of Squares"
+title: "two-pages-of-squares"
 topic: "A fixture for the tests of the checks and the renderer"
 tags: ["fixture", "test"]
 language: "en"
