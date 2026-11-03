@@ -142,10 +142,7 @@ describe("the renderer", () => {
 
   test("fails on a network request made while the page renders", async () => {
     const { root, out, main } = copyWithMain((text) =>
-      text.replace(
-        "<style>",
-        '<style>h1{background-image:image-set("https://example.org/e.png" 1x)}',
-      ),
+      text.replace("<style>", '<style>h1{background-image:u\\72l("https://example.org/e.png")}'),
     );
     const [result] = await renderSheets({ root, out });
     assert.equal(

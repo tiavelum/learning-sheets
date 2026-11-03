@@ -156,6 +156,10 @@ export function readFrontMatter(text) {
       fields[key] = isScalar(node) && node.value !== null ? String(node.value) : "";
       continue;
     }
+    // A double-quoted scalar may be folded over lines, which its value no longer shows.
+    if (/\n/.test(match[1].slice(node.range[0], node.range[1]))) {
+      problems.push(`front matter: "${key}" is not on one line`);
+    }
     fields[key] = node.value;
   }
   const missing = FRONT_MATTER_FIELDS.filter((field) => !keys.includes(field));
@@ -276,6 +280,11 @@ function cssLoads(css) {
   for (const match of css.matchAll(/@import\s+(?:url\()?\s*['"]?([^'")\s;]+)/gi)) {
     loads.push(match[1]);
   }
+  for (const set of css.matchAll(/image-set\(([^)]*)\)/gi)) {
+    for (const match of set[1].matchAll(/(['"])(.*?)\1/g)) {
+      if (loadsSomething(match[2])) loads.push(match[2]);
+    }
+  }
   return loads;
 }
 
@@ -329,8 +338,10 @@ export function staticProblems(text, page) {
       ) {
         problems.push(`loads ${attr.value} through the ${attrName} of <${name}>`);
       }
-      if (attrName === "style") {
-        for (const url of cssLoads(attr.value)) problems.push(`loads ${url} from an inline style`);
+      if (attrName === "style" || /url\(|image-set\(/i.test(attr.value)) {
+        for (const url of cssLoads(attr.value)) {
+          problems.push(`loads ${url} from the ${attrName} of <${name}>`);
+        }
       }
     }
     if (name === "style") {

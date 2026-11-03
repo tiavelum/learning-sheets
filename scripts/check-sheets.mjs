@@ -2,7 +2,7 @@
 // Checks every sheet folder of a sheets root against the contract in
 // sheets/README.md and prints one line per violation.
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
@@ -172,7 +172,7 @@ function checkFields(file, name, fields, report) {
       `front matter: "made" ${JSON.stringify(made)} is not a date in the form YYYY-MM-DD`,
     );
   }
-  if (skill !== undefined && !/^tiavelum\/claude-setup@[0-9a-f]{7,40}$/.test(skill)) {
+  if (skill !== undefined && !/^tiavelum\/claude-setup@[0-9a-f]{7,}$/.test(skill)) {
     report(
       file,
       `front matter: "skill" ${JSON.stringify(skill)} is not tiavelum/claude-setup@ and a commit hash of at least 7 lowercase hexadecimal characters`,
@@ -204,7 +204,17 @@ function isDate(text) {
   return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(text);
 }
 
-/** The README below its front matter: one sentence, then ## Prompt and the prompt in a text block. */
+// A full stop after one of these ends no sentence, though a capital follows it.
+const ABBREVIATION = /^(?:Dr|Mr|Mrs|Ms|Prof|St|vs|e\.g|i\.e|etc)\.$/i;
+
+function sentenceCount(paragraph) {
+  let count = 1;
+  for (const match of paragraph.matchAll(/(\S+[.!?])["'”’)\]]*\s+(?=\p{Lu})/gu)) {
+    if (!ABBREVIATION.test(match[1])) count++;
+  }
+  return count;
+}
+
 function checkBody(file, body, report) {
   const lines = body.split("\n");
   let index = 0;
@@ -220,7 +230,7 @@ function checkBody(file, body, report) {
   const paragraph = sentence.join(" ");
   if (paragraph === "")
     report(file, "has no sentence on what the sheet covers and for whom below the front matter");
-  else if (!/[.!?]$/.test(paragraph) || paragraph.split(/(?<=[.!?])\s+(?=\p{Lu})/u).length > 1) {
+  else if (!/[.!?]["'”’)\]*_]*$/.test(paragraph) || sentenceCount(paragraph) > 1) {
     report(
       file,
       "the text below the front matter is not one sentence on what the sheet covers and for whom",
@@ -368,11 +378,18 @@ function checkPage(file, { dependencies, nodeModules }, report) {
 }
 
 function main() {
+  const usage = "usage: check-sheets.mjs [--root <folder>]";
   let values;
   try {
     ({ values } = parseArgs({ options: { root: { type: "string", default: "sheets" } } }));
   } catch (error) {
-    console.error(`${error.message}; usage: check-sheets.mjs [--root <folder>]`);
+    console.error(`${error.message}; ${usage}`);
+    process.exitCode = 2;
+    return;
+  }
+  // A mistyped root would otherwise pass as a root that holds no sheet.
+  if (!existsSync(values.root) || !statSync(values.root).isDirectory()) {
+    console.error(`${values.root} is not a folder; ${usage}`);
     process.exitCode = 2;
     return;
   }

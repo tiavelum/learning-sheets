@@ -2,6 +2,7 @@
 // that one change breaks.
 
 import assert from "node:assert/strict";
+import { execFileSync, spawnSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -11,6 +12,12 @@ import { checkSheets } from "../scripts/check-sheets.mjs";
 import { isNam2, nameFromTitle, pagesInPrintOrder } from "../scripts/sheet-files.mjs";
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "sheets");
+const CHECK = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+  "scripts",
+  "check-sheets.mjs",
+);
 const SHEET = "two-pages-of-squares";
 const temporary = mkdtempSync(path.join(tmpdir(), "check-sheets-"));
 after(() => rmSync(temporary, { recursive: true, force: true }));
@@ -247,6 +254,46 @@ describe("the check", () => {
     assertViolation(root, readme, /"artifact_version" is empty/);
   });
 
+  test("reports a title folded over two lines", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(path.join(sheet, "README.md"), '"Two Pages of Squares"', '"Two Pages\n  of Squares"'),
+    );
+    assertViolation(root, readme, /"title" is not on one line/);
+  });
+
+  test("allows a skill commit hash of 40 and of 64 hexadecimal characters", () => {
+    for (const hash of ["a".repeat(40), "b".repeat(64)]) {
+      const root = brokenCopy((_, sheet) =>
+        edit(path.join(sheet, "README.md"), "@4f26fe8", `@${hash}`),
+      );
+      assert.deepEqual(checkSheets(root).violations, []);
+    }
+  });
+
+  for (const sentence of [
+    "A sheet for Dr. Smith and her class, on two coloured squares.",
+    "A sheet of squares for those who test scripts, e.g. Alice and Bob.",
+    "A sheet of squares (for whoever changes the scripts.)",
+  ]) {
+    test(`allows the one sentence ${JSON.stringify(sentence)}`, () => {
+      const root = brokenCopy((_, sheet) =>
+        edit(
+          path.join(sheet, "README.md"),
+          "A two-page sheet of coloured squares that the tests of the checks and the renderer read, for whoever changes those scripts.",
+          sentence,
+        ),
+      );
+      assert.deepEqual(checkSheets(root).violations, []);
+    });
+  }
+
+  test("reports two sentences below the front matter", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(path.join(sheet, "README.md"), "those scripts.", "those scripts. It has two pages."),
+    );
+    assertViolation(root, readme, /is not one sentence/);
+  });
+
   test("reports a folder name that is not the title's", () => {
     const root = brokenCopy((_, sheet) => {
       edit(path.join(sheet, "README.md"), "Two Pages of Squares", "Two Pages of Circles");
@@ -367,6 +414,24 @@ describe("the check", () => {
       /not static: loads https:\/\/example.org\/b.png from a <style>/,
     ],
     [
+      "a url() in a presentation attribute",
+      "<h1 ",
+      '<svg width="1" height="1" aria-hidden="true"><rect width="1" height="1" fill="url(https://example.org/g.svg#a)"/></svg><h1 ',
+      /not static: loads https:\/\/example.org\/g.svg#a from the fill of <rect>/,
+    ],
+    [
+      "an image-set() in an inline style",
+      "<h1 ",
+      "<p style=\"background-image: image-set('https://example.org/i.png' 1x)\">x</p><h1 ",
+      /not static: loads https:\/\/example.org\/i.png from the style of <p>/,
+    ],
+    [
+      "a -webkit-image-set() in a <style>",
+      "<style>",
+      '<style>h1{background-image:-webkit-image-set("https://example.org/w.png" 1x)}',
+      /not static: loads https:\/\/example.org\/w.png from a <style>/,
+    ],
+    [
       "another stylesheet",
       "<style>",
       '<link rel="stylesheet" href="https://example.org/c.css"><style>',
@@ -403,6 +468,18 @@ describe("the check", () => {
       ),
     );
     assert.deepEqual(checkSheets(root).violations, []);
+  });
+
+  test("in a git work tree, ignores a file git leaves out and reports one it would commit", () => {
+    const root = brokenCopy((root, sheet) => {
+      execFileSync("git", ["init", "-q"], { cwd: root });
+      writeFileSync(path.join(root, ".git", "info", "exclude"), ".DS_Store\n");
+      writeFileSync(path.join(sheet, ".DS_Store"), "x");
+      writeFileSync(path.join(sheet, "project", ".DS_Store"), "x");
+    });
+    assert.deepEqual(checkSheets(root).violations, []);
+    writeFileSync(path.join(root, SHEET, "notes.txt"), "x");
+    assertViolation(root, [SHEET, "notes.txt"], /holds exactly README.md and project\//);
   });
 
   test("reports a font family without its package in package.json", () => {
@@ -450,5 +527,35 @@ describe("the check", () => {
       mainPage,
       /requests Source Sans 3 at weight 950, which @fontsource\/source-sans-3 does not hold/,
     );
+  });
+});
+
+describe("the command", () => {
+  const run = (...args) => spawnSync(process.execPath, [CHECK, ...args], { encoding: "utf8" });
+
+  test("exits 0 and counts the sheets where there is no violation", () => {
+    const result = run("--root", FIXTURES);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout, `1 sheet in ${FIXTURES}, no violation\n`);
+  });
+
+  test("exits 1 and prints each violation and their number", () => {
+    const root = brokenCopy((root) => writeFileSync(path.join(root, "catalog.json"), "{}\n"));
+    const result = run("--root", root);
+    assert.equal(result.status, 1);
+    assert.match(result.stdout, /catalog\.json: is not a sheet folder/);
+    assert.match(result.stdout, new RegExp(`\n1 violation in ${root.replaceAll("\\", "\\\\")}\n$`));
+  });
+
+  test("exits 2 on an option it does not know", () => {
+    const result = run("--roots", FIXTURES);
+    assert.equal(result.status, 2);
+    assert.match(result.stderr, /usage: check-sheets\.mjs/);
+  });
+
+  test("exits 2 on a root that is not a folder", () => {
+    const result = run("--root", path.join(temporary, "none"));
+    assert.equal(result.status, 2);
+    assert.match(result.stderr, /is not a folder/);
   });
 });
