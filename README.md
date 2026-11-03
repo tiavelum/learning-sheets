@@ -1,8 +1,9 @@
 # learning-sheets
 
 The source of the printable learning sheets made with the learning-sheet skill of
-[tiavelum/claude-setup](https://github.com/tiavelum/claude-setup), each to be kept
-with the prompt and the version of the skill that made it.
+[tiavelum/claude-setup](https://github.com/tiavelum/claude-setup), each kept with
+the prompt and the version of the skill that made it, for anyone who wants to find,
+print or change a sheet and for the sessions that archive them.
 
 ## Getting started
 

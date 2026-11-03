@@ -6,17 +6,17 @@ Status: accepted.
 
 ## Context
 
-A learning sheet is made as a Design canvas in the Claude app. While the session that made it lives, its PDF comes from the canvas's own export; in the long run its source lives here and the releases build its PDF, as [the maintainer decided in issue #1](https://github.com/tiavelum/learning-sheets/issues/1). The same decisions require, for each sheet, a README with its topic, its prompt, the skill and the date that made it and the artifact's link and version; names that a person can tell apart, with the artifact named like its folder; no PDF in git; and that a new session can find an existing sheet and work on it.
+A learning sheet is made as a Design canvas in the Claude app. While the session that made it lives, its PDF comes from the canvas's own export; in the long run its source lives here and the releases build its PDF, as [issue #1](https://github.com/tiavelum/learning-sheets/issues/1) states. Its decisions require, for each sheet, a README with its topic, its prompt, the skill and the date that made it and the artifact's link and version; names that a person can tell apart, with the artifact named like its folder; no PDF in git; and that a new session can find an existing sheet and work on it.
 
-A canvas consists of `project/canvas.json`, its index of pages, and one `.dc.html` file per page, which the Artifact tool reads and publishes under the same paths.
+A canvas consists of its index `project/canvas.json` and one page file per page, as [Page files](../../sheets/README.md#page-files) describes; the Artifact tool reads and publishes them under the same paths.
 
 ## Decision
 
 - Each sheet is one folder below `sheets/`, holding its README and, in `project/`, the canvas's index and page files unchanged, under the paths the canvas gives them, so that a session can publish them back to a canvas as they are.
-- The README's YAML front matter is the one home of the sheet's facts (title, topic, tags, language, paper, date, skill, artifact link and version); below it stand one sentence on what the sheet covers and for whom, and the prompt.
+- The README's YAML front matter is the one home of the sheet's facts (the fields of [Front matter](../../sheets/README.md#front-matter)); below it stand one sentence on what the sheet covers and for whom, and the prompt.
 - The folder name is the title in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2), and no two sheets share one, so a new sheet on a topic already present takes a title that says what sets it apart. The listing of `sheets/` is the list of names taken.
 - No catalog file is committed. Where a list of all sheets is needed, it is generated from the READMEs as `catalog.json`, for the browse page and for each release.
-- No PDF, image or other generated file is committed; the PDFs go into releases, as [the maintainer decided in issue #1](https://github.com/tiavelum/learning-sheets/issues/1) and [decision 0003](0003-release-every-pdf-from-a-dispatched-workflow.md) records.
+- No PDF, image or other generated file is committed; the PDFs go into releases, as [issue #1](https://github.com/tiavelum/learning-sheets/issues/1) states and [decision 0003](0003-release-every-pdf-from-a-dispatched-workflow.md) records.
 - The skill is named by the commit of tiavelum/claude-setup whose `skills/learning-sheet/SKILL.md` has the same text as the copy the session loaded, since the skill has no released version.
 - The page files keep the canvas's file names, which [deviations.md](../../deviations.md#nam-2-page-files-below-sheetsproject) records as a deviation from NAM-2.
 
