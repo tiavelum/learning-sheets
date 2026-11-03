@@ -301,6 +301,7 @@ describe("the check", () => {
     "A sheet of squares for those who test scripts, e.g. Alice and Bob. It has two pages. Each holds one square.",
     "A sheet of squares for those who test scripts (e.g. Alice and Bob). It has two pages. Each holds one square.",
     "A sheet of squares for those who test scripts, z. B. Alice and Bob. It has two pages.",
+    "A sheet of squares for those who test scripts, z. B. Alice and Bob. It has two pages. Each holds one square.",
     "A sheet of squares that costs 3.5 Francs to print. It is for whoever changes the scripts.",
     "A sheet of squares. It is (for whoever changes the scripts.)",
     "A sheet of squares\nfor whoever changes the scripts. It is written over two lines.",
