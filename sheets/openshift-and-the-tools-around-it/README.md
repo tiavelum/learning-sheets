@@ -1,5 +1,5 @@
 ---
-title: "openshift"
+title: "openshift-and-the-tools-around-it"
 topic: "Red Hat OpenShift: what it is for, how it works, and how it relates to the tools around it and its alternatives"
 tags: ["containers", "devops", "kubernetes"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-03"
 skill: "tiavelum/claude-setup@24b49de"
 artifact: "https://claude.ai/artifact/QYyva485cqduYRo2hdHURd"
-artifact_version: "1793710906-05b4"
+artifact_version: "1793715964-a8a2"
 ---
 
 A two-page learning sheet that pictures OpenShift as a container market with its office, its grounds and a service yard, for an adult who knows nothing about OpenShift.

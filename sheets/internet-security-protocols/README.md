@@ -1,5 +1,5 @@
 ---
-title: "security-standards"
+title: "internet-security-protocols"
 topic: "Common security protocols and standards such as TLS, SSH and OAuth, and what each protects"
 tags: ["internet", "security"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-03"
 skill: "tiavelum/claude-setup@24b49de"
 artifact: "https://claude.ai/artifact/6rr8RMLR16AbgYpuv4dD8J"
-artifact_version: "1793710860-937a"
+artifact_version: "1793715968-47ec"
 ---
 
 A two-page learning sheet that pictures nine security protocols and standards as a visit to a company building across the street, for an adult who knows nothing about them.
