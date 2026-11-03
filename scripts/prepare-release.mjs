@@ -39,12 +39,30 @@ function git(root, args) {
  */
 export function changesSince(previous, root, sheets) {
   // Every path stays relative to the root, which can lie anywhere in the repository.
-  git(root, ["rev-parse", "--verify", "--quiet", `${previous}^{commit}`]);
+  try {
+    git(root, ["rev-parse", "--verify", "--quiet", `${previous}^{commit}`]);
+  } catch {
+    throw new ReleaseError(
+      `the tag ${previous} of the latest release is not in this clone, so the sheets cannot be compared with it`,
+    );
+  }
   const before = git(root, ["ls-tree", "-d", "-z", "--name-only", previous, "."])
     .split("\0")
     .filter((name) => name !== "");
   const differing = new Set(
-    git(root, ["diff", "--name-only", "--relative", "-z", previous, "HEAD", "--", "."])
+    // Without --no-renames, git pairs a file deleted from one sheet with the
+    // same file added to another and names only the new path.
+    git(root, [
+      "diff",
+      "--no-renames",
+      "--name-only",
+      "--relative",
+      "-z",
+      previous,
+      "HEAD",
+      "--",
+      ".",
+    ])
       .split("\0")
       .filter((file) => file.includes("/"))
       .map((file) => file.slice(0, file.indexOf("/"))),
@@ -81,6 +99,12 @@ export function releaseNotes({ tag, previous, count, changes }) {
   else lines.push(`Since ${previous}:`, "");
   for (const [heading, titles] of lists) {
     lines.push(`${heading}:`, "", ...[...titles].sort().map((title) => `- ${title}`), "");
+  }
+  if (changes.removed.length > 0) {
+    lines.push(
+      'A removed sheet\'s PDF stays in the releases that held it; its link under "latest" no longer works.',
+      "",
+    );
   }
   lines.push(
     "Each sheet's PDF is an asset of this release, named after its folder in `sheets/`; " +

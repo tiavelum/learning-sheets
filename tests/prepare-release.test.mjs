@@ -3,7 +3,7 @@
 // release from a stubbed fetch.
 
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -112,6 +112,8 @@ describe("the notes", () => {
         "",
         "- gone",
         "",
+        'A removed sheet\'s PDF stays in the releases that held it; its link under "latest" no longer works.',
+        "",
         "Each sheet's PDF is an asset of this release, named after its folder in `sheets/`; " +
           "`learning-sheets-2026-11-03-1430.zip` holds all of them, and `catalog.json` lists every sheet's facts and links.",
         "",
@@ -119,6 +121,23 @@ describe("the notes", () => {
     );
     assert.equal(lines[0], "the latest release is 2026-11-01-0900");
     assert.match(lines[1], /notes on 3 sheets, 1 added, 1 changed, 1 removed$/);
+  });
+
+  test("list a sheet as changed whose file another sheet now holds", async () => {
+    const { repository, root } = released("2026-11-01-0900", ["alpha-sheet"]);
+    rmSync(path.join(root, "alpha-sheet", "project", "back.dc.html"));
+    addSheet(root, "zeta-sheet");
+    git(repository, "add", "--all");
+    git(repository, "commit", "--quiet", "-m", "move a page file");
+
+    const { changes } = await prepareRelease({
+      tag: "2026-11-03-1430",
+      root,
+      ...files("moved"),
+      fetch: latest("2026-11-01-0900"),
+      token: "",
+    });
+    assert.deepEqual(changes, { added: ["zeta-sheet"], changed: ["alpha-sheet"], removed: [] });
   });
 
   test("say so where nothing changed since the latest release", async () => {
@@ -148,6 +167,44 @@ describe("the notes", () => {
       notes,
       /^This release holds the PDFs of 2 learning sheets\.\n\nIt is the first release\.\n\nAdded:\n\n- alpha\n- zeta\n\nEach/,
     );
+  });
+});
+
+describe("the first release", () => {
+  test("lists every sheet as added and prints that no release exists", async () => {
+    const out = files("first");
+    const { lines, previous } = await prepareRelease({
+      tag: "2026-11-03-1430",
+      root: FIXTURES,
+      ...out,
+      fetch: latest(null),
+      token: "",
+    });
+    assert.equal(previous, null);
+    assert.equal(lines[0], "no release yet: this is the first");
+    assert.match(
+      readFileSync(out.notes, "utf8"),
+      /^This release holds the PDFs of 1 learning sheet\.\n\nIt is the first release\.\n\nAdded:\n\n- two-pages-of-squares\n\nEach/,
+    );
+  });
+});
+
+describe("the command", () => {
+  const script = path.join(
+    path.dirname(fileURLToPath(import.meta.url)),
+    "..",
+    "scripts",
+    "prepare-release.mjs",
+  );
+  const run = (...args) => spawnSync("node", [script, ...args], { encoding: "utf8" });
+  test("exits 2 on a tag out of form and on an option it does not know", () => {
+    assert.equal(run("--tag", "today").status, 2);
+    assert.equal(run("--tag", "2026-11-03-1430", "--nope").status, 2);
+  });
+  test("exits 1 and names the reason on a root that holds no sheet", () => {
+    const result = run("--tag", "2026-11-03-1430", "--root", path.join(temporary, "none"));
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /holds no sheet, so there is nothing to release/);
   });
 });
 
@@ -192,6 +249,11 @@ describe("what it refuses", () => {
         fetch: async () => new Response(null, { status: 500 }),
       },
       /could not be read \(HTTP 500\)/,
+    ],
+    [
+      "a latest release whose tag is not in the clone",
+      { tag: "2026-11-03-1430", root: FIXTURES, fetch: latest("2099-01-01-0000") },
+      /^the tag 2099-01-01-0000 of the latest release is not in this clone, so the sheets cannot be compared with it$/,
     ],
   ];
   for (const [what, options, message] of cases) {
