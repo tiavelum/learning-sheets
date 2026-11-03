@@ -21,20 +21,19 @@ function git(cwd, ...args) {
   return execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
 }
 
-/** A copy of the fixture sheet under another title, in the folder that title gives. */
-function addSheet(root, title) {
-  const name = title.toLowerCase().replaceAll(" ", "-");
+/** A copy of the fixture sheet under another name, its title and its folder name. */
+function addSheet(root, name) {
   cpSync(path.join(FIXTURES, SHEET), path.join(root, name), { recursive: true });
   for (const file of [path.join(name, "README.md"), path.join(name, "project", "canvas.json")]) {
     const text = readFileSync(path.join(root, file), "utf8");
-    writeFileSync(path.join(root, file), text.replaceAll("Two Pages of Squares", title));
+    writeFileSync(path.join(root, file), text.replaceAll(`"${SHEET}"`, `"${name}"`));
   }
   return name;
 }
 
 let repositories = 0;
-/** A git repository whose sheets root holds the given titles, committed and tagged as a release. */
-function released(tag, titles) {
+/** A git repository whose sheets root holds the given sheets, committed and tagged as a release. */
+function released(tag, names) {
   const repository = path.join(temporary, String(repositories++));
   const root = path.join(repository, "sheets");
   mkdirSync(root, { recursive: true });
@@ -44,7 +43,7 @@ function released(tag, titles) {
   // A signing key the machine's git configuration asks for would not be found.
   git(repository, "config", "commit.gpgsign", "false");
   git(repository, "config", "tag.gpgsign", "false");
-  for (const title of titles) addSheet(root, title);
+  for (const name of names) addSheet(root, name);
   writeFileSync(path.join(root, "README.md"), "# Sheets\n");
   git(repository, "add", ".");
   git(repository, "commit", "--quiet", "-m", "sheets");
@@ -72,11 +71,11 @@ function files(directory) {
 
 describe("the notes", () => {
   test("list the sheets added, changed and removed since the latest release, by title", async () => {
-    const { repository, root } = released("2026-11-01-0900", ["Alpha Sheet", "Beta Sheet", "Gone"]);
+    const { repository, root } = released("2026-11-01-0900", ["alpha-sheet", "beta-sheet", "gone"]);
     const beta = path.join(root, "beta-sheet", "project", "Main.dc.html");
     writeFileSync(beta, `${readFileSync(beta, "utf8")}\n`);
     rmSync(path.join(root, "gone"), { recursive: true });
-    addSheet(root, "Delta Sheet");
+    addSheet(root, "delta-sheet");
     git(repository, "add", "--all");
     git(repository, "commit", "--quiet", "-m", "change the sheets");
 
@@ -90,9 +89,9 @@ describe("the notes", () => {
     });
     assert.equal(previous, "2026-11-01-0900");
     assert.deepEqual(changes, {
-      added: ["Delta Sheet"],
-      changed: ["Beta Sheet"],
-      removed: ["Gone"],
+      added: ["delta-sheet"],
+      changed: ["beta-sheet"],
+      removed: ["gone"],
     });
     assert.equal(
       readFileSync(out.notes, "utf8"),
@@ -103,15 +102,15 @@ describe("the notes", () => {
         "",
         "Added:",
         "",
-        "- Delta Sheet",
+        "- delta-sheet",
         "",
         "Changed:",
         "",
-        "- Beta Sheet",
+        "- beta-sheet",
         "",
         "Removed:",
         "",
-        "- Gone",
+        "- gone",
         "",
         "Each sheet's PDF is an asset of this release, named after its folder in `sheets/`; " +
           "`learning-sheets-2026-11-03-1430.zip` holds all of them, and `catalog.json` lists every sheet's facts and links.",
@@ -123,7 +122,7 @@ describe("the notes", () => {
   });
 
   test("say so where nothing changed since the latest release", async () => {
-    const { root } = released("2026-11-01-0900", ["Alpha Sheet"]);
+    const { root } = released("2026-11-01-0900", ["alpha-sheet"]);
     const out = files("unchanged");
     await prepareRelease({
       tag: "2026-11-03-1430",
@@ -143,11 +142,11 @@ describe("the notes", () => {
       tag: "2026-11-03-1430",
       previous: null,
       count: 2,
-      changes: { added: ["Zeta", "Alpha"], changed: [], removed: [] },
+      changes: { added: ["zeta", "alpha"], changed: [], removed: [] },
     });
     assert.match(
       notes,
-      /^This release holds the PDFs of 2 learning sheets\.\n\nIt is the first release\.\n\nAdded:\n\n- Alpha\n- Zeta\n\nEach/,
+      /^This release holds the PDFs of 2 learning sheets\.\n\nIt is the first release\.\n\nAdded:\n\n- alpha\n- zeta\n\nEach/,
     );
   });
 });
@@ -170,7 +169,7 @@ describe("the catalog", () => {
     assert.equal(catalog.sheets.length, 1);
     const [sheet] = catalog.sheets;
     assert.equal(sheet.name, SHEET);
-    assert.equal(sheet.title, "Two Pages of Squares");
+    assert.equal(sheet.title, SHEET);
     assert.equal(sheet.source, `${REPO}/tree/2026-11-03-1430/tests/fixtures/sheets/${SHEET}`);
     assert.equal(sheet.pdf, `${REPO}/releases/download/2026-11-03-1430/${SHEET}.pdf`);
     assert.equal(sheet.image, undefined);
