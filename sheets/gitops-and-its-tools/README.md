@@ -1,5 +1,5 @@
 ---
-title: "gitops"
+title: "gitops-and-its-tools"
 topic: "GitOps and its tools: what each does, how it works and how they differ"
 tags: ["devops", "gitops", "kubernetes"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-03"
 skill: "tiavelum/claude-setup@24b49de"
 artifact: "https://claude.ai/artifact/WeMkPtCvpWW3x1NHkRp7EX"
-artifact_version: "1793710881-51de"
+artifact_version: "1793715807-0eaf"
 ---
 
 A five-page learning sheet that pictures GitOps as a supermarket chain whose stores keep their shelves exactly as head office plans them, for an adult who knows nothing about GitOps and its tools.

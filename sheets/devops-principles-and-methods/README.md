@@ -1,5 +1,5 @@
 ---
-title: "devops"
+title: "devops-principles-and-methods"
 topic: "What DevOps is, why it exists, what it is good for, and its methods and principles"
 tags: ["devops", "software"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-03"
 skill: "tiavelum/claude-setup@24b49de"
 artifact: "https://claude.ai/artifact/JKGQEwXZhbqkG7qMVXDMFJ"
-artifact_version: "1793710871-ade8"
+artifact_version: "1793715790-8e46"
 ---
 
 A two-page learning sheet that pictures DevOps as a restaurant whose recipes are the code, whose dishes are the running software and whose guests are its users, for adults who know nothing about DevOps.
