@@ -254,7 +254,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 
 2. With the Artifact tool, `list` the files of the canvas at `artifact`, and compare the version that the reply names with `artifact_version`:
    - **The same version.** The canvas holds the archived files: go to step 3.
-   - **Another version.** The reply gives each file's path, type and size but no sha256, so take the sha256 from a `read`: `read` the canvas's `project/canvas.json` as step 5 of "Archive a sheet" gives, with `out_dir` set to a folder outside the clone, such as `/tmp/canvas-check`, so that the committed files stay as they are. List the pages it names, then `read` each as `project/<page>` in one call with the same `out_dir`:
+   - **Another version.** The reply gives each file's path, type and size but no sha256, so take the sha256 from a `read`: `read` the canvas's `project/canvas.json` as step 5 of "Archive a sheet" gives, with `out_dir` set to `/tmp/canvas-check`, so that the committed files stay as they are; where the tool takes no `out_dir`, use its reply's `saved_dir` in place of `/tmp/canvas-check` below. List the pages it names, then `read` each as `project/<page>` in one call with the same `out_dir`:
 
      ```bash
      node -e 'console.log(Object.keys(JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).boards).join("\n"))' /tmp/canvas-check/project/canvas.json

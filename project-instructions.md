@@ -6,7 +6,7 @@ Canvas files: Take a sheet's canvas files only from its artifact through the Art
 
 Prompts: When unsure whether a detail in a sheet's prompt is private, leave it out; `sheets/README.md` gives what a prompt leaves out and how.
 
-Merging: You may merge a pull request that adds or changes one sheet. Before merging, read the artifact's `project/canvas.json` and every page it names once more with the Artifact tool, into a folder outside the clone, and give the agent that checks the pull request each file's sha256 and the version that all these reads report, so that it compares them with the sha256 of each committed canvas file and the README's `artifact_version`. Tell it that a version other than `artifact_version` passes where every sha256 matches, and that the README keeps its `artifact_version`.
+Merging: You may merge a pull request that adds or changes one sheet. Before merging, read the artifact's `project/canvas.json` and every page it names once more with the Artifact tool, into a folder outside the clone, and give the agent that checks the pull request each file's sha256 and the version that all these reads report, so that it compares them with the sha256 of each committed canvas file and the README's `artifact_version`. Tell it that a version other than `artifact_version` passes where the committed canvas files and these reads have the same paths and every sha256 matches, and that the README keeps its `artifact_version`.
 
 Workflows: Never dispatch or rerun a GitHub Actions workflow; tiavelum starts each release with the "Run workflow" button.
 
