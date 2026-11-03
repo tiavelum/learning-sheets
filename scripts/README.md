@@ -22,7 +22,7 @@ npm run check -- --root tests/fixtures/sheets
 | --------------- | -------- | ---------------------------------------- |
 | `--root <path>` | `sheets` | The folder whose sheet folders it checks |
 
-It checks the root and each of its subfolders against the rules of [the contract of a sheet folder](../sheets/README.md) that a script can decide, those of [What this folder holds](../sheets/README.md#what-this-folder-holds), [A sheet folder](../sheets/README.md#a-sheet-folder), [The sheet README](../sheets/README.md#the-sheet-readme), [Front matter](../sheets/README.md#front-matter), [Page files](../sheets/README.md#page-files) and [Folder name](../sheets/README.md#folder-name); what needs a reader, such as whether the prompt leaves out names and private details, is left to the review. Beyond the contract:
+It checks the root and each of its subfolders against the rules of [the contract of a sheet folder](../sheets/README.md) that a script can decide, those of [What this folder holds](../sheets/README.md#what-this-folder-holds), [A sheet folder](../sheets/README.md#a-sheet-folder), [The sheet README](../sheets/README.md#the-sheet-readme), [Front matter](../sheets/README.md#front-matter), [Page files](../sheets/README.md#page-files) and [Folder name](../sheets/README.md#folder-name); what needs a reader, such as whether the request says what the prompt in the pull request asked for, is left to the review. It counts the sentences of the request by the full stops, question and exclamation marks followed by a space and a capital, other than those of the abbreviations Dr., Mr., Mrs., Ms., Prof., St., vs., e.g., i.e. and etc. Beyond the contract:
 
 - In a git work tree it looks only at files git would commit, so a file that `.gitignore` leaves out, such as `.DS_Store`, is no violation.
 - It reads which fonts a package holds from the `metadata.json` of the installed package. A font family whose package is missing from `package.json` is a violation that names the command adding it; a package that `package.json` names and `npm ci` has not installed is left to the renderer, which fails on it.
@@ -33,10 +33,10 @@ It prints one line per violation, the file and the problem, then their number; w
 1 sheet in tests/fixtures/sheets, no violation
 ```
 
-On a violation it prints, for example for a `made` without quotes:
+On a violation it prints, for example for a `created` without quotes:
 
 ```text
-sheets/login-methods-and-recovery/README.md: front matter: "made" is not a string in double quotes
+sheets/login-methods-and-recovery/README.md: front matter: "created" is not a string in double quotes
 1 violation in sheets
 ```
 

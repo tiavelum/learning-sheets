@@ -72,7 +72,9 @@ function card(sheet) {
     ]),
     element("div", {}, [
       element("dt", { text: "Made" }),
-      element("dd", {}, [element("time", { datetime: sheet.made, text: dateText(sheet.made) })]),
+      element("dd", {}, [
+        element("time", { datetime: sheet.created, text: dateText(sheet.created) }),
+      ]),
     ]),
   ]);
   const tags = element(
@@ -171,7 +173,7 @@ function matches(sheet, { words, tags, language }) {
 }
 
 const byTitle = (a, b) => a.title.localeCompare(b.title, "en", { sensitivity: "base" });
-const byDate = (a, b) => b.made.localeCompare(a.made) || byTitle(a, b);
+const byDate = (a, b) => b.last_modified.localeCompare(a.last_modified) || byTitle(a, b);
 
 /** The form's state in the page's URL, without the values that are the defaults. */
 function writeUrl(state) {

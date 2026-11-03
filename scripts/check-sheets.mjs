@@ -98,8 +98,9 @@ const ONE_LINE_FIELDS = [
   "topic",
   "language",
   "paper",
-  "made",
-  "skill",
+  "created",
+  "last_modified",
+  "skill_version",
   "artifact",
   "artifact_version",
 ];
@@ -111,7 +112,8 @@ function checkFields(file, name, fields, report) {
     if (value.trim() === "") report(file, `front matter: "${field}" is empty`);
     else if (/[\r\n]/.test(value)) report(file, `front matter: "${field}" is not on one line`);
   }
-  const { title, topic, tags, language, paper, made, skill, artifact } = fields;
+  const { title, topic, tags, language, paper, artifact } = fields;
+  const { created, last_modified: lastModified, skill_version: skillVersion } = fields;
   if (title !== undefined && title.trim() !== "") {
     if (!isNam2(title)) {
       report(
@@ -150,16 +152,28 @@ function checkFields(file, name, fields, report) {
       `front matter: "paper" is ${JSON.stringify(paper)}, not ${Object.keys(PAPER_SIZES).join(" or ")}`,
     );
   }
-  if (made !== undefined && !isDate(made)) {
+  for (const [field, value] of [
+    ["created", created],
+    ["last_modified", lastModified],
+  ]) {
+    if (value !== undefined && !isDate(value)) {
+      report(
+        file,
+        `front matter: "${field}" ${JSON.stringify(value)} is not a date in the form YYYY-MM-DD`,
+      );
+    }
+  }
+  // Dates of one form compare as text in the order of time.
+  if (isDate(created ?? "") && isDate(lastModified ?? "") && lastModified < created) {
     report(
       file,
-      `front matter: "made" ${JSON.stringify(made)} is not a date in the form YYYY-MM-DD`,
+      `front matter: "last_modified" ${lastModified} is before "created" ${created}; a sheet's latest version is not handed over before its first`,
     );
   }
-  if (skill !== undefined && !/^tiavelum\/claude-setup@[0-9a-f]{7,}$/.test(skill)) {
+  if (skillVersion !== undefined && !/^tiavelum\/claude-setup@[0-9a-f]{7,}$/.test(skillVersion)) {
     report(
       file,
-      `front matter: "skill" ${JSON.stringify(skill)} is not tiavelum/claude-setup@ and a commit hash of at least 7 lowercase hexadecimal characters`,
+      `front matter: "skill_version" ${JSON.stringify(skillVersion)} is not tiavelum/claude-setup@ and a commit hash of at least 7 lowercase hexadecimal characters`,
     );
   }
   if (
@@ -199,6 +213,10 @@ function sentenceCount(paragraph) {
   return count;
 }
 
+const REQUEST_HEADING = "## Request";
+// What starts a line that is not prose: a heading, a fence, a list item, a quote or a table.
+const NOT_PROSE = /^(#|```|~~~|[-*+] |\d+[.)] |>|\|)/;
+
 function checkBody(file, body, report) {
   const lines = body.split("\n");
   let index = 0;
@@ -206,53 +224,44 @@ function checkBody(file, body, report) {
     while (index < lines.length && lines[index].trim() === "") index++;
   };
   skipBlank();
-  const sentence = [];
-  while (index < lines.length && lines[index].trim() !== "" && !lines[index].startsWith("#")) {
-    sentence.push(lines[index].trim());
+  if (lines[index] !== REQUEST_HEADING) {
+    report(
+      file,
+      lines.includes(REQUEST_HEADING)
+        ? `holds text between the front matter and "${REQUEST_HEADING}", the README's only section`
+        : `has no heading "${REQUEST_HEADING}" below the front matter`,
+    );
+    return;
+  }
+  index++;
+  skipBlank();
+  const paragraph = [];
+  while (index < lines.length && lines[index].trim() !== "") {
+    paragraph.push(lines[index].trim());
     index++;
   }
-  const paragraph = sentence.join(" ");
-  if (paragraph === "")
-    report(file, "has no sentence on what the sheet covers and for whom below the front matter");
-  else if (!/[.!?]["'”’)\]*_]*$/.test(paragraph) || sentenceCount(paragraph) > 1) {
+  const request = paragraph.join(" ");
+  if (request === "") {
+    report(file, `has no request below "${REQUEST_HEADING}"`);
+    return;
+  }
+  if (paragraph.some((line) => NOT_PROSE.test(line))) {
+    report(file, `the request below "${REQUEST_HEADING}" is not one paragraph of prose`);
+  } else if (!/[.!?]["'”’)\]*_]*$/.test(request)) {
+    report(file, "the request does not end with the end of a sentence");
+  } else if (sentenceCount(request) > 3) {
     report(
       file,
-      "the text below the front matter is not one sentence on what the sheet covers and for whom",
+      `the request is ${sentenceCount(request)} sentences, not one to three on what the sheet was asked to cover, for whom and what for`,
     );
   }
   skipBlank();
-  if (lines[index] !== "## Prompt") {
-    report(file, 'has no heading "## Prompt" after the sentence on what the sheet covers');
-    return;
-  }
-  index++;
-  skipBlank();
-  const fence = /^(`{3,})text$/.exec(lines[index] ?? "");
-  if (!fence) {
-    report(file, 'has no fenced block marked "text" holding the prompt below "## Prompt"');
-    return;
-  }
-  index++;
-  const prompt = [];
-  while (index < lines.length && lines[index] !== fence[1]) prompt.push(lines[index++]);
-  if (index >= lines.length) {
-    report(file, "the fenced block of the prompt is not closed");
-    return;
-  }
-  index++;
-  const longestRun = Math.max(
-    0,
-    ...[...prompt.join("\n").matchAll(/`+/g)].map((run) => run[0].length),
-  );
-  if (longestRun >= fence[1].length) {
+  if (index < lines.length) {
     report(
       file,
-      `the fence of the prompt is ${fence[1].length} backticks, not longer than the run of ${longestRun} in the prompt`,
+      `holds text after the request; "${REQUEST_HEADING}" is the README's only section and holds one paragraph`,
     );
   }
-  if (prompt.join("").trim() === "") report(file, "the prompt is empty");
-  skipBlank();
-  if (index < lines.length) report(file, "holds text after the prompt");
 }
 
 function checkProject(projectDir, fields, fonts, report) {

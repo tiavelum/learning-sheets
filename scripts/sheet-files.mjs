@@ -15,8 +15,9 @@ export const FRONT_MATTER_FIELDS = [
   "tags",
   "language",
   "paper",
-  "made",
-  "skill",
+  "created",
+  "last_modified",
+  "skill_version",
   "artifact",
   "artifact_version",
 ];
@@ -69,7 +70,7 @@ export function listSheetFolders(root) {
     .map((entry) => entry.slice(0, -1));
 }
 
-// Only double-quoted values pass, since unquoted YAML reads `made` as a date and
+// Only double-quoted values pass, since unquoted YAML reads `created` as a date and
 // `language: no` as a boolean.
 export function readFrontMatter(text) {
   const problems = [];
