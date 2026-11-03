@@ -85,8 +85,12 @@ function plural(count, word) {
   return `${count} ${word}${count === 1 ? "" : "s"}`;
 }
 
-/** The notes of the release, in Markdown, for whoever downloads its PDFs. */
-export function releaseNotes({ tag, previous, count, changes }) {
+/**
+ * The notes of the release, in Markdown, for whoever downloads its PDFs. An
+ * added or changed sheet is listed with the date of its latest version, from
+ * `lastModified`, a map from title to `last_modified`.
+ */
+export function releaseNotes({ tag, previous, count, changes, lastModified = new Map() }) {
   const lines = [`This release holds the PDFs of ${plural(count, "learning sheet")}.`, ""];
   const lists = [
     ["Added", changes.added],
@@ -97,8 +101,12 @@ export function releaseNotes({ tag, previous, count, changes }) {
   else if (lists.length === 0)
     lines.push(`No sheet was added, changed or removed since ${previous}.`, "");
   else lines.push(`Since ${previous}:`, "");
+  const item = (heading, title) =>
+    heading !== "Removed" && lastModified.has(title)
+      ? `- ${title}, last modified ${lastModified.get(title)}`
+      : `- ${title}`;
   for (const [heading, titles] of lists) {
-    lines.push(`${heading}:`, "", ...[...titles].sort().map((title) => `- ${title}`), "");
+    lines.push(`${heading}:`, "", ...[...titles].sort().map((title) => item(heading, title)), "");
   }
   if (changes.removed.length > 0) {
     lines.push(
@@ -168,7 +176,8 @@ export async function prepareRelease({
     previous === null
       ? { added: sheets.map(({ fields }) => fields.title), changed: [], removed: [] }
       : changesSince(previous, root, sheets);
-  const text = releaseNotes({ tag, previous, count: sheets.length, changes });
+  const lastModified = new Map(sheets.map(({ fields }) => [fields.title, fields.last_modified]));
+  const text = releaseNotes({ tag, previous, count: sheets.length, changes, lastModified });
   for (const file of [notes, catalog]) mkdirSync(path.dirname(file), { recursive: true });
   writeFileSync(notes, text);
   writeFileSync(catalog, `${JSON.stringify(releaseCatalog(sheets, tag, root), null, 2)}\n`);

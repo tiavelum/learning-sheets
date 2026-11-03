@@ -141,8 +141,40 @@ describe("the check", () => {
     assertViolation(root, readme, /fields stand in the order/);
   });
 
+  test("reports last_modified before created in the order of the fields", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(
+        path.join(sheet, "README.md"),
+        'created: "2026-11-01"\nlast_modified: "2026-11-03"',
+        'last_modified: "2026-11-03"\ncreated: "2026-11-01"',
+      ),
+    );
+    assertViolation(
+      root,
+      readme,
+      /fields stand in the order .*paper, last_modified, created, skill_version.*, not .*paper, created, last_modified, skill_version/,
+    );
+  });
+
+  for (const [old, field] of [
+    ["made", "created"],
+    ["skill", "skill_version"],
+  ]) {
+    test(`reports ${old} as no field of a sheet and ${field} as missing`, () => {
+      const root = brokenCopy((_, sheet) =>
+        edit(path.join(sheet, "README.md"), `${field}: `, `${old}: `),
+      );
+      const { violations } = checkSheets(root);
+      assert.deepEqual(
+        violations.map((line) => line.slice(line.indexOf(": ") + 2)),
+        [`front matter: "${field}" is missing`, `front matter: "${old}" is not a field of a sheet`],
+      );
+    });
+  }
+
   for (const [field, quoted, unquoted] of [
-    ["made", '"2026-11-03"', "2026-11-03"],
+    ["created", '"2026-11-01"', "2026-11-01"],
+    ["last_modified", '"2026-11-03"', "2026-11-03"],
     ["language", '"en"', "no"],
     ["topic", '"A fixture for the tests of the checks and the renderer"', "'single quoted'"],
   ]) {
@@ -189,12 +221,13 @@ describe("the check", () => {
   for (const [field, from, to, pattern] of [
     ["language", '"en"', '"english language"', /"language" .* is not a BCP 47 language tag/],
     ["paper", '"a4"', '"a3"', /"paper" is "a3", not a4 or letter/],
-    ["made", '"2026-11-03"', '"2026-02-30"', /"made" .* is not a date/],
+    ["created", '"2026-11-01"', '"2026-02-30"', /"created" "2026-02-30" is not a date/],
+    ["last_modified", '"2026-11-03"', '"3 Nov 2026"', /"last_modified" "3 Nov 2026" is not a date/],
     [
-      "skill",
+      "skill_version",
       '"tiavelum/claude-setup@4f26fe8"',
       '"tiavelum/claude-setup@main"',
-      /"skill" .* is not/,
+      /"skill_version" .* is not tiavelum\/claude-setup@ and a commit hash/,
     ],
     [
       "artifact",
@@ -214,6 +247,28 @@ describe("the check", () => {
       );
     });
   }
+
+  test("allows a last_modified equal to created, as a sheet with one version has", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(
+        path.join(sheet, "README.md"),
+        'last_modified: "2026-11-03"',
+        'last_modified: "2026-11-01"',
+      ),
+    );
+    assert.deepEqual(checkSheets(root).violations, []);
+  });
+
+  test("reports a last_modified before created", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(
+        path.join(sheet, "README.md"),
+        'last_modified: "2026-11-03"',
+        'last_modified: "2026-10-31"',
+      ),
+    );
+    assertViolation(root, readme, /"last_modified" 2026-10-31 is before "created" 2026-11-01/);
+  });
 
   test("reports an empty artifact_version", () => {
     const root = brokenCopy((_, sheet) =>
@@ -238,29 +293,111 @@ describe("the check", () => {
     }
   });
 
-  for (const sentence of [
-    "A sheet for Dr. Smith and her class, on two coloured squares.",
-    "A sheet of squares for those who test scripts, e.g. Alice and Bob.",
-    "A sheet of squares (for whoever changes the scripts.)",
+  const REQUEST =
+    "A two-page test sheet with a square on each page, which the tests of the checks, the renderer and the browse page read. It is for whoever changes those scripts.";
+
+  for (const request of [
+    "A sheet of two coloured squares for Dr. Smith and her class. It has two pages.",
+    "A sheet of squares for those who test scripts, e.g. Alice and Bob. It has two pages. Each holds one square.",
+    "A sheet of squares for those who test scripts (e.g. Alice and Bob). It has two pages. Each holds one square.",
+    "A sheet of squares for those who test scripts, z. B. Alice and Bob. It has two pages.",
+    "A sheet of squares for those who test scripts, z. B. Alice and Bob. It has two pages. Each holds one square.",
+    "A sheet of squares that costs 3.5 Francs to print. It is for whoever changes the scripts.",
+    "A sheet of squares. It is (for whoever changes the scripts.)",
+    "A sheet of squares\nfor whoever changes the scripts. It is written over two lines.",
   ]) {
-    test(`allows the one sentence ${JSON.stringify(sentence)}`, () => {
-      const root = brokenCopy((_, sheet) =>
-        edit(
-          path.join(sheet, "README.md"),
-          "A two-page sheet of coloured squares that the tests of the checks and the renderer read, for whoever changes those scripts.",
-          sentence,
-        ),
-      );
+    test(`allows the request ${JSON.stringify(request)}`, () => {
+      const root = brokenCopy((_, sheet) => edit(path.join(sheet, "README.md"), REQUEST, request));
       assert.deepEqual(checkSheets(root).violations, []);
     });
   }
 
-  test("reports two sentences below the front matter", () => {
-    const root = brokenCopy((_, sheet) =>
-      edit(path.join(sheet, "README.md"), "those scripts.", "those scripts. It has two pages."),
-    );
-    assertViolation(root, readme, /is not one sentence/);
-  });
+  for (const [what, from, to, pattern] of [
+    [
+      "one sentence",
+      REQUEST,
+      "A two-page test sheet for whoever changes the scripts.",
+      /the request is 1 sentence, not two or three/,
+    ],
+    [
+      "four sentences",
+      "those scripts.",
+      "those scripts. It has two pages. Each holds a square.",
+      /the request is 4 sentences, not two or three/,
+    ],
+    [
+      "four sentences, one of which starts with a digit",
+      REQUEST,
+      "A test sheet of squares. 2 pages hold them. One is blue. One is orange.",
+      /the request is 4 sentences, not two or three/,
+    ],
+    [
+      "four sentences, one of which starts with a quotation mark",
+      REQUEST,
+      'A test sheet of squares. "Squares" is its subject. One is blue. One is orange.',
+      /the request is 4 sentences, not two or three/,
+    ],
+    [
+      "four sentences, one of which starts with a bracket",
+      REQUEST,
+      "A test sheet of squares. (It has two pages.) One is blue. One is orange.",
+      /the request is 4 sentences, not two or three/,
+    ],
+    ["no request", REQUEST, "", /has no request below "## Request"/],
+    [
+      "a request that is a list",
+      REQUEST,
+      "- A test sheet.\n- For whoever changes the scripts.",
+      /the request below "## Request" is not one paragraph of prose/,
+    ],
+    [
+      "a request that is a code block",
+      REQUEST,
+      "```text\nMake a two-page test sheet.\n```",
+      /the request below "## Request" is not one paragraph of prose/,
+    ],
+    [
+      "a request that does not end a sentence",
+      "those scripts.",
+      "those scripts",
+      /the request does not end with the end of a sentence/,
+    ],
+    [
+      "no heading Request",
+      "## Request\n",
+      "",
+      /has no heading "## Request" below the front matter/,
+    ],
+    [
+      "another heading in place of Request",
+      "## Request",
+      "## Prompt",
+      /has no heading "## Request" below the front matter/,
+    ],
+    [
+      "a sentence above Request",
+      "## Request",
+      "A two-page sheet of coloured squares.\n\n## Request",
+      /holds text between the front matter and "## Request", the README's only section/,
+    ],
+    [
+      "a section Prompt after the request",
+      "those scripts.",
+      "those scripts.\n\n## Prompt\n\n```text\nMake a two-page test sheet.\n```",
+      /holds text after the request; "## Request" is the README's only section/,
+    ],
+    [
+      "a second paragraph",
+      "those scripts.",
+      "those scripts.\n\nIt has two pages.",
+      /holds text after the request/,
+    ],
+  ]) {
+    test(`reports ${what}`, () => {
+      const root = brokenCopy((_, sheet) => edit(path.join(sheet, "README.md"), from, to));
+      assertViolation(root, readme, pattern);
+    });
+  }
 
   for (const title of [
     "Two Pages of Squares",

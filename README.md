@@ -2,8 +2,8 @@
 
 The source of the printable learning sheets made with the learning-sheet skill of
 [tiavelum/claude-setup](https://github.com/tiavelum/claude-setup), each kept with
-the prompt and the version of the skill that made it, for anyone who wants to find,
-print or change a sheet and for the sessions that archive them.
+what it was asked to cover and the version of the skill that made it, for anyone
+who wants to find, print or change a sheet and for the sessions that archive them.
 
 ## Getting started
 
@@ -59,7 +59,7 @@ It prints the same two lines.
 
 ## Browse the sheets
 
-Open `https://tiavelum.github.io/learning-sheets/` in a browser. The page lists every sheet of `main` with its title, topic, tags, language, paper, date and a small image of its page one, filters them by words in the title and topic, by tag and by language, and sorts them by date or by title. Each sheet links to its PDF in the latest release, or says "PDF not released yet", to its folder on GitHub and to its Design canvas. Beside the page, `https://tiavelum.github.io/learning-sheets/catalog.json` lists every sheet's folder name, front matter and links as data. [Decision 0004](docs/decisions/0004-publish-the-browse-page-on-github-pages.md) records why the page is built this way.
+Open `https://tiavelum.github.io/learning-sheets/` in a browser. The page lists every sheet of `main` with its title, topic, tags, language, paper, the dates on which it was created and last modified, and a small image of its page one, filters them by words in the title and topic, by tag and by language, and sorts them by the date of their last change or by title. Each sheet links to its PDF in the latest release, or says "PDF not released yet", to its folder on GitHub and to its Design canvas. Beside the page, `https://tiavelum.github.io/learning-sheets/catalog.json` lists every sheet's folder name, front matter and links as data. [Decision 0004](docs/decisions/0004-publish-the-browse-page-on-github-pages.md) records why the page is built this way.
 
 The page is served once GitHub Pages publishes from the workflow `.github/workflows/pages.yml`, which a maintainer enables once, by hand, with [the REST API's call that creates a Pages site](https://docs.github.com/en/rest/pages/pages#create-a-github-pages-site) built by a workflow. In a terminal where the GitHub CLI `gh` is logged in as the maintainer, run:
 
@@ -93,7 +93,7 @@ The run checks and renders every sheet of `main` and publishes one release tagge
 - `learning-sheets-<tag>.zip` with every PDF;
 - `catalog.json`, every sheet's front matter and its links at that release.
 
-Its notes give the number of sheets and the titles of the sheets added, changed and removed since the release before, as [`scripts/README.md`](scripts/README.md#prepare-releasemjs) describes. `https://github.com/tiavelum/learning-sheets/releases/latest/download/<name>.pdf` gives a sheet's PDF in whichever release is the latest, the form of [a link to an asset of the latest release](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases). After the release, the run rebuilds [the browse page](#browse-the-sheets), whose links then lead to the new PDFs.
+Its notes give the number of sheets and the titles of the sheets added, changed and removed since the release before, each sheet added or changed with the date it was last modified, as [`scripts/README.md`](scripts/README.md#prepare-releasemjs) describes. `https://github.com/tiavelum/learning-sheets/releases/latest/download/<name>.pdf` gives a sheet's PDF in whichever release is the latest, the form of [a link to an asset of the latest release](https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases). After the release, the run rebuilds [the browse page](#browse-the-sheets), whose links then lead to the new PDFs.
 
 A run makes no release, and shows a red cross, where `sheets/` holds no sheet, where a check fails or a sheet does not render, where it was started on a branch other than `main`, or where a release was made in the same minute. A red cross on the last job, `Rebuild the browse page`, leaves the release made; run the workflow "Pages" with "Run workflow" to rebuild the page. Click the run, then the job with the red cross: the step with the red cross names the reason in its log, such as the sheet that did not render and why. After a release in the same minute, run the workflow again a minute later. A run started while another is in progress waits for it, and of several runs waiting, only the one started last goes ahead, as [GitHub's guide to concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) describes for a group's pending runs. [Decision 0003](docs/decisions/0003-release-every-pdf-from-a-dispatched-workflow.md) records why releases are made this way.
 
@@ -107,13 +107,17 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    npm ci
    ```
 
-2. List the folder names that sheets already take:
+2. List the sheets already archived, with the title and topic of each:
 
    ```bash
-   ls sheets
+   grep -H -e '^title:' -e '^topic:' sheets/*/README.md
    ```
 
-   The sheet's folder name is the one that [Folder name](sheets/README.md#folder-name) gives for the canvas's title, here `login-methods-and-recovery`. Where the canvas's title does not take the form that [Front matter](sheets/README.md#front-matter) gives for `title`, or `ls sheets` lists its folder name, choose with the person a title in that form whose folder name is free, one that says what sets the new sheet apart as [Folder name](sheets/README.md#folder-name) gives, and give the canvas that title by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
+   It prints the `title` and `topic` of every sheet, each after its README's path, whose folder name is the sheet's name. Where one of them is on the topic of the new sheet, ask the person whether the new sheet is a new version of that sheet or a variant beside it, the choice that [Folder name](sheets/README.md#folder-name) describes:
+   - **A new version.** Give the canvas the title of that sheet, as the next paragraph gives, and archive it as step 4 of [Change a sheet](#change-a-sheet) gives, with this canvas as the sheet's `artifact`.
+   - **A variant.** Go on as for any new sheet, with a name that says what sets the variant apart.
+
+   The sheet's folder name is the one that [Folder name](sheets/README.md#folder-name) gives for the canvas's title, here `login-methods-and-recovery`. For a new sheet or a variant, where the canvas's title does not take the form that [Front matter](sheets/README.md#front-matter) gives for `title`, or the list names its folder name, choose with the person a title in that form whose folder name is free, one that says what sets the new sheet apart as [Folder name](sheets/README.md#folder-name) gives. For a new version the title is that of the existing sheet, which the list names. Give the canvas the chosen title, or the existing sheet's, by changing `title` in its `project/canvas.json` with the Artifact tool, as the Design type's "Revising a canvas" says. The reply of the next `read` then names the new `title`; where it does not, ask the person to rename the artifact to it.
 
 3. Open an issue in this repository titled `Archive the learning sheet login-methods-and-recovery`, whose description says what and why and when it is done:
 
@@ -165,7 +169,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 
    In `/tmp/claude-setup`, run the command of [Front matter](sheets/README.md#front-matter) that prints the commit, such as `24b49de`, and do what it says where it prints nothing.
 
-8. Write `sheets/login-methods-and-recovery/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill` as `tiavelum/claude-setup@` and the commit from step 7, `paper` from the board sizes, `topic`, `tags` and `language` from the sheet, the sentence and the prompt as [The sheet README](sheets/README.md#the-sheet-readme) gives, and `made` as this command prints it on the day of the first hand-over:
+8. Write `sheets/login-methods-and-recovery/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill_version` as `tiavelum/claude-setup@` and the commit from step 7, `paper` from the board sizes, `topic`, `tags` and `language` from the sheet, the request under `## Request` from the person's prompt as [The sheet README](sheets/README.md#the-sheet-readme) gives, and `created` and `last_modified` both as this command prints it on the day the session hands the sheet over:
 
    ```bash
    date -u +%F
@@ -196,7 +200,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
     git push -u origin feat/21-add-login-methods-and-recovery
     ```
 
-11. Open a pull request from the branch, titled `feat: add the learning sheet login-methods-and-recovery`, with this description, and in its `<details>` the lines that step 6 printed:
+11. Open a pull request from the branch, titled `feat: add the learning sheet login-methods-and-recovery`, with this description, and in its two `<details>` the person's prompt as [The prompt](sheets/README.md#the-prompt) gives and the lines that step 6 printed:
 
     ````markdown
     Add the learning sheet `login-methods-and-recovery`, read from version 1793715998-6304 of [its canvas](https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q), so that it outlives its session and its artifact.
@@ -204,6 +208,15 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
     Closes #21 (Archive the learning sheet login-methods-and-recovery)
 
     To check, open the artifact `sheets` of this pull request's check run: its `login-methods-and-recovery.pdf` shows the pages of the canvas.
+
+    <details>
+    <summary>The prompt</summary>
+
+    ```text
+    Well, I'd like you to create for me a handout that I can print. So not just an MD file that lists all those items and explains them, puts them in relation, and also has a analogy like in normal life, like in the way of a two or three sentence explanation ready for each of those variants. Could you please create something like that for me?
+    ```
+
+    </details>
 
     <details>
     <summary>The sha256 of each canvas file</summary>
@@ -247,7 +260,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 4. Archive the change as "Archive a sheet" gives from step 3 on, with these differences:
    - A change of title changes the folder name too, as [Folder name](sheets/README.md#folder-name) gives. Give the canvas the new title and take its folder name as step 2 of "Archive a sheet" gives, and use that name for the branch and for every later path.
    - The issue is titled after the change, such as `Archive the recovery codes added to login-methods-and-recovery`, and the branch is `feat/<issue>-change-` and the folder name's first four words.
-   - Before step 5, remove the sheet's canvas files, so that a page the canvas no longer has goes too:
+   - Before step 5 of "Archive a sheet", remove the sheet's canvas files, so that a page the canvas no longer has goes too:
 
      ```bash
      git rm -q -r sheets/login-methods-and-recovery/project
@@ -259,8 +272,8 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
      git mv sheets/login-methods-and-recovery sheets/login-methods-and-recovery-codes
      ```
 
-   - In the README, `artifact` and `artifact_version` take the canvas's current link and version, and `made`, `skill` and the prompt stay as they are, as [Front matter](sheets/README.md#front-matter) gives; step 7 is left out.
-   - The pull request's title names the change, such as `feat: add the recovery codes to login-methods-and-recovery`.
+   - In the README, as [Front matter](sheets/README.md#front-matter) gives, `created` stays as it is, `last_modified` takes the date that the command of step 8 of "Archive a sheet" prints on the day this session hands the change over, `skill_version` takes the commit that step 7 of "Archive a sheet" finds for the skill this session loaded, and `artifact` and `artifact_version` take the canvas's current link and version. The request stays as it is, unless the change changes what the sheet is asked to be, such as a further subject or another reader; then rewrite it as [The sheet README](sheets/README.md#the-sheet-readme) gives.
+   - The pull request's title names the change, such as `feat: add the recovery codes to login-methods-and-recovery`, and its description quotes the prompt that asked for the change, as [The prompt](sheets/README.md#the-prompt) gives.
 
 ## Content and structure
 
@@ -273,7 +286,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 | [`scripts/`](scripts/README.md) | The scripts that check the sheet folders, render the sheets to PDF, build the browse page and write the notes of a release; its [README](scripts/README.md) gives their options, output and exit status                                              |
 | [`site/`](site/README.md)       | The source of the browse page: its HTML, script and stylesheet, which `scripts/build-site.mjs` builds into the page; its [README](site/README.md) describes them                                                                                     |
 | [`tests/`](tests/README.md)     | The tests of the scripts and the fixture sheet they run on; its [README](tests/README.md) lists them                                                                                                                                                 |
-| `docs/`                         | The documentation beyond the READMEs: in `docs/decisions/`, the decision records that say why the sheets are kept, rendered, released, browsed and archived as they are                                                                              |
+| `docs/`                         | The documentation beyond the READMEs: in `docs/decisions/`, the decision records that say why the sheets are kept, versioned, rendered, released, browsed and archived as they are                                                                   |
 | `.github/workflows/check.yml`   | The checks every pull request and every push to `main` run: formatting and lint, the tests, the sheet check and the render of every sheet, whose PDFs it attaches to the run as the artifact `sheets`                                                |
 | `.github/workflows/release.yml` | The release of every sheet's PDF, the zip of them all and the catalog, started by "Run workflow" under Actions, and the rebuild of the browse page after it                                                                                          |
 | `.github/workflows/pages.yml`   | The build of the browse page on every push to `main`, on "Run workflow" and when the release workflow calls it, and its deployment to GitHub Pages where Pages publishes from GitHub Actions                                                         |

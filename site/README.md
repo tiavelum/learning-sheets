@@ -2,11 +2,11 @@
 
 This folder holds the source of the browse page, which lists every sheet and filters and sorts them, and this file describes its files and how the build fills them, for whoever changes the page.
 
-| File         | Holds                                                                                                                     |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `index.html` | The page: the filters, the list and an empty `<script id="catalog" type="application/json">` that the build fills         |
-| `browse.js`  | The script that reads the catalog from that element, lists each sheet and filters and sorts the list by the form's values |
-| `browse.css` | The stylesheet, in the system fonts, with one palette for a light and one for a dark colour scheme                        |
+| File         | Holds                                                                                                                                                                                                                            |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index.html` | The page: the filters, the list and an empty `<script id="catalog" type="application/json">` that the build fills                                                                                                                |
+| `browse.js`  | The script that reads the catalog from that element, lists each sheet with the dates on which it was created and last modified, and filters and sorts the list by the form's values, by default by `last_modified`, newest first |
+| `browse.css` | The stylesheet, in the system fonts, with one palette for a light and one for a dark colour scheme                                                                                                                               |
 
 [`scripts/build-site.mjs`](../scripts/README.md#build-sitemjs) copies these files into the built page, puts the catalog into the empty `catalog` element of `index.html`, and writes `catalog.json` and the images of page one beside them. The catalog stands in the page, not only in `catalog.json`, so the built page also works when opened as a file, where a browser does not fetch JSON. The page loads nothing from another site: no font, no script and no stylesheet from elsewhere.
 

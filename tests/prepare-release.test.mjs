@@ -102,11 +102,11 @@ describe("the notes", () => {
         "",
         "Added:",
         "",
-        "- delta-sheet",
+        "- delta-sheet, last modified 2026-11-03",
         "",
         "Changed:",
         "",
-        "- beta-sheet",
+        "- beta-sheet, last modified 2026-11-03",
         "",
         "Removed:",
         "",
@@ -207,7 +207,7 @@ describe("the first release", () => {
     assert.equal(lines[0], "no release yet: this is the first");
     assert.match(
       readFileSync(out.notes, "utf8"),
-      /^This release holds the PDFs of 1 learning sheet\.\n\nIt is the first release\.\n\nAdded:\n\n- two-pages-of-squares\n\nEach/,
+      /^This release holds the PDFs of 1 learning sheet\.\n\nIt is the first release\.\n\nAdded:\n\n- two-pages-of-squares, last modified 2026-11-03\n\nEach/,
     );
   });
 });
@@ -253,6 +253,9 @@ describe("the catalog", () => {
     assert.equal(sheet.source, `${REPO}/tree/2026-11-03-1430/tests/fixtures/sheets/${SHEET}`);
     assert.equal(sheet.pdf, `${REPO}/releases/download/2026-11-03-1430/${SHEET}.pdf`);
     assert.equal(sheet.image, undefined);
+    assert.equal(sheet.created, "2026-11-01");
+    assert.equal(sheet.last_modified, "2026-11-03");
+    assert.equal(sheet.skill_version, "tiavelum/claude-setup@4f26fe8");
   });
 });
 
