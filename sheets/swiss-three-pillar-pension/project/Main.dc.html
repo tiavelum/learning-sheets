@@ -8,227 +8,165 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&amp;family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;display=swap">
 <style>
-/* Layout: A4 fixed page, 40 px edge, legend in two zone columns above one scene illustration. */
-:root {
-  --ink: #1f2328; --ink-2: #474d55; --paper: #fffdf9; --line: #c9c4ba;
-  --a: #f0a830; --a-deep: #9a6508; --a-tint: #fdf0d5; --a-roof: #f6dca6;
-  --b: #1f4e8c; --b-deep: #1f4e8c; --b-tint: #e2eaf5; --b-roof: #c3d3ea;
-  --c: #2e7d3e; --c-deep: #2e7d3e; --c-tint: #e1f0e3; --c-roof: #c4e2ca;
-  --body: "Atkinson Hyperlegible", "Verdana", "Segoe UI", sans-serif;
-  --display: "Bricolage Grotesque", "Arial Narrow", "Helvetica Neue", sans-serif;
-}
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); }
-.page { width: 794px; height: 1123px; box-sizing: border-box; padding: 40px 40px 0; display: flex; flex-direction: column; gap: 12px; background: var(--paper); overflow: hidden; }
-.eyebrow { margin: 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); font-weight: 700; }
-h1 { margin: 2px 0 0; font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1.05; letter-spacing: -.01em; text-wrap: balance; }
-.brief { margin: 6px 0 0; font-size: 13px; line-height: 1.35; max-width: 714px; }
-.legend { display: grid; grid-template-columns: 350px 350px; column-gap: 14px; align-items: start; }
-.col { display: flex; flex-direction: column; gap: 5px; }
-.zh { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 4px; font-size: 12px; line-height: 1.25; }
-.zh b { font-family: var(--display); font-weight: 600; font-size: 14px; }
-.zh.za { background: var(--a-tint); } .zh.zb { background: var(--b-tint); } .zh.zc { background: var(--c-tint); }
-.zh + .it { margin-top: 1px; }
-.it { display: grid; grid-template-columns: 30px 1fr; column-gap: 5px; align-items: start; }
-.it p { margin: 0; font-size: 12px; line-height: 1.3; }
-.it b { font-weight: 700; }
-.mk { width: 26px; height: 24px; display: block; justify-self: center; }
-.mk.tri { width: 30px; height: 26px; }
-.mk text, .scene .mn { font-family: var(--body); font-weight: 700; font-size: 12px; text-anchor: middle; }
-.zone-gap { height: 4px; }
-.scene { margin: 0; }
-.scene svg { display: block; width: 714px; height: auto; }
-.scene text { font-family: var(--body); font-size: 12px; fill: var(--ink); }
-.scene .sign { font-weight: 700; font-size: 12.5px; }
-.scene .lab { font-size: 12px; }
-.scene .labb { font-size: 12px; font-weight: 700; }
-.scene .ttl { font-family: var(--display); font-weight: 600; font-size: 15px; }
-.scene .mn.w { fill: #ffffff; }
-.ic { fill: none; stroke: #1f2328; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+body{margin:0}
+.sheet{width:794px;height:1123px;box-sizing:border-box;padding:40px 40px 0 40px;background:#FFFFFF;color:#1b2430;font-family:'Atkinson Hyperlegible Next','Atkinson Hyperlegible',Verdana,sans-serif;font-size:13px;line-height:1.4;display:flex;flex-direction:column;gap:10px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:2px solid #1b2430;padding-bottom:8px}
+.top h1{margin:0;font-family:'Bricolage Grotesque','Atkinson Hyperlegible Next',Verdana,sans-serif;font-weight:800;font-size:28px;line-height:1.05;letter-spacing:-0.01em}
+.top .page{font-size:12px;color:#3F4A57;text-align:right;white-space:nowrap}
+.brief{margin:0;font-size:13.5px;line-height:1.4}
+.keyrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.key{display:flex;gap:8px;align-items:center;font-size:12px;line-height:1.25}
+.key b{display:block;font-size:13px}
+.h2{margin:0;font-family:'Bricolage Grotesque','Atkinson Hyperlegible Next',Verdana,sans-serif;font-weight:700;font-size:15px;line-height:1.2;display:flex;align-items:center;gap:8px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 16px}
+.chip{display:flex;align-items:center;gap:6px;font-size:12.5px}
+.chip svg text{font-size:14px}
+.chip svg.tri{width:28px;height:28px}
+.chip svg.tri text{font-size:12px}
+.cardhead svg text{font-size:13px}
+.groups{display:grid;grid-template-columns:236px 466px;gap:12px}
+.card{border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.cardhead{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px}
+.card p{margin:0;font-size:12.5px;line-height:1.38}
+.contrast{border-radius:6px;padding:10px 12px;display:grid;grid-template-columns:205px 20px 205px;gap:0 4px}
+.contrast .or{align-self:center;text-align:center;font-weight:700;font-size:13px}
+.contrast .side{display:flex;flex-direction:column;gap:6px}
+.contrast p{margin:0;font-size:12.5px;line-height:1.38}
 </style>
 </helmet>
-<div class="page">
-  <header>
-    <p class="eyebrow">Learning sheet · The Swiss pension system</p>
-    <h1>Three kitchens for your old age</h1>
-    <p class="brief">The village street below is a picture of the Swiss pension system, from paying in while you work to your plate in old age. Page two gives the facts behind each numbered item.</p>
-  </header>
-
-  <section class="legend" aria-label="Legend">
-    <div class="col">
-      <div class="zh za">
-        <svg class="mk" viewBox="0 0 26 24" aria-hidden="true"><circle cx="13" cy="12" r="10" fill="#f0a830" stroke="#9a6508" stroke-width="1"/></svg>
-        <span><b>The village kitchen</b><br>1st pillar · state pension (AHV/IV)</span>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="1"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">1</text></svg>
-        <p><b>AHV contributions.</b> Everyone who earns fills the village kitchen's basket, a worker with a share of every wage that the employer matches; the village adds a share from tax money, and what comes in this month is served to the old this month.</p>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="2"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">2</text></svg>
-        <p><b>Contribution years.</b> A stamp card at the kitchen door gets one stamp for every year you paid in, and every missing stamp makes your monthly bowl a little smaller for life.</p>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="3"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">3</text></svg>
-        <p><b>IV (disability insurance).</b> If illness or an accident stops you working before retirement age, the same kitchen first helps you back to work and, only if that fails, starts filling a bowl for you early.</p>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="4"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">4</text></svg>
-        <p><b>AHV pension.</b> From retirement age the kitchen fills a bowl for you every month for life, plus an extra one each December: bigger if you brought more, but never more than twice the smallest full bowl, and a married couple together never more than three.</p>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="5"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">5</text></svg>
-        <p><b>Supplementary benefits (EL).</b> If your bowls and jars together do not cover the basics and you have little put aside, you can ask the town hall next door to top up your bowl from tax money.</p>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="zh zb">
-        <svg class="mk" viewBox="0 0 26 24" aria-hidden="true"><rect x="3" y="2" width="20" height="20" rx="2" fill="#1f4e8c"/></svg>
-        <span><b>The storeroom at work</b><br>2nd pillar · occupational pension (BVG)</span>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="6"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">6</text></svg>
-        <p><b>Pension fund.</b> Once you are employed and earn enough, a shelf in the storeroom at work carries your name; every month you and your employer put jars on it, and the storekeeper adds interest every year.</p>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="7"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">7</text></svg>
-        <p><b>Buy-in.</b> If your shelf has gaps, you may add jars of your own to the same shelf, and the tax office gives you a discount on them.</p>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="8"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">8</text></svg>
-        <p><b>Vested benefits.</b> When you change jobs, your shelf moves in a sealed crate to the next employer's storeroom (you tell the old storekeeper where), or waits in a locker until there is one.</p>
-      </div>
-      <div class="it">
-        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="9"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">9</text></svg>
-        <p><b>Pension or lump sum.</b> At retirement the storekeeper turns your shelf into a fixed monthly delivery for life; if you ask in time, you may take part of it at once, or all of it if the storeroom's rules allow.</p>
-      </div>
-      <div class="zone-gap"></div>
-      <div class="zh zc">
-        <svg class="mk" viewBox="0 0 26 24" aria-hidden="true"><polygon points="13,1.5 25,22.5 1,22.5" fill="#2e7d3e"/></svg>
-        <span><b>Your kitchen at home</b><br>3rd pillar · private provision (3a/3b)</span>
-      </div>
-      <div class="it">
-        <svg class="mk tri" viewBox="0 0 30 26" role="img" aria-label="10"><polygon points="15,0.5 29.5,25.5 0.5,25.5" fill="#2e7d3e"/><text x="15" y="22.5" fill="#ffffff">10</text></svg>
-        <p><b>Pillar 3a.</b> At home, a locked cupboard takes up to a fixed number of jars each year, the tax office gives you a discount on them, and it opens only near retirement or for a few big steps such as buying a home.</p>
-      </div>
-      <div class="it">
-        <svg class="mk tri" viewBox="0 0 30 26" role="img" aria-label="11"><polygon points="15,0.5 29.5,25.5 0.5,25.5" fill="#2e7d3e"/><text x="15" y="22.5" fill="#ffffff">11</text></svg>
-        <p><b>Pillar 3b.</b> Next to it, your open pantry holds whatever else you put aside, with no limit and no lock, and usually no tax discount.</p>
-      </div>
-    </div>
-  </section>
-
-  <figure class="scene">
-    <svg viewBox="0 0 714 396" role="img" aria-label="A village street: the village kitchen with the town hall next door, the storeroom at work, and your kitchen at home, each with numbered items; in front, your table in old age with a plate filled from all three.">
-      <defs>
-        <marker id="arA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9a6508"/></marker>
-        <marker id="arB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f4e8c"/></marker>
-        <marker id="arC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d3e"/></marker>
-      </defs>
-
-      <!-- street -->
-      <rect x="0" y="236" width="714" height="10" fill="#ece8e0"/>
-      <line x1="0" y1="236" x2="714" y2="236" stroke="#9a958c" stroke-width="1.2"/>
-
-      <!-- Zone A: village kitchen -->
-      <polygon points="0,74 101,30 202,74" fill="#f6dca6" stroke="#9a6508" stroke-width="1.5" stroke-linejoin="round"/>
-      <rect x="6" y="72" width="190" height="164" fill="#fdf0d5" stroke="#9a6508" stroke-width="1.5"/>
-      <rect x="28" y="82" width="148" height="24" rx="4" fill="#ffffff" stroke="#9a6508" stroke-width="1.2"/>
-      <circle cx="42" cy="94" r="6" fill="#f0a830" stroke="#9a6508" stroke-width="1"/>
-      <text class="sign" x="53" y="98.5">Village kitchen</text>
-      <rect x="82" y="176" width="38" height="60" fill="#ffffff" stroke="#9a6508" stroke-width="1.2"/>
-      <circle cx="113" cy="208" r="2" fill="#9a6508"/>
-      <rect x="132" y="182" width="58" height="50" rx="3" fill="#ffffff" stroke="#9a6508" stroke-width="1.2"/>
-
-      <g class="ic" transform="translate(28 120) scale(1.6)"><path d="M3.5 11h17l-2.2 9.5H5.7z"/><path d="M7.5 11c0-5.2 9-5.2 9 0"/><path d="M4.3 14.5h15.4M12 11v9.5M8 11l.6 9.5M16 11l-.6 9.5"/><circle cx="9.6" cy="8.6" r="1.7" fill="#fff"/><circle cx="14.2" cy="8.2" r="1.9" fill="#fff"/></g>
-      <g class="ic" transform="translate(38 192) scale(1.6)"><rect x="2.5" y="5" width="19" height="14" rx="1.5" fill="#fff"/><circle cx="7" cy="10" r="1.7" fill="#1f2328"/><circle cx="12" cy="10" r="1.7" fill="#1f2328"/><circle cx="17" cy="10" r="1.7" fill="#1f2328"/><circle cx="7" cy="14.6" r="1.7" fill="#1f2328"/><circle cx="12" cy="14.6" r="1.7" stroke-dasharray="1.4 1.2"/><circle cx="17" cy="14.6" r="1.7" fill="#1f2328"/></g>
-      <g class="ic" transform="translate(140 116) scale(1.6)"><circle cx="12" cy="3.8" r="1.9"/><path d="M12 5.8v4.4M9.2 7.6h5.6M12 10.2l-2 2.6M12 10.2l2 2.6"/><path d="M3 21v-5h3l3-1.6h5.2a1.6 1.6 0 0 1 0 3.2H10.5"/><path d="M14.2 16.6l4.6-2.2c1.6-.7 2.7 1.1 1.2 2.1l-6 3.7H6"/></g>
-      <g class="ic" transform="translate(142 190) scale(1.6)"><path d="M3 12h18c0 4.6-4 7.6-9 7.6S3 16.6 3 12z"/><path d="M9 19.6h6"/><path d="M13.2 11.4l4.4-7.2"/><circle cx="18.4" cy="3.3" r="1.4"/></g>
-
-      <g><circle cx="24" cy="118" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="24" y="122.3">1</text></g>
-      <g><circle cx="26" cy="188" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="26" y="192.3">2</text></g>
-      <g><circle cx="136" cy="118" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="136" y="122.3">3</text></g>
-      <g><circle cx="132" cy="168" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="132" y="172.3">4</text></g>
-
-      <!-- Zone A: town hall next door -->
-      <polygon points="200,124 235,100 270,124" fill="#f6dca6" stroke="#9a6508" stroke-width="1.5" stroke-linejoin="round"/>
-      <rect x="203" y="122" width="64" height="114" fill="#fdf0d5" stroke="#9a6508" stroke-width="1.5"/>
-      <text class="lab" x="235" y="142" text-anchor="middle">Town hall</text>
-      <g class="ic" transform="translate(222 178) scale(1.6)"><path d="M3.5 4.5h7.5l-1 6.5H5z" transform="rotate(-25 7 8)"/><path d="M11.4 5.2c1.6 0 1.8 2.4.4 3"/><path d="M11.2 9.6c.6 2 .6 3.6 0 5" stroke-dasharray="1.6 1.4"/><path d="M6 15.5h12c0 3.2-2.7 5.2-6 5.2s-6-2-6-5.2z"/></g>
-      <g><circle cx="213" cy="166" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="213" y="170.3">5</text></g>
-
-      <!-- Zone B: storeroom at work -->
-      <rect x="278" y="76" width="228" height="12" fill="#c3d3ea" stroke="#1f4e8c" stroke-width="1.5"/>
-      <rect x="284" y="88" width="216" height="148" fill="#e2eaf5" stroke="#1f4e8c" stroke-width="1.5"/>
-      <rect x="308" y="96" width="168" height="24" rx="4" fill="#ffffff" stroke="#1f4e8c" stroke-width="1.2"/>
-      <rect x="317" y="102" width="12" height="12" rx="1" fill="#1f4e8c"/>
-      <text class="sign" x="336" y="112.5">Storeroom at work</text>
-      <rect x="358" y="176" width="38" height="60" fill="#ffffff" stroke="#1f4e8c" stroke-width="1.2"/>
-      <circle cx="389" cy="208" r="2" fill="#1f4e8c"/>
-      <rect x="440" y="134" width="40" height="30" fill="#ffffff" stroke="#1f4e8c" stroke-width="1.2"/>
-      <path d="M460 134v30M440 149h40" stroke="#1f4e8c" stroke-width="1"/>
-
-      <g class="ic" transform="translate(310 128) scale(2)"><path d="M2.5 15h19M4.5 15v6M19.5 15v6"/><rect x="3.8" y="7.5" width="4.4" height="7.5" rx="1" fill="#fff"/><rect x="9.8" y="6" width="4.4" height="9" rx="1" fill="#fff"/><rect x="15.8" y="8.5" width="4.4" height="6.5" rx="1" fill="#fff"/><rect x="9.5" y="16.4" width="5" height="3" rx=".5" fill="#fff"/></g>
-      <g class="ic" transform="translate(382 132) scale(1.6)"><rect x="4" y="8" width="11" height="13" rx="2" fill="#fff"/><path d="M5.5 8V5.5h8V8"/><path d="M4 12.5h11"/><path d="M19 2.8v6.4M15.8 6h6.4"/></g>
-      <g class="ic" transform="translate(312 190) scale(1.6)"><path d="M2.5 3v14.5h10"/><circle cx="4.3" cy="19.6" r="1.7" fill="#fff"/><rect x="5.5" y="9" width="7" height="8.5" fill="#fff"/><path d="M5.5 9l7 8.5M12.5 9l-7 8.5"/><rect x="15" y="4" width="6.5" height="17" rx=".6" fill="#fff"/><path d="M16.6 7h3.3M16.6 9h3.3M19.8 13v2"/></g>
-      <g class="ic" transform="translate(452 186) scale(1.6)"><path d="M12 2.5v19M8.5 21.5h7"/><path d="M12 5H5l-2 2.2L5 9.4h7z" fill="#fff"/><path d="M12 11.2h7l2 2.2-2 2.2h-7z" fill="#fff"/></g>
-
-      <g><rect x="288" y="126" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="299" y="141.3" fill="#ffffff">6</text></g>
-      <g><rect x="358" y="132" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="369" y="147.3" fill="#ffffff">7</text></g>
-      <g><rect x="285" y="192" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="296" y="207.3" fill="#ffffff">8</text></g>
-      <g><rect x="428" y="190" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="439" y="205.3" fill="#ffffff">9</text></g>
-
-      <!-- Zone C: your kitchen at home -->
-      <rect x="668" y="58" width="14" height="30" fill="#c4e2ca" stroke="#2e7d3e" stroke-width="1.5"/>
-      <polygon points="514,100 613,52 712,100" fill="#c4e2ca" stroke="#2e7d3e" stroke-width="1.5" stroke-linejoin="round"/>
-      <rect x="522" y="98" width="182" height="138" fill="#e1f0e3" stroke="#2e7d3e" stroke-width="1.5"/>
-      <rect x="532" y="108" width="162" height="24" rx="4" fill="#ffffff" stroke="#2e7d3e" stroke-width="1.2"/>
-      <polygon points="546,113 553,125 539,125" fill="#2e7d3e"/>
-      <text class="sign" x="559" y="124.5">Your kitchen at home</text>
-
-      <g class="ic" transform="translate(558 160) scale(2)"><rect x="3" y="2.5" width="18" height="19" rx="1" fill="#fff"/><path d="M12 2.5v19"/><rect x="9.4" y="12.6" width="5.2" height="4.4" rx=".6" fill="#fff"/><path d="M10.4 12.6v-1.4a1.6 1.6 0 0 1 3.2 0v1.4"/><circle cx="17" cy="6.6" r="2"/></g>
-      <g class="ic" transform="translate(644 160) scale(2)"><rect x="3" y="2.5" width="12" height="19" fill="#fff"/><path d="M3 9h12M3 15.5h12"/><rect x="4.6" y="4.5" width="2.6" height="4.5" rx=".6"/><rect x="9" y="5.5" width="2.6" height="3.5" rx=".6"/><rect x="6.5" y="11" width="2.6" height="4.5" rx=".6"/><path d="M15 2.5l6 2.4v14.2l-6 2.4" fill="#fff"/></g>
-
-      <g><polygon points="545,148 560,174 530,174" fill="#2e7d3e"/><text class="mn w" x="545" y="171" fill="#ffffff">10</text></g>
-      <g><polygon points="631,148 646,174 616,174" fill="#2e7d3e"/><text class="mn w" x="631" y="171" fill="#ffffff">11</text></g>
-
-      <!-- arrows to the table -->
-      <path d="M101 240 Q 130 252 176 254" fill="none" stroke="#9a6508" stroke-width="2" marker-end="url(#arA)"/>
-      <path d="M377 240 L 377 252" fill="none" stroke="#1f4e8c" stroke-width="2" marker-end="url(#arB)"/>
-      <path d="M613 240 Q 600 252 560 254" fill="none" stroke="#2e7d3e" stroke-width="2" marker-end="url(#arC)"/>
-
-      <!-- your table in old age -->
-      <rect x="110" y="258" width="494" height="134" rx="12" fill="#f7f2e8" stroke="#c9bda6" stroke-width="1.2"/>
-      <circle cx="357" cy="324" r="64" fill="#ffffff" stroke="#9aa0a6" stroke-width="1.5"/>
-      <path d="M357 324L357 268A56 56 0 0 1 357 380Z" fill="#f0a830" stroke="#ffffff" stroke-width="2"/>
-      <path d="M357 324L357 380A56 56 0 0 1 311.7 291.1Z" fill="#1f4e8c" stroke="#ffffff" stroke-width="2"/>
-      <path d="M357 324L311.7 291.1A56 56 0 0 1 357 268Z" fill="#2e7d3e" stroke="#ffffff" stroke-width="2"/>
-      <circle cx="386" cy="324" r="6.5" fill="#ffffff" stroke="#1f2328" stroke-width="1.2"/>
-      <rect x="323" y="333" width="12" height="12" fill="#ffffff" stroke="#1f2328" stroke-width="1.2"/>
-      <polygon points="342,284 349,296 335,296" fill="#ffffff" stroke="#1f2328" stroke-width="1.2"/>
-
-      <path d="M414 320 L 434 316" stroke="#1f2328" stroke-width="1"/>
-      <text class="labb" x="438" y="314">The basics</text>
-      <text class="lab" x="438" y="329">from the village kitchen</text>
-      <path d="M318 288 L 298 284" stroke="#1f2328" stroke-width="1"/>
-      <text class="labb" x="294" y="282" text-anchor="end">On top, if you wish</text>
-      <text class="lab" x="294" y="297" text-anchor="end">from your own kitchen</text>
-      <path d="M314 350 L 298 352" stroke="#1f2328" stroke-width="1"/>
-      <text class="labb" x="294" y="350" text-anchor="end">Most of the rest</text>
-      <text class="lab" x="294" y="365" text-anchor="end">from the storeroom at work</text>
-      <text class="ttl" x="438" y="364">Your table in old age</text>
-      <text class="lab" x="438" y="380">(not to scale)</text>
-    </svg>
-  </figure>
+<div class="sheet">
+<header class="top"><h1>Three pillars, one garden</h1><div class="page">The Swiss pension system as a picture<br>Page 1 of 2: the scene</div></header>
+<p class="brief">This garden is a picture of the Swiss pension system: when your wage stops at retirement, three water sources keep it green. Page two gives the facts behind each numbered item.</p>
+<div class="keyrow"><div class="key"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle></g></svg><div><b>Town main</b>1st pillar: state pension</div></div><div class="key"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect></g></svg><div><b>Tank at work</b>2nd pillar: occupational pension</div></div><div class="key"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><path d="M0 -13 L14 11.5 L-14 11.5 Z" fill="#C04585" stroke-linejoin="round"></path></g></svg><div><b>Barrels at home</b>3rd pillar: private provision</div></div><div class="key"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><path d="M0 -13.5 L13.5 0 L0 13.5 L-13.5 0 Z" fill="#7CB342" stroke="#1b2430" stroke-width="1"></path></g></svg><div><b>The garden</b>how you live in retirement</div></div></div>
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 class="h2"><span>The scene</span></h2>
+<div class="legend"><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">1</text></g></svg><span>AHV/IV contributions</span></div><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">2</text></g></svg><span>Contribution years</span></div><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">3</text></g></svg><span>AHV pension</span></div><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">4</text></g></svg><span>IV pension</span></div><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">5</text></g></svg><span>Supplementary benefits (EL)</span></div><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">6</text></g></svg><span>Pension fund savings</span></div><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">7</text></g></svg><span>Buy-in</span></div><div class="chip"><svg class="tri" width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><path d="M0 -13 L14 11.5 L-14 11.5 Z" fill="#C04585" stroke-linejoin="round"></path><text x="0" y="8.6" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">11</text></g></svg><span>Pillar 3a</span></div><div class="chip"><svg class="tri" width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><path d="M0 -13 L14 11.5 L-14 11.5 Z" fill="#C04585" stroke-linejoin="round"></path><text x="0" y="8.6" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">12</text></g></svg><span>Pillar 3b</span></div><div class="chip"><svg width="24" height="24" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><path d="M0 -13.5 L13.5 0 L0 13.5 L-13.5 0 Z" fill="#7CB342" stroke="#1b2430" stroke-width="1"></path><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">13</text></g></svg><span>Pension gap</span></div></div>
+<svg viewBox="0 10 714 430" width="714" height="430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cross-section of a street: your workplace with a water tank on legs, a wage pipe and the town water main underground, a neighbour's garden, a tanker truck, and your house and garden with barrels and a dry patch" style="display: block; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">
+  <rect x="0" y="0" width="714" height="268" fill="#F3F7FB"></rect>
+  <rect x="0" y="268" width="714" height="172" fill="#F2ECE2"></rect>
+  <line x1="0" y1="268" x2="714" y2="268" stroke="#8A7B66" stroke-width="2"></line>
+  <text x="704" y="290" text-anchor="end" font-size="12" fill="#5C4F3E">underground</text>
+  <line x1="6" y1="408" x2="690" y2="408" stroke="#1F4E8C" stroke-width="12" stroke-linecap="round"></line>
+  <path d="M690 398 L708 408 L690 418 Z" fill="#1F4E8C"></path>
+  <text x="14" y="392" font-size="13" font-weight="700" fill="#1F4E8C">Town main</text>
+  <text x="704" y="434" text-anchor="end" font-size="12" fill="#1b2430">on to the gardens of today's retirees</text>
+  <path d="M244 404 l6 4 -6 4" fill="none" stroke="#FFFFFF" stroke-width="2"></path>
+  <path d="M460 404 l6 4 -6 4" fill="none" stroke="#FFFFFF" stroke-width="2"></path>
+  <path d="M620 404 l6 4 -6 4" fill="none" stroke="#FFFFFF" stroke-width="2"></path>
+  <path d="M56 268 V298 H606 V268" fill="none" stroke="#6B7480" stroke-width="8" stroke-linejoin="round"></path>
+  <text x="236" y="289" font-size="12" fill="#1b2430">wage pipe</text>
+  <path d="M92 290 L92 306 L108 290 L108 306 Z" fill="#FFFFFF" stroke="#1b2430" stroke-width="1.6" stroke-linejoin="round"></path>
+  <text x="100" y="324" text-anchor="middle" font-size="12" fill="#1b2430">closes at</text>
+  <text x="100" y="338" text-anchor="middle" font-size="12" fill="#1b2430">retirement</text>
+  <rect x="12" y="132" width="88" height="136" fill="#E6E9EE" stroke="#4A5563" stroke-width="1.6"></rect>
+  <g fill="#FFFFFF" stroke="#4A5563" stroke-width="1">
+    <rect x="22" y="144" width="16" height="14"></rect><rect x="48" y="144" width="16" height="14"></rect><rect x="74" y="144" width="16" height="14"></rect>
+    <rect x="22" y="168" width="16" height="14"></rect><rect x="48" y="168" width="16" height="14"></rect><rect x="74" y="168" width="16" height="14"></rect>
+    <rect x="22" y="192" width="16" height="14"></rect><rect x="48" y="192" width="16" height="14"></rect><rect x="74" y="192" width="16" height="14"></rect>
+    <rect x="22" y="216" width="16" height="14"></rect><rect x="74" y="216" width="16" height="14"></rect>
+  </g>
+  <rect x="47" y="238" width="18" height="30" fill="#4A5563"></rect>
+  <text x="56" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430">Workplace</text>
+  <path d="M132 268 L142 200 M190 268 L180 200 M136 240 H186" fill="none" stroke="#8A6A1E" stroke-width="2"></path>
+  <line x1="161" y1="294" x2="161" y2="200" stroke="#C98A0B" stroke-width="5"></line>
+  <rect x="122" y="118" width="78" height="82" rx="6" fill="#FFFFFF" stroke="#B57A08" stroke-width="2.5"></rect>
+  <rect x="124" y="168" width="18" height="30" fill="#CFE5F4"></rect>
+  <rect x="142" y="156" width="20" height="42" fill="#CFE5F4"></rect>
+  <rect x="162" y="146" width="18" height="52" fill="#8EC5E8"></rect>
+  <rect x="180" y="174" width="18" height="24" fill="#CFE5F4"></rect>
+  <path d="M142 120 V198 M180 120 V198" stroke="#B57A08" stroke-width="1.4"></path>
+  <line x1="162" y1="120" x2="162" y2="198" stroke="#B57A08" stroke-width="1.4"></line>
+  <rect x="162" y="121" width="18" height="77" fill="none" stroke="#B57A08" stroke-width="3"></rect>
+  <path d="M200 186 h10 a5 5 0 0 1 5 5 v4" fill="none" stroke="#1b2430" stroke-width="2.4" stroke-linecap="round"></path>
+  <path d="M205 180 v6 M201 180 h8" stroke="#1b2430" stroke-width="2" stroke-linecap="round"></path>
+  <text x="208" y="152" font-size="12" font-weight="700" fill="#1b2430">Tank at</text>
+  <text x="208" y="166" font-size="12" font-weight="700" fill="#1b2430">your work</text>
+  <text x="208" y="212" font-size="12" fill="#1b2430">tap: 9 · 10</text>
+  <path d="M134 56 a12 12 0 0 1 10 -19 a16 16 0 0 1 29 -6 a13 13 0 0 1 22 9 a10 10 0 0 1 -2 16 z" fill="#FFFFFF" stroke="#4A5563" stroke-width="1.6" stroke-linejoin="round"></path>
+  <g fill="#5BA8DD">
+    <path d="M148 70 c-2.5 3.2 -3.8 5.2 -3.8 6.8 a3.8 3.8 0 0 0 7.6 0 c0 -1.6 -1.3 -3.6 -3.8 -6.8 z"></path>
+    <path d="M166 86 c-2.5 3.2 -3.8 5.2 -3.8 6.8 a3.8 3.8 0 0 0 7.6 0 c0 -1.6 -1.3 -3.6 -3.8 -6.8 z"></path>
+    <path d="M184 70 c-2.5 3.2 -3.8 5.2 -3.8 6.8 a3.8 3.8 0 0 0 7.6 0 c0 -1.6 -1.3 -3.6 -3.8 -6.8 z"></path>
+  </g>
+  <g transform="rotate(38 112 98)">
+    <path d="M100 90 h24 l-3 22 h-18 z" fill="#FFFFFF" stroke="#1b2430" stroke-width="2" stroke-linejoin="round"></path>
+    <path d="M100 90 c0 -10 24 -10 24 0" fill="none" stroke="#1b2430" stroke-width="1.6"></path>
+  </g>
+  <g fill="#5BA8DD">
+    <path d="M126 104 c-2 2.6 -3 4.2 -3 5.4 a3 3 0 0 0 6 0 c0 -1.2 -1 -2.8 -3 -5.4 z"></path>
+    <path d="M132 112 c-1.6 2 -2.4 3.3 -2.4 4.3 a2.4 2.4 0 0 0 4.8 0 c0 -1 -0.8 -2.3 -2.4 -4.3 z"></path>
+  </g>
+  <rect x="262" y="254" width="90" height="14" fill="#9CCB6A"></rect>
+  <g fill="#C04585"><circle cx="276" cy="250" r="4"></circle><circle cx="300" cy="248" r="4"></circle><circle cx="338" cy="250" r="4"></circle></g>
+  <g stroke="#4F7F27" stroke-width="2"><line x1="276" y1="254" x2="276" y2="262"></line><line x1="300" y1="252" x2="300" y2="262"></line><line x1="338" y1="254" x2="338" y2="262"></line></g>
+  <line x1="315" y1="226" x2="315" y2="256" stroke="#5C4F3E" stroke-width="2.5"></line>
+  <rect x="266" y="186" width="98" height="40" rx="3" fill="#FFFFFF" stroke="#5C4F3E" stroke-width="1.6"></rect>
+  <text x="315" y="202" text-anchor="middle" font-size="12" fill="#1b2430">can't work for</text>
+  <text x="315" y="217" text-anchor="middle" font-size="12" fill="#1b2430">health reasons</text>
+  <path d="M300 402 V334 H318 V268" fill="none" stroke="#1F4E8C" stroke-width="5" stroke-linejoin="round"></path>
+  <rect x="362" y="232" width="48" height="26" rx="12" fill="#1F4E8C"></rect>
+  <text x="386" y="249" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF">taxes</text>
+  <path d="M410 238 h12 l8 9 v11 h-20 z" fill="#E6E9EE" stroke="#1b2430" stroke-width="1.6" stroke-linejoin="round"></path>
+  <line x1="358" y1="258" x2="432" y2="258" stroke="#1b2430" stroke-width="2"></line>
+  <circle cx="374" cy="262" r="5.5" fill="#1b2430"></circle><circle cx="418" cy="262" r="5.5" fill="#1b2430"></circle>
+  <line x1="398" y1="302" x2="398" y2="394" stroke="#1F4E8C" stroke-width="5"></line>
+  <path d="M390 380 L398 394 L406 380" fill="none" stroke="#1F4E8C" stroke-width="3" stroke-linejoin="round"></path>
+  <circle cx="378" cy="330" r="8" fill="#F7D774" stroke="#1b2430" stroke-width="1.4"></circle>
+  <line x1="378" y1="326" x2="378" y2="334" stroke="#1b2430" stroke-width="1.4"></line>
+  <text x="310" y="362" font-size="12" fill="#1b2430">fee from you</text>
+  <text x="310" y="376" font-size="12" fill="#1b2430">and employer</text>
+  <rect x="428" y="314" width="78" height="56" rx="5" fill="#FFFFFF" stroke="#1F4E8C" stroke-width="1.8"></rect>
+  <text x="467" y="330" text-anchor="middle" font-size="12" fill="#1b2430">water card</text>
+  <g fill="#1F4E8C">
+    <circle cx="442" cy="344" r="4.5"></circle><circle cx="456" cy="344" r="4.5"></circle><circle cx="470" cy="344" r="4.5"></circle><circle cx="484" cy="344" r="4.5"></circle>
+    <circle cx="442" cy="358" r="4.5"></circle><circle cx="456" cy="358" r="4.5"></circle><circle cx="484" cy="358" r="4.5"></circle>
+  </g>
+  <circle cx="470" cy="358" r="4.5" fill="#FFFFFF" stroke="#1F4E8C" stroke-width="1.4" stroke-dasharray="2 1.6"></circle>
+  <rect x="438" y="254" width="272" height="14" fill="#9CCB6A"></rect>
+  <path d="M444 268 c4 -10 52 -10 56 0 z" fill="#C9A678"></path>
+  <path d="M452 266 l6 -5 l-2 -3 M470 266 l-4 -6 l5 -2 M488 266 l4 -5" fill="none" stroke="#7A5A33" stroke-width="1.4"></path>
+  <path d="M472 256 c0 -8 2 -12 8 -14 c1 4 -1 7 -5 8" fill="none" stroke="#7A6A2A" stroke-width="1.8"></path>
+  <line x1="526" y1="402" x2="526" y2="262" stroke="#1F4E8C" stroke-width="5"></line>
+  <path d="M518 236 a8 8 0 0 1 16 0 v26 h-16 z" fill="#1F4E8C"></path>
+  <rect x="512" y="242" width="28" height="7" rx="2" fill="#1F4E8C"></rect>
+  <rect x="514" y="262" width="24" height="5" fill="#1F4E8C"></rect>
+  <text x="534" y="386" font-size="12" fill="#1b2430">flows from retirement</text>
+  <path d="M560 196 L598 164 L636 196 Z" fill="#E6E9EE" stroke="#4A5563" stroke-width="1.6" stroke-linejoin="round"></path>
+  <rect x="566" y="196" width="64" height="58" fill="#FFFFFF" stroke="#4A5563" stroke-width="1.6"></rect>
+  <rect x="576" y="208" width="16" height="14" fill="#FFFFFF" stroke="#4A5563" stroke-width="1"></rect>
+  <rect x="604" y="226" width="16" height="28" fill="#4A5563"></rect>
+  <text x="598" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430">Your garden</text>
+  <circle cx="550" cy="248" r="4" fill="#E8A317"></circle>
+  <line x1="550" y1="252" x2="550" y2="262" stroke="#4F7F27" stroke-width="2"></line>
+  <path d="M644 228 h24 c3 8 3 26 0 34 h-24 c-3 -8 -3 -26 0 -34 z" fill="#C04585" stroke="#1b2430" stroke-width="1.6"></path>
+  <path d="M642 238 h28 M642 252 h28" stroke="#1b2430" stroke-width="1.2"></path>
+  <rect x="650" y="241" width="12" height="9" rx="1.5" fill="#FFFFFF" stroke="#1b2430" stroke-width="1.4"></rect>
+  <path d="M652.5 241 v-2.5 a3.5 3.5 0 0 1 7 0 v2.5" fill="none" stroke="#1b2430" stroke-width="1.4"></path>
+  <path d="M676 244 h18 v20 h-18 z" fill="#FFFFFF" stroke="#C04585" stroke-width="2"></path>
+  <path d="M694 250 l10 -8 M702 240 l5 4" fill="none" stroke="#C04585" stroke-width="2" stroke-linecap="round"></path>
+  <path d="M679 244 c0 -9 12 -9 12 0" fill="none" stroke="#C04585" stroke-width="2"></path>
+  <g transform="translate(352 330) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">1</text></g>
+  <g transform="translate(414 340) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">2</text></g>
+  <g transform="translate(526 214) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">3</text></g>
+  <g transform="translate(284 334) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">4</text></g>
+  <g transform="translate(386 218) scale(1.0)"><circle cx="0" cy="0" r="11.5" fill="#1F4E8C"></circle><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">5</text></g>
+  <g transform="translate(220 128) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">6</text></g>
+  <g transform="translate(78 96) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">7</text></g>
+  <g transform="translate(656 214) scale(1.0)"><path d="M0 -13 L14 11.5 L-14 11.5 Z" fill="#C04585" stroke-linejoin="round"></path><text x="0" y="8.6" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">11</text></g>
+  <g transform="translate(694 222) scale(1.0)"><path d="M0 -13 L14 11.5 L-14 11.5 Z" fill="#C04585" stroke-linejoin="round"></path><text x="0" y="8.6" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">12</text></g>
+  <g transform="translate(456 228) scale(1.0)"><path d="M0 -13.5 L13.5 0 L0 13.5 L-13.5 0 Z" fill="#7CB342" stroke="#1b2430" stroke-width="1"></path><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">13</text></g>
+</svg>
+</section>
+<div class="groups"><section style="display: flex; flex-direction: column; gap: 6px"><h2 class="h2"><svg width="20" height="20" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect></g></svg><span>Tank at work: changing jobs</span></h2><div class="card" style="background: #F9E4AC; flex-grow: 1"><svg width="205" height="98" viewBox="0 0 210 100" role="img" aria-label="Water moving from the old tank to the next one, or waiting in a holding tank at the bank" style="display: block; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif"><rect x="6" y="8" width="40" height="44" rx="4" fill="#FFFFFF" stroke="#B57A08" stroke-width="2.5"></rect><rect x="8" y="40" width="36" height="10" fill="#CFE5F4" stroke="#5BA8DD" stroke-width="1" stroke-dasharray="3 2"></rect><rect x="164" y="8" width="40" height="44" rx="4" fill="#FFFFFF" stroke="#B57A08" stroke-width="2.5"></rect><rect x="166" y="22" width="36" height="28" fill="#8EC5E8"></rect><path d="M54 28 h100 M146 21 l8 7 -8 7" fill="none" stroke="#1b2430" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path><text x="104" y="20" text-anchor="middle" font-size="12.3" fill="#1b2430">next job</text><rect x="89" y="54" width="32" height="24" rx="3" fill="#CFE5F4" stroke="#1b2430" stroke-width="2"></rect><path d="M97 54 v-4 h16 v4" fill="none" stroke="#1b2430" stroke-width="2"></path><path d="M26 54 v12 h58 M126 66 h58 v-12" fill="none" stroke="#1b2430" stroke-width="1.6" stroke-dasharray="4 3"></path><text x="105" y="94" text-anchor="middle" font-size="12.3" fill="#1b2430">bank, in between</text></svg><div class="cardhead"><svg width="26" height="26" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">8</text></g></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #1b2430; flex: none; display: block"><rect x="1.5" y="3" width="6" height="9" rx="1.2"></rect><rect x="16.5" y="3" width="6" height="9" rx="1.2"></rect><path d="M9 7.5h5.5M12.5 5.5l2 2-2 2"></path><rect x="9" y="16" width="6" height="6" rx="1"></rect><path d="M4.5 12.5v4.5H9M15 19h4.5v-6.5" stroke-dasharray="1.6 1.4"></path></svg><span>Vested benefits</span></div><p>When you change workplace, the water in your compartment moves with you into the next tank, or waits in a sealed holding tank at the bank until there is one.</p></div></section><section style="display: flex; flex-direction: column; gap: 6px"><h2 class="h2"><svg width="20" height="20" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect></g></svg><span>Tank at work: at retirement, tap or carry away</span></h2><div class="contrast" style="background: #F9E4AC"><div class="side"><svg width="205" height="92" viewBox="0 0 205 92" role="img" aria-label="Water flowing from the tap into the garden every month" style="display: block; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif"><rect x="8" y="10" width="44" height="58" rx="5" fill="#FFFFFF" stroke="#B57A08" stroke-width="2.5"></rect><rect x="10" y="30" width="40" height="36" fill="#8EC5E8"></rect><path d="M52 56 h10 a5 5 0 0 1 5 5 v3" fill="none" stroke="#1b2430" stroke-width="2.4" stroke-linecap="round"></path><path d="M67 70 c-2 2.6 -3 4.2 -3 5.4 a3 3 0 0 0 6 0 c0 -1.2 -1 -2.8 -3 -5.4 z" fill="#5BA8DD"></path><rect x="58" y="82" width="140" height="8" fill="#9CCB6A"></rect><path d="M96 72 c-1.8 2.3 -2.7 3.7 -2.7 4.8 a2.7 2.7 0 0 0 5.4 0 c0 -1.1 -.9 -2.5 -2.7 -4.8 z" fill="#5BA8DD"></path><path d="M120 72 c-1.8 2.3 -2.7 3.7 -2.7 4.8 a2.7 2.7 0 0 0 5.4 0 c0 -1.1 -.9 -2.5 -2.7 -4.8 z" fill="#5BA8DD"></path><path d="M144 72 c-1.8 2.3 -2.7 3.7 -2.7 4.8 a2.7 2.7 0 0 0 5.4 0 c0 -1.1 -.9 -2.5 -2.7 -4.8 z" fill="#5BA8DD"></path><path d="M168 72 c-1.8 2.3 -2.7 3.7 -2.7 4.8 a2.7 2.7 0 0 0 5.4 0 c0 -1.1 -.9 -2.5 -2.7 -4.8 z" fill="#5BA8DD"></path><path d="M192 72 c-1.8 2.3 -2.7 3.7 -2.7 4.8 a2.7 2.7 0 0 0 5.4 0 c0 -1.1 -.9 -2.5 -2.7 -4.8 z" fill="#5BA8DD"></path><text x="84" y="40" font-size="12" fill="#1b2430">a steady flow,</text><text x="84" y="55" font-size="12" fill="#1b2430">month after month</text></svg><div class="cardhead"><svg width="26" height="26" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">9</text></g></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #1b2430; flex: none; display: block"><path d="M3 5v6"></path><path d="M3 8h8a4 4 0 0 1 4 4v2"></path><path d="M8 8V4.5M6 4.5h4"></path><path d="M15 16.5c-.9 1.2-1.4 1.9-1.4 2.5a1.4 1.4 0 0 0 2.8 0c0-.6-.5-1.3-1.4-2.5z" fill="currentColor"></path></svg><span>Pension-fund pension</span></div><p>The tap on your compartment: from retirement it lets the same flow into your garden every month for as long as you live.</p></div><div class="or">or</div><div class="side"><svg width="205" height="92" viewBox="0 0 205 92" role="img" aria-label="Water carried away from the tank at once in a canister" style="display: block; font-family: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif"><rect x="8" y="10" width="44" height="58" rx="5" fill="#FFFFFF" stroke="#B57A08" stroke-width="2.5"></rect><rect x="10" y="56" width="40" height="10" fill="#8EC5E8"></rect><rect x="10" y="30" width="40" height="26" fill="none" stroke="#2F6FA8" stroke-width="1.6" stroke-dasharray="3 2.5"></rect><path d="M60 48 h44 M96 41 l8 7 -8 7" fill="none" stroke="#1b2430" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path><rect x="114" y="34" width="34" height="42" rx="4" fill="#8EC5E8" stroke="#1b2430" stroke-width="2"></rect><path d="M122 34 v-7 h14 v7" fill="none" stroke="#1b2430" stroke-width="2"></path><path d="M119 44 l24 24 M143 44 l-24 24" stroke="#FFFFFF" stroke-width="2"></path><text x="156" y="52" font-size="12" fill="#1b2430">at once</text></svg><div class="cardhead"><svg width="26" height="26" viewBox="-14 -14 28 28" aria-hidden="true" style="flex: none; display: block"><g transform="translate(0 0) scale(1.0)"><rect x="-11" y="-11" width="22" height="22" rx="2.5" fill="#F0B429" stroke="#1b2430" stroke-width="1"></rect><text x="0" y="4.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1b2430" font-family="'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', Verdana, sans-serif">10</text></g></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: #1b2430; flex: none; display: block"><rect x="3" y="9" width="11" height="12" rx="2"></rect><path d="M6 9V6h5v3"></path><path d="M5.5 12.5l6 5.5M11.5 12.5l-6 5.5"></path><path d="M16 12h5.5M19 9.5l2.5 2.5-2.5 2.5"></path></svg><span>Lump sum</span></div><p>Instead of only using the tap, you can carry part of your compartment's water away at once, or all of it if your tank's rules allow, and must make it last yourself.</p></div></div></section></div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
 class Component extends DCLogic {
-  renderVals() {
-    return {};
-  }
+renderVals() {
+return {};
+}
 }
 </script>
 </body>

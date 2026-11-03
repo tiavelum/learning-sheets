@@ -6,11 +6,11 @@ language: "en"
 paper: "a4"
 created: "2026-11-01"
 last_modified: "2026-11-01"
-skill_version: "tiavelum/claude-setup@669bb79"
+skill_version: "tiavelum/claude-setup@4f26fe8"
 artifact: "https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"
-artifact_version: "1793715998-6304"
+artifact_version: "1793722009-42ad"
 ---
 
 ## Request
 
-A printable handout, rather than a Markdown list, on the ways of logging in that an earlier conversation went through, from passwords and passkeys to getting back into an account. It explains each way and how they relate, and gives each an everyday analogy in two or three sentences, for anyone with online accounts who wants to see how they fit together.
+A learning sheet on how logins work: passwords, passkeys, device passcodes and biometrics, password managers, two-step login and the ways to get back into an account when something is lost. It is for a lay adult who has no picture of the topic yet and wants to understand and memorise it, in general terms with products named only as examples, printed on A4.
