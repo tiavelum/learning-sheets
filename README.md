@@ -198,7 +198,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    npm run format
    ```
 
-   Where the check or the render reports a page, change the page on the canvas and go back to step 5; [`scripts/README.md`](scripts/README.md) explains each message.
+   Where the check or the render reports a page, change the page on the canvas and go back to step 5; [`scripts/README.md`](scripts/README.md) explains each message. Where the render reports that a page draws a character in a font the page does not load, such as `draws U+2192 → in a font the page does not load`, replace the character on the canvas with one the page's fonts hold, such as "to" or "->" for "→", or draw it as a shape in the page's SVG.
 
 10. Commit the sheet folder and push the branch:
 

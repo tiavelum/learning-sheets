@@ -66,7 +66,15 @@ A sheet fails, and leaves neither its PDF nor its PNG in the output folder, also
 - a page is not static under [the contract](../sheets/README.md#page-files), or asks for a font its installed package does not hold;
 - a page requests anything other than its own HTML and the Fontsource files, a request the renderer blocks;
 - a font does not load;
-- the content of a page's body runs past its frame, which it reports by side and by how many px.
+- the content of a page's body runs past its frame, which it reports by side and by how many px;
+- a page draws a character in a font it does not load, against [Page files](../sheets/README.md#page-files).
+
+For the last, it asks Chromium, through `CSS.getPlatformFontsForNode` of [the DevTools protocol's CSS domain](https://github.com/ChromeDevTools/devtools-protocol/blob/master/pdl/domains/CSS.pdl), which fonts it drew each visible text and generated content of the page with, and whether each was downloaded. Where one of them was not downloaded, and so is a font of the machine rather than a Fontsource font the page loads, it draws each character of that text alone in the same font properties and reports every character that still takes another font. It names each such character once per page, by its code points and the character, one line each, after looking at every page of the sheet, such as:
+
+```text
+sheets/swiss-three-pillar-pension/project/Facts.dc.html: draws U+2192 → in a font the page does not load
+sheets/swiss-three-pillar-pension/project/Facts.dc.html: draws U+2265 ≥ in a font the page does not load
+```
 
 It renders with the Chrome at `CHROME_PATH` where that variable is set, and otherwise with Playwright's Chromium, which this command installs:
 
