@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   # The release workflow calls this one after each release, since a release
   # that its own GITHUB_TOKEN makes starts no other workflow. The caller grants
-  # the permissions of both jobs: contents: read, pages: write and id-token: write.
+  # what both jobs ask for: contents: read, pages: write and id-token: write.
   workflow_call:
 
 permissions: {}
