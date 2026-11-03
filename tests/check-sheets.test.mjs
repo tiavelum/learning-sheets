@@ -6,7 +6,7 @@ import path from "node:path";
 import { after, describe, test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { checkSheets } from "../scripts/check-sheets.mjs";
-import { isNam2, nameFromTitle, pagesInPrintOrder } from "../scripts/sheet-files.mjs";
+import { pagesInPrintOrder } from "../scripts/sheet-files.mjs";
 
 const FIXTURES = path.join(path.dirname(fileURLToPath(import.meta.url)), "fixtures", "sheets");
 const CHECK = path.join(
@@ -51,33 +51,6 @@ function assertViolation(root, file, pattern) {
 const readme = [SHEET, "README.md"];
 const canvasFile = [SHEET, "project", "canvas.json"];
 const mainPage = [SHEET, "project", "Main.dc.html"];
-
-describe("the name rule", () => {
-  const cases = [
-    ["Logins at a Glance", "logins-at-a-glance"],
-    ["How a web page reaches your screen", "how-a-web-page-reaches-your-screen"],
-    ["Logins, Keys and Recovery", "logins-keys-and-recovery"],
-    ["Säule 3a für Selbständige", "saeule-3a-fuer-selbstaendige"],
-    ["Drei Säulen der Vorsorge", "drei-saeulen-der-vorsorge"],
-    ["Don't Get Locked Out", "dont-get-locked-out"],
-    ["Don’t Get Locked Out", "dont-get-locked-out"],
-    ["Straße und Café", "strasse-und-cafe"],
-    ["Input/Output", "input-output"],
-    ["Ærø, Œuvre und Łódź", "aero-oeuvre-und-lodz"],
-    ["ÖL und ÄRGER", "oel-und-aerger"],
-    ["Säule", "saeule"],
-    ["  Points -- of   Sail  ", "points-of-sail"],
-  ];
-  for (const [title, name] of cases) {
-    test(`${JSON.stringify(title)} gives ${name}`, () => {
-      assert.equal(nameFromTitle(title), name);
-      assert.ok(isNam2(name));
-    });
-  }
-  test("a title of no letter or digit gives no name", () => {
-    assert.equal(nameFromTitle("— ? —"), "");
-  });
-});
 
 describe("the print order", () => {
   test("pages print by y, then x, whatever order lists", () => {
@@ -251,7 +224,7 @@ describe("the check", () => {
 
   test("reports a title folded over two lines", () => {
     const root = brokenCopy((_, sheet) =>
-      edit(path.join(sheet, "README.md"), '"Two Pages of Squares"', '"Two Pages\n  of Squares"'),
+      edit(path.join(sheet, "README.md"), '"two-pages-of-squares"', '"two-pages-\\\n  of-squares"'),
     );
     assertViolation(root, readme, /"title" is not on one line/);
   });
@@ -289,39 +262,90 @@ describe("the check", () => {
     assertViolation(root, readme, /is not one sentence/);
   });
 
-  test("reports a folder name that is not the title's", () => {
-    const root = brokenCopy((_, sheet) => {
-      edit(path.join(sheet, "README.md"), "Two Pages of Squares", "Two Pages of Circles");
-      editCanvas(sheet, (canvas) => {
-        canvas.title = "Two Pages of Circles";
+  for (const title of [
+    "Two Pages of Squares",
+    "two_pages_of_squares",
+    "two-pages--of-squares",
+    "-two-pages-of-squares",
+    "two-pages-of-squares-",
+    "two-pages-of-carrés",
+  ]) {
+    test(`reports the title ${JSON.stringify(title)}, which is not in the form of a name`, () => {
+      const root = brokenCopy((_, sheet) => {
+        edit(path.join(sheet, "README.md"), '"two-pages-of-squares"', JSON.stringify(title));
+        editCanvas(sheet, (canvas) => {
+          canvas.title = title;
+        });
+      });
+      assertViolation(
+        root,
+        readme,
+        /the title .* is not a sheet's name, lowercase words of a-z and 0-9 joined by single hyphens \(Folder name, NAM-2\)$/,
+      );
+    });
+  }
+
+  for (const title of ["squares-learning-sheet", "learning-sheets-of-squares"]) {
+    test(`reports the title ${title}, which holds the words learning sheet`, () => {
+      const root = brokenCopy((root) => {
+        cpSync(path.join(root, SHEET), path.join(root, title), { recursive: true });
+        rmSync(path.join(root, SHEET), { recursive: true });
+        edit(path.join(root, title, "README.md"), '"two-pages-of-squares"', `"${title}"`);
+        editCanvas(path.join(root, title), (canvas) => {
+          canvas.title = title;
+        });
+      });
+      assertViolation(root, [title, "README.md"], /holds the words "learning sheet"/);
+    });
+  }
+
+  test("allows a title in which learning is not followed by sheet", () => {
+    const title = "machine-learning-on-sheets";
+    const root = brokenCopy((root) => {
+      cpSync(path.join(root, SHEET), path.join(root, title), { recursive: true });
+      rmSync(path.join(root, SHEET), { recursive: true });
+      edit(path.join(root, title, "README.md"), '"two-pages-of-squares"', `"${title}"`);
+      editCanvas(path.join(root, title), (canvas) => {
+        canvas.title = title;
       });
     });
-    assertViolation(root, readme, /is not the name the title gives, two-pages-of-circles/);
+    assert.deepEqual(checkSheets(root).violations, []);
+  });
+
+  test("reports a folder name that is not the title", () => {
+    const root = brokenCopy((_, sheet) => {
+      edit(path.join(sheet, "README.md"), "two-pages-of-squares", "two-pages-of-circles");
+      editCanvas(sheet, (canvas) => {
+        canvas.title = "two-pages-of-circles";
+      });
+    });
+    assertViolation(
+      root,
+      readme,
+      /the folder name two-pages-of-squares is not the title, two-pages-of-circles$/,
+    );
+  });
+
+  test("reports a second sheet that takes the title of another", () => {
+    const root = brokenCopy((root) =>
+      cpSync(path.join(root, SHEET), path.join(root, "two-pages-of-squares-again"), {
+        recursive: true,
+      }),
+    );
+    assertViolation(
+      root,
+      ["two-pages-of-squares-again", "README.md"],
+      /the folder name two-pages-of-squares-again is not the title, two-pages-of-squares$/,
+    );
   });
 
   test("reports a canvas title other than the README's", () => {
     const root = brokenCopy((_, sheet) =>
       editCanvas(sheet, (canvas) => {
-        canvas.title = "Two pages of squares";
+        canvas.title = "Two Pages of Squares";
       }),
     );
     assertViolation(root, canvasFile, /is not the title of the README/);
-  });
-
-  test("reports two sheets whose titles give one folder name", () => {
-    const root = brokenCopy((root) => {
-      const other = path.join(root, "two-pages-of-squares-again");
-      cpSync(path.join(root, SHEET), other, { recursive: true });
-      edit(path.join(other, "README.md"), "Two Pages of Squares", "Two Pages of Squares!");
-      editCanvas(other, (canvas) => {
-        canvas.title = "Two Pages of Squares!";
-      });
-    });
-    const { violations } = checkSheets(root);
-    assert.ok(
-      violations.some((line) => line.includes("no two sheets share a folder name")),
-      violations.join("\n"),
-    );
   });
 
   test("reports a board whose file is missing", () => {

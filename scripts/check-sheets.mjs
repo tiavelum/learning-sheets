@@ -12,7 +12,6 @@ import {
   isNam2,
   listEntries,
   listSheetFolders,
-  nameFromTitle,
   PAPER_SIZES,
   pagesInPrintOrder,
   paperSize,
@@ -27,6 +26,7 @@ const REPOSITORY = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const NODE_MODULES = path.join(REPOSITORY, "node_modules");
 const PAGE_NAME = /^[A-Za-z0-9_][A-Za-z0-9_.-]*\.dc\.html$/;
 const FIRST_PAGE = "Main.dc.html";
+const LEARNING_SHEET = /(^|-)learning-sheets?(-|$)/;
 
 export function checkSheets(
   root,
@@ -47,25 +47,7 @@ export function checkSheets(
 
   const dependencies = readDependencies(packageFile);
   const sheets = listSheetFolders(root);
-  const folderOfName = new Map();
-  for (const name of sheets) {
-    const title = checkSheet(root, name, { dependencies, nodeModules }, report);
-    if (title === undefined) continue;
-    const given = nameFromTitle(title);
-    if (given === "") continue;
-    if (!folderOfName.has(given)) folderOfName.set(given, []);
-    folderOfName.get(given).push(name);
-  }
-  for (const [given, folders] of folderOfName) {
-    if (folders.length < 2) continue;
-    for (const folder of folders) {
-      const others = folders.filter((other) => other !== folder).join(", ");
-      report(
-        path.join(root, folder, "README.md"),
-        `its title gives the folder name ${given}, as the title of ${others} does; no two sheets share a folder name`,
-      );
-    }
-  }
+  for (const name of sheets) checkSheet(root, name, { dependencies, nodeModules }, report);
   return { violations, sheets };
 }
 
@@ -97,10 +79,9 @@ function checkSheet(root, name, fonts, report) {
   const projectDir = path.join(folder, "project");
   if (!entries.includes("project/")) {
     report(projectDir, "is missing");
-    return fields?.title;
+    return;
   }
   checkProject(projectDir, fields, fonts, report);
-  return fields?.title;
 }
 
 function checkReadme(file, name, report) {
@@ -131,12 +112,19 @@ function checkFields(file, name, fields, report) {
     else if (/[\r\n]/.test(value)) report(file, `front matter: "${field}" is not on one line`);
   }
   const { title, topic, tags, language, paper, made, skill, artifact } = fields;
-  if (title !== undefined) {
-    const given = nameFromTitle(title);
-    if (given === "")
-      report(file, `front matter: the title ${JSON.stringify(title)} gives no folder name`);
-    else if (given !== name) {
-      report(file, `the folder name ${name} is not the name the title gives, ${given}`);
+  if (title !== undefined && title.trim() !== "") {
+    if (!isNam2(title)) {
+      report(
+        file,
+        `front matter: the title ${JSON.stringify(title)} is not a sheet's name, lowercase words of a-z and 0-9 joined by single hyphens (Folder name, NAM-2)`,
+      );
+    } else if (LEARNING_SHEET.test(title)) {
+      report(
+        file,
+        `front matter: the title ${JSON.stringify(title)} holds the words "learning sheet", which a sheet's name leaves out (Folder name)`,
+      );
+    } else if (title !== name) {
+      report(file, `the folder name ${name} is not the title, ${title}`);
     }
   }
   if (topic?.endsWith(".")) report(file, 'front matter: "topic" ends with a period');
