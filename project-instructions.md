@@ -2,11 +2,11 @@ Repository tiavelum/learning-sheets.
 
 This repository keeps the learning sheets made with the learning-sheet skill of tiavelum/claude-setup, each as the files of its Design canvas with a README, so that they can be found, printed and changed after their session ends.
 
-Canvas files: Take a sheet's canvas files only from its artifact through the Artifact tool, and commit them as the tool saved them. Never write, fix or reformat one yourself; to change a page, change it on the canvas and read it again.
+Canvas files: Take a sheet's canvas files only from its artifact through the Artifact tool; to change a page, change it on the canvas and read it again. `sheets/README.md` gives how the files are kept.
 
-Prompts: Before committing a sheet's README, leave every name of a person and every private detail out of its prompt, marked as `sheets/README.md` shows; when unsure whether a detail is private, leave it out.
+Prompts: When unsure whether a detail in a sheet's prompt is private, leave it out; `sheets/README.md` gives what a prompt leaves out and how.
 
-Merging: You may merge a pull request that adds or changes one sheet. Have the agent that checks it compare each committed canvas file's sha256, and the README's `artifact_version`, with what the Artifact tool reports for the artifact.
+Merging: You may merge a pull request that adds or changes one sheet. List the artifact's files with the Artifact tool and give the agent that checks the pull request each file's sha256 and the version, so that it compares them with the sha256 of each committed canvas file and the README's `artifact_version`.
 
 Workflows: Never dispatch or rerun a GitHub Actions workflow; tiavelum starts each release with the "Run workflow" button.
 
