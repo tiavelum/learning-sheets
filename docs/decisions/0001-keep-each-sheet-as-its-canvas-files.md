@@ -6,7 +6,7 @@ Status: accepted.
 
 ## Context
 
-A learning sheet is made as a Design canvas in the Claude app. While the session that made it lives, its PDF comes from the canvas's own export; in the long run its source lives here and the releases build its PDF, as [issue #1](https://github.com/tiavelum/learning-sheets/issues/1) states. Its decisions require, for each sheet, a README with its topic, its prompt, the skill and the date that made it and the artifact's link and version; names that a person can tell apart, with the artifact named like its folder; no PDF in git; and that a new session can find an existing sheet and work on it.
+A learning sheet is made as a Design canvas in the Claude app. While the session that made it lives, its PDF comes from the canvas's own export; in the long run its source lives here and the releases build its PDF, as [issue #1](https://github.com/tiavelum/learning-sheets/issues/1) states. The decisions of that issue require, for each sheet, a README with its topic, its prompt, the skill and the date that made it and the artifact's link and version; names that a person can tell apart, with the artifact named like its folder; no PDF in git; and that a new session can find an existing sheet and work on it.
 
 A canvas consists of its index `project/canvas.json` and one page file per page, as [Page files](../../sheets/README.md#page-files) describes; the Artifact tool reads and publishes them under the same paths.
 
