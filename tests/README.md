@@ -20,6 +20,6 @@ npm test
 The renderer's tests launch the browser that `render-sheets.mjs` uses, so Chromium is installed first, as the root README's "Getting started" shows. The run ends with the number of tests that passed and failed:
 
 ```text
-# pass 91
+# pass 98
 # fail 0
 ```

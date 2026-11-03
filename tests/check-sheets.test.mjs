@@ -264,6 +264,8 @@ describe("the check", () => {
 
   for (const title of [
     "Two Pages of Squares",
+    "two pages of squares",
+    "Two-Pages-of-Squares",
     "two_pages_of_squares",
     "two-pages--of-squares",
     "-two-pages-of-squares",
@@ -299,18 +301,26 @@ describe("the check", () => {
     });
   }
 
-  test("allows a title in which learning is not followed by sheet", () => {
-    const title = "machine-learning-on-sheets";
-    const root = brokenCopy((root) => {
-      cpSync(path.join(root, SHEET), path.join(root, title), { recursive: true });
-      rmSync(path.join(root, SHEET), { recursive: true });
-      edit(path.join(root, title, "README.md"), '"two-pages-of-squares"', `"${title}"`);
-      editCanvas(path.join(root, title), (canvas) => {
-        canvas.title = title;
+  for (const title of [
+    "machine-learning-on-sheets",
+    "relearning-sheet",
+    "learning-sheetmusic",
+    "saeule-3a",
+    "3a",
+    "squares",
+  ]) {
+    test(`allows the title ${title}`, () => {
+      const root = brokenCopy((root) => {
+        cpSync(path.join(root, SHEET), path.join(root, title), { recursive: true });
+        rmSync(path.join(root, SHEET), { recursive: true });
+        edit(path.join(root, title, "README.md"), '"two-pages-of-squares"', `"${title}"`);
+        editCanvas(path.join(root, title), (canvas) => {
+          canvas.title = title;
+        });
       });
+      assert.deepEqual(checkSheets(root).violations, []);
     });
-    assert.deepEqual(checkSheets(root).violations, []);
-  });
+  }
 
   test("reports a folder name that is not the title", () => {
     const root = brokenCopy((_, sheet) => {
