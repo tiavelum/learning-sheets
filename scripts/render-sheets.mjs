@@ -534,6 +534,11 @@ async function uncoveredCharacters(page, drawable) {
     const { nodeIds } = await session.send("DOM.pushNodesByBackendIdsToFrontend", {
       backendNodeIds: texts.map(({ index }) => nodes.backendNodeId[index]),
     });
+    // A ::first-letter node has no id of its own; its element's fonts include its letter.
+    const { nodeIds: parentIds } = await session.send("DOM.pushNodesByBackendIdsToFrontend", {
+      backendNodeIds: texts.map(({ index }) => nodes.backendNodeId[nodes.parentIndex[index]]),
+    });
+    for (const [at, id] of nodeIds.entries()) if (id === 0) nodeIds[at] = parentIds[at];
     const found = new Set();
     for (const [at, { index, text, style }] of texts.entries()) {
       const fonts = await fontsOf(nodeIds[at]);

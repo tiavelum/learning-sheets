@@ -339,6 +339,25 @@ describe("the renderer", () => {
     assert.deepEqual(result.warnings, []);
   });
 
+  test("looks at the first letter that a ::first-letter rule sets apart", async () => {
+    const { root, out, main } = copyWithMain((text) =>
+      text
+        .replace(
+          "<style>",
+          "<style>h1::first-letter { font-size: 60px; } p::first-letter { font-size: 30px; font-family: 'Source Sans 3', Arial, sans-serif; }",
+        )
+        .replace('700">Page 1</h1>', `700">${PRIVATE_USE}Page 1</h1>`)
+        .replace('16px">', '16px">→ '),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, [
+      `${main}: draws U+E000 ${PRIVATE_USE} in a font neither the page nor the fallback loads`,
+    ]);
+    const drawn = await fontCharacters(path.join(out, `${SHEET}.pdf`));
+    assert.deepEqual(drawn.get("NotoSansMath-Regular"), new Set(["→"]));
+  });
+
   test("fails on a network request made while the page renders", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text.replace("<style>", '<style>h1{background-image:u\\72l("https://example.org/e.png")}'),
