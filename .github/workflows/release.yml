@@ -146,7 +146,8 @@ jobs:
             --notes-file notes.md \
             --latest)
           echo "Released $title: $url"
-          echo "Released [$title]($url) with $(find assets -name '*.pdf' | wc -l) PDFs." >> "$GITHUB_STEP_SUMMARY"
+          pdfs=$(find assets -name '*.pdf' | wc -l)
+          echo "Released [$title]($url) with $pdfs PDF$([ "$pdfs" -eq 1 ] || echo s)." >> "$GITHUB_STEP_SUMMARY"
 
   # A release made with the workflow's own token starts no other workflow,
   # so this one rebuilds the browse page to link the new PDFs.
