@@ -7,7 +7,7 @@ print or change a sheet and for the sessions that archive them.
 
 ## Getting started
 
-The repository holds no sheet yet; [issue #1](https://github.com/tiavelum/learning-sheets/issues/1) tracks the work that adds the sheets, the releases of their PDFs and a page to browse them. What a sheet folder holds, field by field, is in [`sheets/README.md`](sheets/README.md).
+Each sheet stands in a folder of its own in [`sheets/`](sheets/README.md), named after the sheet, so the listing of `sheets/` gives every sheet's name; what a sheet folder holds, field by field, is in [`sheets/README.md`](sheets/README.md).
 
 This section checks and renders the sheets on your machine. It needs Node.js 22, the version CI pins being 22.23.4, npm 10, which comes with it, and git; the commands below ran with git 2.43.0. Playwright's Chromium runs on macOS and Linux; on Linux it also needs [the system packages that Playwright lists](https://playwright.dev/docs/browsers#install-system-dependencies).
 
@@ -39,7 +39,7 @@ Check every sheet folder against [its contract](sheets/README.md):
 npm run check
 ```
 
-It prints `0 sheets in sheets, no violation`, since `sheets/` holds no sheet yet; [`scripts/README.md`](scripts/README.md#check-sheetsmjs) gives what it prints on a violation and its exit status.
+It prints the number of sheets it checked, such as `18 sheets in sheets, no violation`; [`scripts/README.md`](scripts/README.md#check-sheetsmjs) gives what it prints on a violation and its exit status.
 
 Render the sheet that the tests use, which stands in [`tests/fixtures/sheets/`](tests/README.md) beside the sheets of `sheets/`:
 
