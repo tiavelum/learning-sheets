@@ -27,6 +27,5 @@ What a sheet folder holds, field by field, is in [`sheets/README.md`](sheets/REA
 
 ## License
 
-The sheets in [`sheets/`](sheets/README.md) are licensed under CC BY 4.0: anyone may
-print, share and adapt them when they credit them. See [sheets/LICENSE](sheets/LICENSE).
+The sheets in [`sheets/`](sheets/README.md) are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode.txt): anyone may print, share and adapt them when they credit the source, link the license and mark any change. See [sheets/LICENSE](sheets/LICENSE).
 Everything else is licensed under MIT. See [LICENSE](LICENSE).
