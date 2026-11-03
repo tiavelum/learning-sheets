@@ -19,7 +19,7 @@ Run the tests from the root of the repository:
 npm test
 ```
 
-The tests of the renderer and of the page build launch the browser that `render-sheets.mjs` uses, so Chromium is installed first, as the root README's "Getting started" shows. The summary at the end of the run gives the number of tests that passed and failed:
+The tests of the renderer and of the page build launch the browser that `render-sheets.mjs` uses, so Chromium is installed first, as the root README's "Getting started" shows. The summary at the end of the run gives the number of tests that passed and failed; each line of it starts with `ℹ` in a terminal and with `#` where the output goes to a file or a program, as in CI, and as shown here:
 
 ```text
 # pass 149
