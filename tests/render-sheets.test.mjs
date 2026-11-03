@@ -195,6 +195,66 @@ describe("the renderer", () => {
     assert.match(result.error, /example\.org\/a\.css/);
   });
 
+  test("fails on characters its fonts lack, naming each once with its code point", async () => {
+    const { root, out, main } = copyWithMain((text) =>
+      text
+        .replace("Page 1</h1>", "Page 1 → 2 → 3</h1>")
+        .replace("that loads nothing.", "that loads nothing, ≥ 1 → 2."),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(
+      result.error,
+      [
+        `${main}: draws U+2192 → in a font the page does not load`,
+        `${main}: draws U+2265 ≥ in a font the page does not load`,
+      ].join("\n"),
+    );
+    assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), false);
+  });
+
+  test("fails on a character of generated content that its fonts lack", async () => {
+    const { root, out, main } = copyWithMain((text) =>
+      text.replace("<style>", '<style>h1::before { content: "→ "; }'),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, `${main}: draws U+2192 → in a font the page does not load`);
+  });
+
+  test("fails on a character that falls through the families it loads to a system font", async () => {
+    const { root, out, main } = copyWithMain((text) =>
+      text
+        .replace(
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400",
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400&amp;family=Zilla+Slab:wght@700",
+        )
+        .replace(
+          '<h1 style="margin: 0;',
+          "<h1 style=\"margin: 0; font-family: 'Zilla Slab', Georgia, serif;",
+        )
+        .replace("Page 1</h1>", "Page 1 Ω</h1>"),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, `${main}: draws U+03A9 Ω in a font the page does not load`);
+  });
+
+  test("passes characters that a later family of the font-family list covers, and those that draw nothing", async () => {
+    const { root, out } = copyWithMain((text) =>
+      text
+        .replace(
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400",
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400&amp;family=Zilla+Slab:wght@700",
+        )
+        .replace(
+          '<h1 style="margin: 0;',
+          "<h1 style=\"margin: 0; font-family: 'Zilla Slab', 'Source Sans 3', serif;",
+        )
+        .replace("Page 1</h1>", "“Page 1” Ω&nbsp;​­</h1>"),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    assert.equal(existsSync(path.join(out, `${SHEET}.pdf`)), true);
+  });
+
   test("fails on a network request made while the page renders", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text.replace("<style>", '<style>h1{background-image:u\\72l("https://example.org/e.png")}'),
@@ -237,6 +297,18 @@ describe("the command", () => {
     const result = run(["--root", root, "--out", folder]);
     assert.equal(result.status, 1);
     assert.match(result.stderr, /is not static: holds a hole/);
+    assert.equal(result.stdout, `0 of 1 sheet rendered to ${folder}\n`);
+  });
+
+  test("exits 1 on a page that draws a character in a font it does not load", () => {
+    const {
+      root,
+      out: folder,
+      main,
+    } = copyWithMain((text) => text.replace("Page 1</h1>", "Page 1 →</h1>"));
+    const result = run(["--root", root, "--out", folder]);
+    assert.equal(result.status, 1);
+    assert.equal(result.stderr, `${main}: draws U+2192 → in a font the page does not load\n`);
     assert.equal(result.stdout, `0 of 1 sheet rendered to ${folder}\n`);
   });
 

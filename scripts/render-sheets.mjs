@@ -29,6 +29,17 @@ const FONT_PATH = "/fonts/";
 const NODE_MODULES = path.join(REPOSITORY, "node_modules");
 // Chromium cannot capture a screenshot much wider than this.
 const MAX_PNG_WIDTH = 16384;
+// Chromium names a font even for a character that draws nothing, such as U+200B.
+const DRAWS_NOTHING = /^[\p{White_Space}\p{Default_Ignorable_Code_Point}\p{Cc}]*$/u;
+// The computed properties that choose the font of a text, and whether it is drawn.
+const FONT_PROPERTIES = [
+  "font-family",
+  "font-style",
+  "font-weight",
+  "font-stretch",
+  "font-variant-caps",
+  "visibility",
+];
 
 export class RenderError extends Error {}
 
@@ -149,6 +160,7 @@ export async function renderSheet(browser, root, name, out, { pngWidth, nodeModu
   if (pages.length === 0)
     throw new RenderError(`${path.join(projectDir, "canvas.json")}: "boards" holds no page`);
   const merged = await PDFDocument.create();
+  const uncovered = [];
   for (const [index, key] of pages.entries()) {
     const file = path.join(projectDir, key);
     const board = canvas.boards[key];
@@ -160,11 +172,14 @@ export async function renderSheet(browser, root, name, out, { pngWidth, nodeModu
       if (error instanceof RenderError) throw new RenderError(`${file}: ${error.message}`);
       throw error;
     }
-    const pdf = await printPage(browser, html, fonts, board, file, {
+    const { pdf, characters } = await printPage(browser, html, fonts, board, file, {
       png: index === 0 && pngWidth ? path.join(out, `${name}.png`) : null,
       pngWidth,
       nodeModules: nodeModules ?? NODE_MODULES,
     });
+    for (const character of characters) {
+      uncovered.push(`${file}: draws ${character} in a font the page does not load`);
+    }
     const printed = await PDFDocument.load(pdf);
     if (printed.getPageCount() !== 1) {
       throw new RenderError(`${file}: printed to ${printed.getPageCount()} pages, not one`);
@@ -176,6 +191,9 @@ export async function renderSheet(browser, root, name, out, { pngWidth, nodeModu
     copied.setCropBox(0, 0, board.w * 0.75, height);
     merged.addPage(copied);
   }
+  // A character drawn in a font the page does not load fails the sheet, as
+  // every other problem of a page does, once every page has been looked at.
+  if (uncovered.length > 0) throw new RenderError(uncovered.join("\n"));
   merged.setTitle(canvas.title ?? name);
   merged.setCreator("learning-sheets render-sheets.mjs");
   merged.setProducer("pdf-lib");
@@ -254,15 +272,119 @@ async function printPage(browser, html, fonts, board, file, { png, pngWidth, nod
       preferCSSPageSize: true,
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
+    // After the PDF, since it adds elements to the page to test each character.
+    const characters = await uncoveredCharacters(page);
     if (blocked.length > 0) {
       throw new RenderError(
         `${file}: requested ${[...new Set(blocked)].join(", ")}, which a page may not load`,
       );
     }
-    return pdf;
+    return { pdf, characters };
   } finally {
     await context.close();
   }
+}
+
+// Chromium reports, for each text and pseudo-element it lays out, the fonts it
+// drew it with, and whether each is a web font, which here only Fontsource is.
+async function uncoveredCharacters(page) {
+  const session = await page.context().newCDPSession(page);
+  try {
+    await session.send("DOM.enable");
+    await session.send("CSS.enable");
+    await session.send("DOM.getDocument", { depth: -1 });
+    const fontsOf = async (nodeId) =>
+      (await session.send("CSS.getPlatformFontsForNode", { nodeId })).fonts;
+    const { documents, strings } = await session.send("DOMSnapshot.captureSnapshot", {
+      computedStyles: FONT_PROPERTIES,
+    });
+    const [{ nodes, layout }] = documents;
+    const texts = [];
+    for (const [entry, index] of layout.nodeIndex.entries()) {
+      const text = layout.text[entry] >= 0 ? strings[layout.text[entry]] : "";
+      if (DRAWS_NOTHING.test(text)) continue;
+      const style = Object.fromEntries(
+        FONT_PROPERTIES.map((property, at) => [property, strings[layout.styles[entry][at]]]),
+      );
+      if (style.visibility !== "visible") continue;
+      texts.push({ index, text, style });
+    }
+    const { nodeIds } = await session.send("DOM.pushNodesByBackendIdsToFrontend", {
+      backendNodeIds: texts.map(({ index }) => nodes.backendNodeId[index]),
+    });
+    const found = new Set();
+    for (const [at, { index, text, style }] of texts.entries()) {
+      const fonts = await fontsOf(nodeIds[at]);
+      if (fonts.every((font) => font.isCustomFont)) continue;
+      // The text holds a character from a system font; each character of it is
+      // drawn alone, with the same font properties, to find which.
+      const graphemes = [...new Set(graphemesOf(text))].filter((g) => !DRAWS_NOTHING.test(g));
+      const parent = nodes.backendNodeId[nodes.parentIndex[index]];
+      const { object } = await session.send("DOM.resolveNode", { backendNodeId: parent });
+      const { result } = await session.send("Runtime.callFunctionOn", {
+        objectId: object.objectId,
+        functionDeclaration: DRAW_ALONE,
+        arguments: [{ value: graphemes }, { value: style }],
+        awaitPromise: true,
+      });
+      const { result: probes } = await session.send("Runtime.getProperties", {
+        objectId: result.objectId,
+        ownProperties: true,
+      });
+      for (const probe of probes.filter((property) => /^\d+$/.test(property.name))) {
+        const { nodeId } = await session.send("DOM.requestNode", {
+          objectId: probe.value.objectId,
+        });
+        const alone = await fontsOf(nodeId);
+        if (alone.some((font) => !font.isCustomFont)) found.add(graphemes[Number(probe.name)]);
+      }
+    }
+    return [...found].sort(byCodePoints).map(characterName);
+  } finally {
+    await session.detach();
+  }
+}
+
+// Runs in the page on the element that holds the text: appends each character
+// in an element of its own that takes the text's font properties.
+const DRAW_ALONE = `async function (graphemes, style) {
+  const svg = this.namespaceURI === "http://www.w3.org/2000/svg";
+  const probes = graphemes.map((grapheme) => {
+    const probe = svg
+      ? document.createElementNS(this.namespaceURI, "tspan")
+      : document.createElement("span");
+    for (const [property, value] of Object.entries(style)) probe.style.setProperty(property, value);
+    probe.style.setProperty("display", "inline");
+    probe.style.setProperty("text-transform", "none");
+    probe.style.setProperty("white-space", "pre");
+    probe.textContent = grapheme;
+    this.append(probe);
+    return probe;
+  });
+  for (const probe of probes) probe.getBoundingClientRect();
+  await document.fonts.ready;
+  return probes;
+}`;
+
+function graphemesOf(text) {
+  return [...new Intl.Segmenter("en", { granularity: "grapheme" }).segment(text)].map(
+    ({ segment }) => segment,
+  );
+}
+
+function byCodePoints(a, b) {
+  const [x, y] = [a, b].map((text) => [...text].map((c) => c.codePointAt(0)));
+  for (let at = 0; at < Math.min(x.length, y.length); at++) {
+    if (x[at] !== y[at]) return x[at] - y[at];
+  }
+  return x.length - y.length;
+}
+
+function characterName(grapheme) {
+  const points = [...grapheme].map(
+    (c) => `U+${c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0")}`,
+  );
+  return `${points.join(" ")} ${grapheme}`;
 }
 
 // A Claude cloud workspace cannot download Playwright's Chromium but has a Chrome.
