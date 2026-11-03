@@ -1,5 +1,5 @@
 ---
-title: "gitlab"
+title: "gitlab-and-its-alternatives"
 topic: "GitLab: what it is for, how it works, and how it compares with similar tools"
 tags: ["devops", "git"]
 language: "en"
@@ -7,7 +7,7 @@ paper: "a4"
 made: "2026-11-03"
 skill: "tiavelum/claude-setup@24b49de"
 artifact: "https://claude.ai/artifact/XbHsVjQmHPfserRgu3eWix"
-artifact_version: "1793710916-945e"
+artifact_version: "1793715809-2fb6"
 ---
 
 A two-page learning sheet that pictures GitLab as a restaurant in which one change travels from the office board to the guests, for an adult who knows nothing about GitLab.
