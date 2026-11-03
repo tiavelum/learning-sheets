@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Learning sheets</title>
+    <link rel="stylesheet" href="browse.css">
+    <script src="browse.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to the sheets</a>
+    <div class="page">
+      <header class="intro">
+        <h1>Learning sheets</h1>
+        <p>
+          Printable sheets that each explain one topic on a page or two. Each sheet links to its
+          PDF, to its source files and to the Design canvas it was made in.
+        </p>
+        <p id="release" class="release"></p>
+      </header>
+      <noscript>
+        <p class="notice">
+          The list of sheets needs JavaScript.
+          <a href="catalog.json">catalog.json</a>
+          holds the same sheets as data.
+        </p>
+      </noscript>
+      <div class="layout">
+        <search id="filter-area" class="filter-area" hidden>
+          <details id="filter-box" class="filters">
+            <summary>Filter and sort</summary>
+            <form id="filters" aria-label="Filter and sort the sheets">
+              <div class="field">
+                <label for="text">Search titles and topics</label>
+                <input id="text" name="q" type="search" autocomplete="off" spellcheck="false">
+              </div>
+              <fieldset class="field tags">
+                <legend>Tags</legend>
+                <p id="tags-hint" class="hint">Shows the sheets that have every tag ticked.</p>
+                <div id="tag-list" class="tag-list"></div>
+              </fieldset>
+              <div class="field">
+                <label for="language">Language</label>
+                <select id="language" name="lang">
+                  <option value="">Any language</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="sort">Sort by</label>
+                <select id="sort" name="sort">
+                  <option value="date">Date, newest first</option>
+                  <option value="title">Title, A to Z</option>
+                </select>
+              </div>
+              <button id="clear" class="clear" type="button">Clear the filters</button>
+            </form>
+          </details>
+        </search>
+        <main id="main" class="results" tabindex="-1">
+          <p id="count" class="count" role="status"></p>
+          <ul id="sheets" class="sheets"></ul>
+          <p id="empty" class="notice" hidden></p>
+        </main>
+      </div>
+      <footer class="footer">
+        <p>
+          The sheets are licensed under
+          <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Their source is the
+          repository
+          <a href="https://github.com/tiavelum/learning-sheets">tiavelum/learning-sheets</a>, and
+          <a href="catalog.json">catalog.json</a>
+          lists them as data.
+        </p>
+      </footer>
+    </div>
+    <script id="catalog" type="application/json"></script>
+  </body>
+</html>

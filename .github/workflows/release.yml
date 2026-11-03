@@ -1,0 +1,161 @@
+name: Release
+
+# Started only by hand, with "Run workflow" under Actions, as decision 0003
+# records.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+# One release at a time: a run started while another is in progress waits
+# for it, so that the two cannot make the same tag or race on "latest".
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Check and render every sheet
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    env:
+      # The PDFs of a release come from Playwright's Chromium, as those the
+      # checks of a pull request attach do, even where the runner image names
+      # another Chrome.
+      CHROME_PATH: ""
+    steps:
+      - name: Refuse a branch other than main
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: |
+          echo "::error title=No release::A release is made from main only, not from $GITHUB_REF. Run the workflow again with the branch main."
+          exit 1
+
+      # The whole history and every tag, since the notes compare the sheets
+      # with those at the latest release's tag.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Make the tag from the time of the run
+        id: tag
+        run: |
+          tag=$(date -u +%Y-%m-%d-%H%M)
+          git check-ref-format "refs/tags/$tag"
+          if git rev-parse --quiet --verify "refs/tags/$tag" > /dev/null; then
+            echo "::error title=No release::The tag $tag exists already, from a release made in the same minute, and a tag is never moved. Run the workflow again in a minute."
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "The release is tagged $tag."
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.23.4
+          package-manager-cache: false
+
+      - name: Install the dependencies
+        run: npm ci
+
+      # Before the checks and the render, so that a run with nothing to
+      # release or no readable latest release stops within a minute.
+      - name: Write the notes and the catalog of the release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          if ! node scripts/prepare-release.mjs --tag "$TAG" 2> "$RUNNER_TEMP/problems.txt"; then
+            while IFS= read -r line; do
+              echo "::error title=No release::$line"
+            done < "$RUNNER_TEMP/problems.txt"
+            exit 1
+          fi
+
+      - name: Check the formatting and lint
+        run: npx biome ci .
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Test the scripts
+        run: npm test
+
+      - name: Check the sheet folders
+        run: npm run check
+
+      - name: Render every sheet
+        run: npm run render -- --out build/release/assets
+
+      # The renderer's exit status already fails the run where a sheet does
+      # not render; this also holds the release to one PDF per sheet of its
+      # catalog, whatever the renderer leaves in its output folder.
+      - name: Pack every PDF into one zip
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        working-directory: build/release/assets
+        run: |
+          expected=$(jq -r '.sheets[].name + ".pdf"' catalog.json | sort | paste -sd ' ')
+          found=$(find . -maxdepth 1 -type f -name '*.pdf' -printf '%f\n' | sort | paste -sd ' ')
+          if [ "$expected" != "$found" ]; then
+            echo "::error title=No release::The PDFs rendered are not one per sheet. Expected: $expected. Found: $found."
+            exit 1
+          fi
+          zip -X -q "learning-sheets-$TAG.zip" ./*.pdf
+          unzip -l "learning-sheets-$TAG.zip"
+
+      - name: Hand the release to the job that publishes it
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release
+          path: build/release/
+          if-no-files-found: error
+          retention-days: 7
+
+  # The one job that can write to the repository runs none of the npm
+  # dependencies, only the GitHub CLI that the runner image holds.
+  publish:
+    name: Publish the release
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release
+          path: release
+
+      # gh creates the release as a draft, uploads every asset and only then
+      # publishes it, deleting the draft where an upload fails, so a release
+      # is published whole or not at all. The tag is made at the commit that
+      # was checked and rendered, not at a later head of main.
+      - name: Create the release, its tag and its assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.build.outputs.tag }}
+        working-directory: release
+        run: |
+          title="Learning sheets ${TAG:0:10} ${TAG:11:2}:${TAG:13:2} UTC"
+          url=$(gh release create "$TAG" assets/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "$title" \
+            --notes-file notes.md \
+            --latest)
+          echo "Released $title: $url"
+          pdfs=$(find assets -name '*.pdf' | wc -l)
+          echo "Released [$title]($url) with $pdfs PDF$([ "$pdfs" -eq 1 ] || echo s)." >> "$GITHUB_STEP_SUMMARY"
+
+  # A release made with the workflow's own token starts no other workflow,
+  # so this one rebuilds the browse page to link the new PDFs.
+  pages:
+    name: Rebuild the browse page
+    needs: publish
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/pages.yml
