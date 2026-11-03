@@ -138,7 +138,7 @@ node scripts/prepare-release.mjs --tag 2026-11-03-1430 --root tests/fixtures/she
 
 It reads the latest release of tiavelum/learning-sheets as `build-site.mjs` does, with the token in `GITHUB_TOKEN` where that variable is set. The notes say how many sheets the release holds and list by title the sheets added, changed and removed since the latest release, comparing the root at that release's tag with the commit checked out, so it runs in a clone that holds the tag: a sheet is added where its folder is new, changed where any file of its folder differs and removed where its folder is gone, so a retitled sheet, whose folder name changes with its title, shows as one removed and one added. With no release yet, they list every sheet as added. The catalog holds what the browse page's `catalog.json` holds, without the image of page one, which only the page has, and with each sheet's source and PDF linked at the new tag, so its links stay valid after later releases.
 
-It prints the latest release, then a line for each file it wrote:
+It prints the latest release, then a line for each file it wrote; before the first release, it prints:
 
 ```text
 no release yet: this is the first
@@ -146,7 +146,7 @@ build/release/notes.md: notes on 1 sheet, 1 added, 0 changed, 0 removed
 build/release/assets/catalog.json: 1 sheet
 ```
 
-Where the latest release cannot be read, it fails rather than write notes that would list every sheet as added.
+Once a release exists, the first line names it, such as `the latest release is 2026-11-03-1430`, and the second counts the sheets added, changed and removed since then. Where the latest release cannot be read, it fails rather than write notes that would list every sheet as added.
 
 | Exit status | Means                                                                                                                                 |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------- |
