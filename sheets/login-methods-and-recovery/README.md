@@ -5,10 +5,10 @@ tags: ["accounts", "security"]
 language: "en"
 paper: "a4"
 created: "2026-11-01"
-last_modified: "2026-11-01"
-skill_version: "tiavelum/claude-setup@4f26fe8"
+last_modified: "2026-11-03"
+skill_version: "tiavelum/claude-setup@24b49de"
 artifact: "https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"
-artifact_version: "1793722009-42ad"
+artifact_version: "1793722958-af33"
 ---
 
 ## Request
