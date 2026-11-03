@@ -140,6 +140,29 @@ describe("the notes", () => {
     assert.deepEqual(changes, { added: ["zeta-sheet"], changed: ["alpha-sheet"], removed: [] });
   });
 
+  test("list a removed sheet by the title its README held at the latest release", async () => {
+    const { repository, root } = released("2026-11-01-0900", ["alpha-sheet", "gone"]);
+    const readme = path.join(root, "gone", "README.md");
+    writeFileSync(
+      readme,
+      readFileSync(readme, "utf8").replace('title: "gone"', 'title: "Gone Sheet"'),
+    );
+    git(repository, "commit", "--quiet", "--all", "-m", "retitle");
+    git(repository, "tag", "--force", "2026-11-01-0900");
+    rmSync(path.join(root, "gone"), { recursive: true });
+    git(repository, "add", "--all");
+    git(repository, "commit", "--quiet", "-m", "remove a sheet");
+
+    const { changes } = await prepareRelease({
+      tag: "2026-11-03-1430",
+      root,
+      ...files("removed-title"),
+      fetch: latest("2026-11-01-0900"),
+      token: "",
+    });
+    assert.deepEqual(changes.removed, ["Gone Sheet"]);
+  });
+
   test("say so where nothing changed since the latest release", async () => {
     const { root } = released("2026-11-01-0900", ["alpha-sheet"]);
     const out = files("unchanged");
