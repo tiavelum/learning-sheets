@@ -8,10 +8,10 @@ This folder holds one folder per sheet, named as [Folder name](#folder-name) giv
 
 ## A sheet folder
 
-A sheet folder holds exactly these files, here for the sheet `logins-at-a-glance`:
+A sheet folder holds exactly these files, here for the sheet `login-methods-and-recovery`:
 
 ```
-sheets/logins-at-a-glance/
+sheets/login-methods-and-recovery/
   README.md              the sheet's facts, what it covers and its prompt
   project/
     canvas.json          the canvas's index of its pages
@@ -33,11 +33,11 @@ The prompt is the person's request that started the sheet, as written, with name
 
 A sheet's README is a document about the repository's content, so under [WR-1](https://github.com/tiavelum/engineering-standards/blob/main/standards/writing.md#wr-1) its sentence, its `topic` and its `tags` are in English, whatever the sheet's `language`; its `title` alone is not translated, since it is the sheet's name that [Folder name](#folder-name) gives. The prompt is quoted as the person wrote it, in the language they wrote it in, since it is the person's words and not text of the repository.
 
-This example uses the facts of the canvas `logins-at-a-glance`; its prompt is an illustration:
+This example uses the facts of the canvas `login-methods-and-recovery`; its prompt is an illustration:
 
 ````markdown
 ---
-title: "logins-at-a-glance"
+title: "login-methods-and-recovery"
 topic: "How logins work, from passwords and passkeys to getting back in"
 tags: ["accounts", "security"]
 language: "en"
@@ -45,7 +45,7 @@ paper: "a4"
 made: "2026-11-01"
 skill: "tiavelum/claude-setup@4f26fe8"
 artifact: "https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"
-artifact_version: "1793655646-5d0b"
+artifact_version: "1793715998-6304"
 ---
 
 A two-page learning sheet that pictures logins as getting into houses, for anyone with online accounts who wants to see how passwords, passkeys and recovery fit together.
@@ -65,7 +65,7 @@ Every field is required, and they stand in the order of this table. Every value 
 
 | Field              | Holds                                                                                        | Form                                                                                                                                                     | Example                                                             |
 | ------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `title`            | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact | The sheet's folder name, in the form that [Folder name](#folder-name) gives                                                                              | `"logins-at-a-glance"`                                              |
+| `title`            | The sheet's name, equal to `title` in `project/canvas.json` and to the title of its artifact | The sheet's folder name, in the form that [Folder name](#folder-name) gives                                                                              | `"login-methods-and-recovery"`                                      |
 | `topic`            | What the sheet covers                                                                        | Text on one line without a final period                                                                                                                  | `"How logins work, from passwords and passkeys to getting back in"` |
 | `tags`             | The words to filter sheets by                                                                | A list of one or more distinct words, each in the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2) | `["accounts", "security"]`                                          |
 | `language`         | The language of the sheet's text                                                             | A language tag of [BCP 47](https://www.rfc-editor.org/info/rfc5646)                                                                                      | `"en"`                                                              |
@@ -73,7 +73,7 @@ Every field is required, and they stand in the order of this table. Every value 
 | `made`             | The date on which the session that made the sheet first handed it over, in UTC               | `YYYY-MM-DD`                                                                                                                                             | `"2026-11-01"`                                                      |
 | `skill`            | The learning-sheet skill that made the sheet                                                 | `tiavelum/claude-setup@` and the hash of a commit of that repository, at least 7 lowercase hexadecimal characters                                        | `"tiavelum/claude-setup@4f26fe8"`                                   |
 | `artifact`         | The link of the Design canvas that holds the sheet                                           | `https://claude.ai/artifact/` and the canvas's id                                                                                                        | `"https://claude.ai/artifact/Dcqoruumq3zMKKfUJWJ26Q"`               |
-| `artifact_version` | The version of the canvas whose files the folder holds                                       | The version as the Artifact tool reports it                                                                                                              | `"1793655646-5d0b"`                                                 |
+| `artifact_version` | The version of the canvas whose files the folder holds                                       | The version as the Artifact tool reports it                                                                                                              | `"1793715998-6304"`                                                 |
 
 `made` and `skill` keep their values when the sheet changes; `artifact` and `artifact_version` name the canvas and version that the folder's files were last read from.
 
@@ -99,7 +99,7 @@ The files are written byte for byte as the Artifact tool reads them, and no form
 
 ## Folder name
 
-A sheet's name is its folder name, and its README's `title`, the `title` of its canvas and so the title of its artifact are the same string. The name is lowercase words of `a`-`z` and `0`-`9` joined by single hyphens, the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2), such as `logins-at-a-glance`. A topic written with other letters or characters is turned into such words: `ä`, `ö`, `ü`, `ß`, `æ`, `œ`, `ø` and `ł` become `ae`, `oe`, `ue`, `ss`, `ae`, `oe`, `o` and `l`, other accents and apostrophes are dropped, and any other character separates two words, so that "Drei Säulen der Vorsorge" becomes `drei-saeulen-der-vorsorge`, "Straße und Café" becomes `strasse-und-cafe` and "Don't Get Locked Out" becomes `dont-get-locked-out`. The name leaves out the words `learning sheet` and `learning sheets`, since every sheet here is one: `points-of-sail`, not `points-of-sail-learning-sheet`.
+A sheet's name is its folder name, and its README's `title`, the `title` of its canvas and so the title of its artifact are the same string. The name is lowercase words of `a`-`z` and `0`-`9` joined by single hyphens, the form of [NAM-2](https://github.com/tiavelum/engineering-standards/blob/main/standards/naming.md#nam-2), such as `login-methods-and-recovery`. A topic written with other letters or characters is turned into such words: `ä`, `ö`, `ü`, `ß`, `æ`, `œ`, `ø` and `ł` become `ae`, `oe`, `ue`, `ss`, `ae`, `oe`, `o` and `l`, other accents and apostrophes are dropped, and any other character separates two words, so that "Drei Säulen der Vorsorge" becomes `drei-saeulen-der-vorsorge`, "Straße und Café" becomes `strasse-und-cafe` and "Don't Get Locked Out" becomes `dont-get-locked-out`. The name leaves out the words `learning sheet` and `learning sheets`, since every sheet here is one: `points-of-sail`, not `points-of-sail-learning-sheet`.
 
 No two sheets share a folder name, and a new sheet never takes the folder of another. A new sheet on a topic already present takes a name that says what sets it apart, such as its scene (`points-of-sail-hillside`), and its artifact is given the same title. The listing of `sheets/` is the list of names taken: one directory read shows them all.
 

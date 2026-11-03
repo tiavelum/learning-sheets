@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How networks work: the picture</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.lg{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:15px}
+.lg svg{flex:none}
+.lg b{font-weight:700}
+.sc{font-size:12px;line-height:15px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#3A3A3A}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; padding: 40px 40px 80px 40px; background: #FFFFFF; color: #1A1A1A; font-family: 'Atkinson Hyperlegible', 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; gap: 10px; overflow: hidden">
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h1 style="margin: 0; font-size: 30px; line-height: 36px; font-weight: 700">How networks work</h1>
+<div style="font-size: 12px; line-height: 15px; color: #4A4A4A">Learning sheet · page 1 of 2 · the picture</div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #2A2A2A">A network pictured as a postal service: cards leave your house through its porter, post companies carry them to a library, and it answers with cards of its own. Page two gives the facts behind each number.</p>
+<div style="display: flex; gap: 22px; align-items: center; font-size: 12px; line-height: 15px">
+<div style="display: flex; gap: 6px; align-items: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#4B2A7B"></circle></svg><span><b>In the house</b>, your side of the door</span></div>
+<div style="display: flex; gap: 6px; align-items: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1.2"></rect></svg><span><b>On the card</b>, what is written on it</span></div>
+<div style="display: flex; gap: 6px; align-items: center"><svg width="17" height="16" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon></svg><span><b>Out in the world</b>, past your door</span></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="sc">The picture</div>
+<div style="display: grid; grid-template-columns: 349px 349px; column-gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#4B2A7B"></circle><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Atkinson Hyperlegible, sans-serif">1</text></svg><div><b>Device</b> · A writing desk in one room of your house, where cards are written and answers land; your phone is a pocket-sized one.</div></div>
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#4B2A7B"></circle><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Atkinson Hyperlegible, sans-serif">2</text></svg><div><b>Ethernet cable</b> · A private tube from a desk straight to the porter: fast and steady, but only where one has been laid.</div></div>
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#4B2A7B"></circle><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Atkinson Hyperlegible, sans-serif">3</text></svg><div><b>Wi-Fi</b> · Cards sent to the porter over the air: no tube needed, but walls weaken it and all rooms share it.</div></div>
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#4B2A7B"></circle><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Atkinson Hyperlegible, sans-serif">4</text></svg><div><b>Home router</b> · The porter at the front door, the house's own first sorting office: every card in or out passes him, and he turns away post nobody asked for.</div></div>
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1"></rect><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A" font-family="Atkinson Hyperlegible, sans-serif">5</text></svg><div><b>Packet</b> · A postcard of limited size: a long message goes out as many cards that travel on their own, not always by the same road.</div></div>
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1"></rect><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A" font-family="Atkinson Hyperlegible, sans-serif">6</text></svg><div><b>IP address</b> · The recipient's and sender's address on every card: inside, the porter gives each desk a number; on cards going out he writes the house's street address instead.</div></div>
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1"></rect><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A" font-family="Atkinson Hyperlegible, sans-serif">9</text></svg><div><b>Encryption (TLS)</b> · A secret code your desk and the library agree for each conversation, after the library shows a stamped ID: sorting offices still see the addresses, not the message.</div></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="lg"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon><text x="13" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" font-family="Atkinson Hyperlegible, sans-serif">10</text></svg><div><b>Access line</b> · The lane from your house to the post company, of old copper, TV cable or fast glass fibre, ending at a small box, often built into the porter.</div></div>
+<div class="lg"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon><text x="13" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" font-family="Atkinson Hyperlegible, sans-serif">11</text></svg><div><b>Mobile network</b> · Away from home, your pocket desk sends its cards over the air to a mobile post company's nearest mast, with no porter or lane; that company passes them on like any other.</div></div>
+<div class="lg"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon><text x="13" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" font-family="Atkinson Hyperlegible, sans-serif">12</text></svg><div><b>Internet service provider</b> · The post company you pay: it collects your house's cards, gives the house its street address and passes cards on to other post companies.</div></div>
+<div class="lg"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon><text x="13" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" font-family="Atkinson Hyperlegible, sans-serif">13</text></svg><div><b>DNS</b> · The directory desk, usually the post company's: before any card goes out, it turns a name like "City Library" into the street address to write, and remembers it for a while.</div></div>
+<div class="lg"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon><text x="13" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" font-family="Atkinson Hyperlegible, sans-serif">14</text></svg><div><b>Routers</b> · Sorting offices along the way: each reads the recipient's address and passes the card to the next office closer to it.</div></div>
+<div class="lg"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon><text x="13" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" font-family="Atkinson Hyperlegible, sans-serif">15</text></svg><div><b>Backbone</b> · The motorways between cities and the cables across the sea floor, carrying the cards of millions of houses at once.</div></div>
+<div class="lg"><svg width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="7,1 19,1 25,12 19,23 7,23 1,12" fill="#36A391"></polygon><text x="13" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" font-family="Atkinson Hyperlegible, sans-serif">16</text></svg><div><b>Server</b> · The library at the far end: open day and night, it waits for cards and sends the answers back.</div></div>
+</div>
+</div>
+</div>
+
+<svg width="714" height="292" viewBox="0 0 714 292" role="img" aria-label="A house with a porter sends postcards along a lane to a post company, past a mobile mast, through sorting offices on a motorway, along a cable on the sea floor to a library." style="display: block; flex: none; font-family: 'Atkinson Hyperlegible', sans-serif">
+<rect x="0" y="244" width="714" height="48" fill="#F1EEE6"></rect>
+<line x1="0" y1="244" x2="524" y2="244" stroke="#6E6A60" stroke-width="1.2"></line>
+<line x1="604" y1="244" x2="714" y2="244" stroke="#6E6A60" stroke-width="1.2"></line>
+<rect x="524" y="244" width="80" height="34" fill="#CFE3F1"></rect>
+<path d="M 524 244 q 10 -5 20 0 t 20 0 t 20 0 t 20 0" fill="none" stroke="#5A88AC" stroke-width="1.5"></path>
+<line x1="524" y1="278" x2="604" y2="278" stroke="#8C8576" stroke-width="1.2"></line>
+
+<polygon points="8,100 96,48 184,100" fill="#E9E1F4" stroke="#2B2B2B" stroke-width="1.5" stroke-linejoin="round"></polygon>
+<rect x="14" y="100" width="164" height="144" fill="#FBF9FD" stroke="#2B2B2B" stroke-width="1.5"></rect>
+<line x1="14" y1="172" x2="178" y2="172" stroke="#2B2B2B" stroke-width="1.5"></line>
+<line x1="96" y1="100" x2="96" y2="172" stroke="#2B2B2B" stroke-width="1.2"></line>
+<line x1="96" y1="172" x2="96" y2="244" stroke="#2B2B2B" stroke-width="1.2"></line>
+
+<g transform="translate(26,150)" stroke="#2B2B2B" stroke-width="1.3" fill="none">
+<rect x="0" y="0" width="48" height="4" fill="#B79B74"></rect>
+<line x1="4" y1="4" x2="4" y2="22"></line><line x1="44" y1="4" x2="44" y2="22"></line>
+<rect x="14" y="-17" width="20" height="14" rx="1.5" fill="#FFFFFF"></rect>
+<line x1="10" y1="-1.5" x2="38" y2="-1.5" stroke-width="2"></line>
+</g>
+<g transform="translate(110,150)" stroke="#2B2B2B" stroke-width="1.3" fill="none">
+<rect x="0" y="0" width="48" height="4" fill="#B79B74"></rect>
+<line x1="4" y1="4" x2="4" y2="22"></line><line x1="44" y1="4" x2="44" y2="22"></line>
+<rect x="14" y="-17" width="20" height="14" rx="1.5" fill="#FFFFFF"></rect>
+<line x1="10" y1="-1.5" x2="38" y2="-1.5" stroke-width="2"></line>
+</g>
+<g transform="translate(22,222)" stroke="#2B2B2B" stroke-width="1.3" fill="none">
+<rect x="0" y="0" width="48" height="4" fill="#B79B74"></rect>
+<line x1="4" y1="4" x2="4" y2="22"></line><line x1="44" y1="4" x2="44" y2="22"></line>
+<rect x="14" y="-17" width="20" height="14" rx="1.5" fill="#FFFFFF"></rect>
+<line x1="10" y1="-1.5" x2="38" y2="-1.5" stroke-width="2"></line>
+</g>
+
+<path d="M 58 216 C 74 216 76 234 92 234 L 108 234" fill="none" stroke="#5B3E91" stroke-width="5" stroke-linecap="round"></path>
+<path d="M 58 216 C 74 216 76 234 92 234 L 108 234" fill="none" stroke="#D9CCEF" stroke-width="1.6" stroke-linecap="round"></path>
+
+<path d="M 116 222 Q 116 207 129 207 Q 142 207 142 222 Z" fill="#8C6BC0" stroke="#2B2B2B" stroke-width="1.2"></path>
+<circle cx="129" cy="199" r="7" fill="#F2DCC2" stroke="#2B2B2B" stroke-width="1.2"></circle>
+<rect x="108" y="222" width="46" height="22" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.3"></rect>
+<path d="M 141 222 a 6.5 6.5 0 0 1 13 0 Z" fill="#E2C04A" stroke="#2B2B2B" stroke-width="1"></path>
+<rect x="160" y="200" width="16" height="44" fill="#D8CBEE" stroke="#2B2B2B" stroke-width="1.3"></rect>
+<circle cx="172" cy="223" r="1.4" fill="#2B2B2B"></circle>
+<path d="M 124.8 181.8 A 6 6 0 0 1 133.2 181.8" fill="none" stroke="#4B2A7B" stroke-width="2" stroke-linecap="round"></path>
+<path d="M 121.2 178.2 A 11 11 0 0 1 136.8 178.2" fill="none" stroke="#4B2A7B" stroke-width="2" stroke-linecap="round"></path>
+<path d="M 117.7 174.7 A 16 16 0 0 1 140.3 174.7" fill="none" stroke="#4B2A7B" stroke-width="2" stroke-linecap="round"></path>
+<path d="M 129.8 158.2 A 6 6 0 0 0 138.2 158.2" fill="none" stroke="#4B2A7B" stroke-width="2" stroke-linecap="round"></path>
+<path d="M 126.2 161.8 A 11 11 0 0 0 141.8 161.8" fill="none" stroke="#4B2A7B" stroke-width="2" stroke-linecap="round"></path>
+
+<rect x="178" y="244" width="56" height="9" fill="#C8C4BA"></rect>
+<rect x="184" y="230" width="22" height="13" rx="1.5" fill="#36A391" stroke="#2B2B2B" stroke-width="1"></rect>
+<path d="M 206 243 L 206 234 L 214 234 L 219 239 L 219 243 Z" fill="#36A391" stroke="#2B2B2B" stroke-width="1"></path>
+<circle cx="190" cy="244" r="3" fill="#2B2B2B"></circle><circle cx="213" cy="244" r="3" fill="#2B2B2B"></circle>
+<rect x="190" y="219" width="11" height="8" fill="#FFF3D8" stroke="#A86B12" stroke-width="1"></rect>
+
+<rect x="234" y="160" width="84" height="16" fill="#36A391" stroke="#2B2B2B" stroke-width="1.3"></rect>
+<text x="276" y="172.5" text-anchor="middle" font-size="12" font-weight="700" fill="#0B2622" letter-spacing="1.5">POST</text>
+<rect x="234" y="176" width="84" height="68" fill="#EAF6F3" stroke="#2B2B2B" stroke-width="1.3"></rect>
+<rect x="242" y="186" width="38" height="28" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.2"></rect>
+<path d="M 249 208 L 249 194 Q 255 191 261 194 Q 267 191 273 194 L 273 208 Q 267 205 261 208 Q 255 205 249 208 Z" fill="#FFFDF6" stroke="#2B2B2B" stroke-width="1"></path>
+<line x1="261" y1="194" x2="261" y2="208" stroke="#2B2B2B" stroke-width="1"></line>
+<rect x="292" y="212" width="16" height="32" fill="#BFE3DB" stroke="#2B2B2B" stroke-width="1.2"></rect>
+
+<rect x="318" y="243" width="206" height="12" fill="#7A7A7A"></rect>
+<line x1="320" y1="249" x2="522" y2="249" stroke="#FFFFFF" stroke-width="1.4" stroke-dasharray="7 6"></line>
+<rect x="604" y="243" width="12" height="12" fill="#7A7A7A"></rect>
+<path d="M 522 249 C 530 249 530 284 540 284 L 588 284 C 598 284 598 249 606 249" fill="none" stroke="#4A4A4A" stroke-width="4" stroke-linecap="round"></path>
+
+<g stroke="#2B2B2B" stroke-width="1.2" fill="none">
+<line x1="346" y1="243" x2="356" y2="140"></line>
+<line x1="366" y1="243" x2="356" y2="140"></line>
+<line x1="348.5" y1="218" x2="363.5" y2="218"></line>
+<line x1="351" y1="192" x2="361" y2="192"></line>
+<line x1="353.5" y1="166" x2="358.5" y2="166"></line>
+<line x1="348.5" y1="218" x2="361" y2="192"></line>
+<line x1="351" y1="192" x2="358.5" y2="166"></line>
+</g>
+<circle cx="356" cy="138" r="3" fill="#36A391" stroke="#2B2B2B" stroke-width="1.2"></circle>
+<path d="M 348 133 A 10 10 0 0 1 364 133" fill="none" stroke="#36A391" stroke-width="2" stroke-linecap="round"></path>
+<path d="M 344 129 A 16 16 0 0 1 368 129" fill="none" stroke="#36A391" stroke-width="2" stroke-linecap="round"></path>
+<circle cx="330" cy="214" r="5" fill="#F2DCC2" stroke="#2B2B2B" stroke-width="1.2"></circle>
+<path d="M 330 219 L 330 232 M 330 232 L 325 243 M 330 232 L 335 243 M 330 223 L 337 220" fill="none" stroke="#2B2B2B" stroke-width="1.5" stroke-linecap="round"></path>
+<rect x="336" y="214" width="5" height="8" rx="1" fill="#2B2B2B"></rect>
+<line x1="341" y1="212" x2="352" y2="146" stroke="#36A391" stroke-width="1.4" stroke-dasharray="2.5 3"></line>
+
+<polygon points="390,200 416,184 442,200" fill="#D3EDE7" stroke="#2B2B2B" stroke-width="1.3" stroke-linejoin="round"></polygon>
+<rect x="394" y="200" width="44" height="43" fill="#EAF6F3" stroke="#2B2B2B" stroke-width="1.3"></rect>
+<path d="M 402 212 L 426 212 L 431 216 L 426 220 L 402 220 Z" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"></path>
+<path d="M 431 226 L 407 226 L 402 230 L 407 234 L 431 234 Z" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"></path>
+<polygon points="454,200 480,184 506,200" fill="#D3EDE7" stroke="#2B2B2B" stroke-width="1.3" stroke-linejoin="round"></polygon>
+<rect x="458" y="200" width="44" height="43" fill="#EAF6F3" stroke="#2B2B2B" stroke-width="1.3"></rect>
+<path d="M 466 212 L 490 212 L 495 216 L 490 220 L 466 220 Z" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"></path>
+<path d="M 495 226 L 471 226 L 466 230 L 471 234 L 495 234 Z" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1"></path>
+<rect x="374" y="245" width="11" height="8" fill="#FFF3D8" stroke="#A86B12" stroke-width="1"></rect>
+<rect x="446" y="245" width="11" height="8" fill="#FFF3D8" stroke="#A86B12" stroke-width="1"></rect>
+<rect x="506" y="245" width="11" height="8" fill="#FFF3D8" stroke="#A86B12" stroke-width="1"></rect>
+
+<polygon points="612,184 660,158 708,184" fill="#D3EDE7" stroke="#2B2B2B" stroke-width="1.3" stroke-linejoin="round"></polygon>
+<rect x="616" y="184" width="88" height="10" fill="#EAF6F3" stroke="#2B2B2B" stroke-width="1.3"></rect>
+<rect x="624" y="194" width="10" height="42" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.2"></rect>
+<rect x="645" y="194" width="10" height="42" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.2"></rect>
+<rect x="666" y="194" width="10" height="42" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.2"></rect>
+<rect x="687" y="194" width="10" height="42" fill="#FFFFFF" stroke="#2B2B2B" stroke-width="1.2"></rect>
+<rect x="614" y="236" width="92" height="8" fill="#EAF6F3" stroke="#2B2B2B" stroke-width="1.2"></rect>
+
+<line x1="232" y1="120" x2="198" y2="217" stroke="#A86B12" stroke-width="1.3" stroke-dasharray="4 3"></line>
+<rect x="200" y="8" width="292" height="112" rx="6" fill="#FFF6E6" stroke="#A86B12" stroke-width="1.5"></rect>
+<line x1="346" y1="22" x2="346" y2="108" stroke="#C9A36A" stroke-width="1"></line>
+<text x="216" y="50" font-size="12" fill="#2A2A2A" font-family="IBM Plex Mono, monospace">Qx7 vLm2 9kTe</text>
+<text x="216" y="67" font-size="12" fill="#2A2A2A" font-family="IBM Plex Mono, monospace">R4a z8Jw pXn</text>
+<text x="216" y="84" font-size="12" fill="#2A2A2A" font-family="IBM Plex Mono, monospace">t0Hn q2Ls …</text>
+<g transform="translate(216,92)" stroke="#2B2B2B" stroke-width="1.4" fill="none"><rect x="0" y="7" width="13" height="10" rx="1.5" fill="#F4B04A"></rect><path d="M 3 7 V 4.5 a 3.5 3.5 0 0 1 7 0 V 7"></path></g>
+<rect x="452" y="16" width="30" height="34" fill="#FFFFFF" stroke="#A86B12" stroke-width="1" stroke-dasharray="3 2"></rect>
+<text x="356" y="70" font-size="12" fill="#1A1A1A"><tspan font-weight="700">To:</tspan> City Library</text>
+<text x="356" y="85" font-size="12" fill="#1A1A1A">12 Book Row</text>
+<text x="356" y="106" font-size="12" fill="#1A1A1A"><tspan font-weight="700">From:</tspan> 5 Garden Road</text>
+<line x1="356" y1="73" x2="476" y2="73" stroke="#C9A36A" stroke-width="0.8"></line>
+<line x1="356" y1="88" x2="476" y2="88" stroke="#C9A36A" stroke-width="0.8"></line>
+<line x1="356" y1="109" x2="476" y2="109" stroke="#C9A36A" stroke-width="0.8"></line>
+
+<g font-size="12" font-weight="700" text-anchor="middle">
+<g><circle cx="80" cy="124" r="11" fill="#4B2A7B" stroke="#FFFFFF" stroke-width="1.5"></circle><text x="80" y="128.3" fill="#FFFFFF">1</text></g>
+<g><circle cx="80" cy="200" r="11" fill="#4B2A7B" stroke="#FFFFFF" stroke-width="1.5"></circle><text x="80" y="204.3" fill="#FFFFFF">2</text></g>
+<g><circle cx="157" cy="180" r="11" fill="#4B2A7B" stroke="#FFFFFF" stroke-width="1.5"></circle><text x="157" y="184.3" fill="#FFFFFF">3</text></g>
+<g><circle cx="150" cy="205" r="11" fill="#4B2A7B" stroke="#FFFFFF" stroke-width="1.5"></circle><text x="150" y="209.3" fill="#FFFFFF">4</text></g>
+<g><rect x="196" y="4" width="22" height="22" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1.2"></rect><text x="207" y="19.3" fill="#1A1A1A">5</text></g>
+<g><rect x="356" y="24" width="22" height="22" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1.2"></rect><text x="367" y="39.3" fill="#1A1A1A">6</text></g>
+<g><rect x="236" y="94" width="22" height="22" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1.2"></rect><text x="247" y="109.3" fill="#1A1A1A">9</text></g>
+<g><polygon points="199,257 211,257 217,268 211,279 199,279 193,268" fill="#36A391" stroke="#FFFFFF" stroke-width="1.5"></polygon><text x="205" y="272.3" fill="#0B2622">10</text></g>
+<g><polygon points="371,147 383,147 389,158 383,169 371,169 365,158" fill="#36A391" stroke="#FFFFFF" stroke-width="1.5"></polygon><text x="377" y="162.3" fill="#0B2622">11</text></g>
+<g><polygon points="296,184 308,184 314,195 308,206 296,206 290,195" fill="#36A391" stroke="#FFFFFF" stroke-width="1.5"></polygon><text x="302" y="199.3" fill="#0B2622">12</text></g>
+<g><polygon points="255,219 267,219 273,230 267,241 255,241 249,230" fill="#36A391" stroke="#FFFFFF" stroke-width="1.5"></polygon><text x="261" y="234.3" fill="#0B2622">13</text></g>
+<g><polygon points="442,160 454,160 460,171 454,182 442,182 436,171" fill="#36A391" stroke="#FFFFFF" stroke-width="1.5"></polygon><text x="448" y="175.3" fill="#0B2622">14</text></g>
+<g><polygon points="558,252 570,252 576,263 570,274 558,274 552,263" fill="#36A391" stroke="#FFFFFF" stroke-width="1.5"></polygon><text x="564" y="267.3" fill="#0B2622">15</text></g>
+<g><polygon points="654,130 666,130 672,141 666,152 654,152 648,141" fill="#36A391" stroke="#FFFFFF" stroke-width="1.5"></polygon><text x="660" y="145.3" fill="#0B2622">16</text></g>
+</g>
+</svg>
+
+<div style="display: flex; flex-direction: column; gap: 8px; background: #FDF1DC; border-radius: 8px; padding: 10px 12px 12px 12px">
+<div style="display: flex; gap: 8px; align-items: center"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1.5"></rect></svg><div class="sc">On the card: two ways of delivering</div></div>
+<div style="display: grid; grid-template-columns: 337px 337px; column-gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1"></rect><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A" font-family="Atkinson Hyperlegible, sans-serif">7</text></svg><div><b>TCP</b> · Registered post, arranged between your desk and the library alone: each card is numbered, the library confirms what arrived, missing cards are sent again and all are put back in order.</div></div>
+<svg width="337" height="66" viewBox="0 0 337 66" role="img" aria-label="Cards 1, 2 and 4 arrive, card 3 is lost; a receipt says 3 is missing; card 3 is sent again; all four arrive in order." style="display: block; font-family: 'Atkinson Hyperlegible', sans-serif">
+<g font-size="12" font-weight="700" text-anchor="middle" fill="#1A1A1A">
+<rect x="4" y="4" width="22" height="16" fill="#FFFFFF" stroke="#A86B12" stroke-width="1.2"></rect><text x="15" y="16.3">1</text>
+<rect x="32" y="4" width="22" height="16" fill="#FFFFFF" stroke="#A86B12" stroke-width="1.2"></rect><text x="43" y="16.3">2</text>
+<rect x="60" y="4" width="22" height="16" fill="none" stroke="#8A8A8A" stroke-width="1.2" stroke-dasharray="3 2"></rect><text x="71" y="16.3" fill="#6A6A6A">3</text>
+<rect x="88" y="4" width="22" height="16" fill="#FFFFFF" stroke="#A86B12" stroke-width="1.2"></rect><text x="99" y="16.3">4</text>
+</g>
+<line x1="62" y1="6" x2="80" y2="18" stroke="#B3261E" stroke-width="1.6"></line><line x1="80" y1="6" x2="62" y2="18" stroke="#B3261E" stroke-width="1.6"></line>
+<line x1="116" y1="12" x2="190" y2="12" stroke="#4A4A4A" stroke-width="1.4"></line><path d="M 190 8 L 197 12 L 190 16 Z" fill="#4A4A4A"></path>
+<text x="204" y="16.3" font-size="12" fill="#1A1A1A">library</text>
+<line x1="197" y1="33" x2="124" y2="33" stroke="#4A4A4A" stroke-width="1.4" stroke-dasharray="4 3"></line><path d="M 124 29 L 117 33 L 124 37 Z" fill="#4A4A4A"></path>
+<text x="4" y="37.3" font-size="12" fill="#1A1A1A"><tspan font-weight="700">receipt:</tspan> 3 missing</text>
+<g font-size="12" font-weight="700" text-anchor="middle" fill="#1A1A1A">
+<rect x="60" y="46" width="22" height="16" fill="#FFFFFF" stroke="#A86B12" stroke-width="1.2"></rect><text x="71" y="58.3">3</text>
+</g>
+<text x="4" y="58.3" font-size="12" fill="#1A1A1A">again:</text>
+<line x1="88" y1="54" x2="190" y2="54" stroke="#4A4A4A" stroke-width="1.4"></line><path d="M 190 50 L 197 54 L 190 58 Z" fill="#4A4A4A"></path>
+<text x="204" y="58.3" font-size="12" fill="#1A1A1A"><tspan font-weight="700">1 2 3 4</tspan> complete</text>
+</svg>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="lg"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="3" fill="#F4B04A" stroke="#8C5A0E" stroke-width="1"></rect><text x="12" y="16.3" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A" font-family="Atkinson Hyperlegible, sans-serif">8</text></svg><div><b>UDP</b> · Plain post: no numbers, no receipts, no resending, so it is quicker; programs choose it for calls and games, where a late card is useless anyway.</div></div>
+<svg width="337" height="66" viewBox="0 0 337 66" role="img" aria-label="Four unnumbered cards are sent, one is lost; nothing is sent back; three arrive with a gap." style="display: block; font-family: 'Atkinson Hyperlegible', sans-serif">
+<g fill="#FFFFFF" stroke="#A86B12" stroke-width="1.2">
+<rect x="4" y="4" width="22" height="16"></rect>
+<rect x="32" y="4" width="22" height="16"></rect>
+<rect x="88" y="4" width="22" height="16"></rect>
+</g>
+<rect x="60" y="4" width="22" height="16" fill="none" stroke="#8A8A8A" stroke-width="1.2" stroke-dasharray="3 2"></rect>
+<line x1="62" y1="6" x2="80" y2="18" stroke="#B3261E" stroke-width="1.6"></line><line x1="80" y1="6" x2="62" y2="18" stroke="#B3261E" stroke-width="1.6"></line>
+<line x1="116" y1="12" x2="190" y2="12" stroke="#4A4A4A" stroke-width="1.4"></line><path d="M 190 8 L 197 12 L 190 16 Z" fill="#4A4A4A"></path>
+<text x="204" y="16.3" font-size="12" fill="#1A1A1A">library</text>
+<text x="4" y="37.3" font-size="12" fill="#1A1A1A"><tspan font-weight="700">no receipt</tspan>, nothing sent again</text>
+<g fill="#FFFFFF" stroke="#A86B12" stroke-width="1.2">
+<rect x="204" y="46" width="22" height="16"></rect>
+<rect x="230" y="46" width="22" height="16"></rect>
+<rect x="282" y="46" width="22" height="16"></rect>
+</g>
+<rect x="256" y="46" width="22" height="16" fill="none" stroke="#8A8A8A" stroke-width="1.2" stroke-dasharray="3 2"></rect>
+<text x="4" y="58.3" font-size="12" fill="#1A1A1A">arrives quickly, with a gap:</text>
+</svg>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

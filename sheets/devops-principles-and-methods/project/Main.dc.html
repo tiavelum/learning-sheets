@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DevOps learning sheet, page 1</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#1e3a8a}a:hover{color:#111827}
+.lg{columns:2;column-gap:18px}
+.lgi{display:grid;grid-template-columns:26px minmax(0,1fr);column-gap:6px;row-gap:3px;align-items:start;break-inside:avoid;margin:0 0 6px}
+.lgi>svg:nth-of-type(1){grid-column:1;grid-row:1;justify-self:center}
+.lgi>svg:nth-of-type(2){grid-column:1;grid-row:2;justify-self:center}
+.lgi>div{grid-column:2;grid-row:1/span 2}
+.nm{font-weight:700}
+.chead{display:flex;align-items:center;gap:6px;font-weight:700;margin:0 0 3px}
+.sech{display:flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700;font-size:13.5px;line-height:1.2;margin:0 0 5px;color:#111827}
+.ic{flex:none;display:block}
+.pg>*{flex:none}
+</style>
+</helmet>
+<div class="pg" style="width: 794px; height: 1123px; box-sizing: border-box; padding: 40px 44px 44px; background: #ffffff; color: #111827; font-family: 'Atkinson Hyperlegible', Arial, sans-serif; font-size: 12px; line-height: 1.3; display: flex; flex-direction: column; gap: 7px; overflow: hidden">
+
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 16px">
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', Arial, sans-serif; font-weight: 800; font-size: 28px; line-height: 1.1; letter-spacing: -0.01em">DevOps, pictured as a restaurant</h1>
+<div style="font-size: 12px; color: #374151; white-space: nowrap">Page 1 of 2 · the picture</div>
+</div>
+
+<p style="margin: 0; font-size: 12.5px; line-height: 1.32; max-width: 706px">This page pictures DevOps as a restaurant: the recipes are the code, the dishes on the tables are the running software, and the guests are its users. Page two gives the facts behind each numbered item.</p>
+
+<div style="display: flex; justify-content: space-between; gap: 12px; font-size: 12px; white-space: nowrap">
+<div style="display: flex; align-items: center; gap: 5px"><svg class="ic" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.5" fill="#1e3a8a"/></svg><span><b>Kitchen</b>: dishes are made</span></div>
+<div style="display: flex; align-items: center; gap: 5px"><svg class="ic" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="0.6" y="0.6" width="12.8" height="12.8" rx="2" fill="#f6bd3b" stroke="#111827" stroke-width="1"/></svg><span><b>Pass</b>: dishes leave</span></div>
+<div style="display: flex; align-items: center; gap: 5px"><svg class="ic" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><polygon points="8,0.7 15.3,8 8,15.3 0.7,8" fill="#4caf6e" stroke="#111827" stroke-width="1"/></svg><span><b>Dining room</b>: guests eat</span></div>
+<div style="display: flex; align-items: center; gap: 5px"><svg class="ic" width="16" height="14" viewBox="0 0 16 14" aria-hidden="true"><polygon points="8,0.5 15.5,13.5 0.5,13.5" fill="#be2f7d"/></svg><span><b>Staff table</b>: the crew looks back</span></div>
+</div>
+
+<div class="lg">
+<div class="lgi"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10.5" fill="#1e3a8a"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">1</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12 A3 3 0 0 1 6.3 6 A3.8 3.8 0 0 1 13.7 6 A3 3 0 0 1 14 12 Z"/><rect x="6" y="12" width="8" height="4.5" rx="0.8"/></svg><div><span class="nm">Development (Dev)</span> The cooks who invent new dishes and change existing ones; they want something new on the menu often.</div></div>
+<div class="lgi"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10.5" fill="#1e3a8a"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">2</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5.5 C8 4.3 5 4.2 2.5 4.8 V15.8 C5 15.2 8 15.3 10 16.5 C12 15.3 15 15.2 17.5 15.8 V4.8 C15 4.2 12 4.3 10 5.5 Z"/><path d="M10 5.5 V16.5"/></svg><div><span class="nm">Version control</span> The shared recipe book that records every change with who made it, when and why, so any earlier version can be cooked again.</div></div>
+<div class="lgi"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10.5" fill="#1e3a8a"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">4</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13" cy="6.5" r="3.6"/><path d="M13 6.5 L14.6 4.9"/><path d="M11 9.4 L4 17.5" stroke-width="2.2"/></svg><div><span class="nm">Automated tests</span> The thermometer and scale that check every batch against the recipe card, the same way every time, without anyone having to remember.</div></div>
+<div class="lgi"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10.5" fill="#1e3a8a"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">5</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="12" height="14" rx="1.5"/><rect x="7.5" y="2.5" width="5" height="3" rx="1"/><rect x="6.5" y="8" width="3" height="3"/><rect x="10.5" y="8" width="3" height="3"/><path d="M6.5 14 H13.5"/></svg><div><span class="nm">Infrastructure as Code (IaC)</span> The written station plan (equipment, settings, what goes where); a machine sets up an identical station from it, anywhere, the same every time.</div></div>
+<div class="lgi"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="0.6" y="0.6" width="20.8" height="20.8" rx="3" fill="#f6bd3b" stroke="#111827" stroke-width="1.2"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">8</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 13.5 H18"/><path d="M3.5 13.5 V7.5 H6.5 V13.5 M8.5 13.5 V7.5 H11.5 V13.5 M13.5 13.5 V7.5 H16.5 V13.5"/></svg><div><span class="nm">Continuous delivery (CD)</span> Every dish that passes the checks takes the same route from stove to table, so it is always ready to go out, and a new dish can go out on any day as a routine, not as an event.</div></div>
+<div class="lgi"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="0.6" y="0.6" width="20.8" height="20.8" rx="3" fill="#f6bd3b" stroke="#111827" stroke-width="1.2"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">10</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="11.5" width="15" height="5" rx="2.5"/><circle cx="5" cy="14" r="0.9"/><circle cx="15" cy="14" r="0.9"/><path d="M7 9.5 H13"/><path d="M8 9.5 Q10 6.2 12 9.5"/></svg><div><span class="nm">Flow</span> Plates move steadily one way, from kitchen to table, and each waits as little as possible.</div></div>
+<div class="lgi"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,0.8 23.2,12 12,23.2 0.8,12" fill="#4caf6e" stroke="#111827" stroke-width="1.2"/><text x="12" y="16.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">11</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 11 A5.5 5.5 0 0 1 15.5 11 Z"/><path d="M2.5 11.5 H17.5"/><circle cx="10" cy="4.6" r="0.9"/><path d="M10 11.5 L11 17.5"/></svg><div><span class="nm">Operations (Ops)</span> The waiters and floor crew who keep every evening running (tables, equipment, supplies); they want a calm, predictable service.</div></div>
+<div class="lgi"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,0.8 23.2,12 12,23.2 0.8,12" fill="#4caf6e" stroke="#111827" stroke-width="1.2"/><text x="12" y="16.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">12</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="10.5" rx="1.5"/><path d="M4.5 9 H7 L8.5 6 L10.5 11.5 L12 8.5 H15.5"/><path d="M10 14 V16.5 M7.5 16.5 H12.5"/></svg><div><span class="nm">Monitoring</span> The screen that shows, during service, how long each table has waited and how full the room is, and rings a bell when something goes wrong.</div></div>
+<div class="lgi"><svg class="ic" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,0.8 23.2,12 12,23.2 0.8,12" fill="#4caf6e" stroke="#111827" stroke-width="1.2"/><text x="12" y="16.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">13</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4 C18 9 16 14 9.5 14 H4.5" stroke-dasharray="2.6 2"/><path d="M7.5 11 L4.5 14 L7.5 17"/></svg><div><span class="nm">Feedback</span> What guests say, and what they leave on their plates, reaches the cooks the same evening, not weeks later.</div></div>
+<div class="lgi"><svg class="ic" width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="13,0.6 25.4,23.4 0.6,23.4" fill="#be2f7d"/><text x="13" y="20.6" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">15</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16.5 H17"/><rect x="4.5" y="10" width="2.6" height="6.5"/><rect x="8.7" y="5.5" width="2.6" height="11"/><rect x="12.9" y="8" width="2.6" height="8.5"/></svg><div><span class="nm">DORA metrics</span> The numbers on the whiteboard, such as how often new dishes go out, how long from a finished change to the table, how many come back and how fast a bad night is put right.</div></div>
+</div>
+
+<svg viewBox="0 0 714 284" width="706" height="281"role="img" aria-label="A restaurant in cross-section: kitchen, pass, dining room and staff table, with numbered markers on the items explained above" style="display: block; flex: none">
+<defs>
+<marker id="ahf" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#374151"/></marker>
+<marker id="ahb" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#374151"/></marker>
+</defs>
+<rect x="0" y="0" width="262" height="260" fill="#e6ebf7"/>
+<rect x="262" y="0" width="74" height="260" fill="#fdf1d6"/>
+<rect x="336" y="0" width="254" height="260" fill="#e2f3e7"/>
+<rect x="590" y="0" width="124" height="260" fill="#f8e3ee"/>
+<rect x="0" y="260" width="714" height="24" fill="#ffffff"/>
+<line x1="0" y1="260" x2="714" y2="260" stroke="#1f2937" stroke-width="2"/>
+<g font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#111827">
+<circle cx="12" cy="272" r="6" fill="#1e3a8a"/><text x="23" y="276.5">Kitchen</text>
+<rect x="266" y="266" width="12" height="12" fill="#f6bd3b" stroke="#111827" stroke-width="0.8"/><text x="283" y="276.5">Pass</text>
+<polygon points="347,265 354,272 347,279 340,272" fill="#4caf6e" stroke="#111827" stroke-width="0.8"/><text x="359" y="276.5">Dining room</text>
+<polygon points="601,265 608,278 594,278" fill="#be2f7d"/><text x="613" y="276.5">Staff table</text>
+</g>
+<path d="M 70 57 L 516 57" stroke="#374151" stroke-width="7" fill="none" marker-end="url(#ahf)"/>
+<path d="M 520 43 C 430 1, 160 1, 70 43" stroke="#374151" stroke-width="3.5" stroke-dasharray="9 6" fill="none" marker-end="url(#ahb)"/>
+<g transform="translate(0 -46)">
+<rect x="586" y="70" width="6" height="236" fill="#9ca3af"/>
+<rect x="16" y="118" width="46" height="58" rx="3" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="30" y="113" width="18" height="8" rx="2" fill="#6b7280"/>
+<g stroke="#6b7280" stroke-width="1" fill="none"><rect x="23" y="130" width="14" height="10"/><rect x="41" y="130" width="14" height="10"/><rect x="23" y="145" width="32" height="8"/><line x1="23" y1="160" x2="55" y2="160"/><line x1="23" y1="166" x2="47" y2="166"/></g>
+<rect x="77" y="160" width="26" height="12" rx="3" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<circle cx="82" cy="157" r="7" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<circle cx="90" cy="153" r="8" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<circle cx="98" cy="157" r="7" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="78" y="159" width="24" height="6" fill="#ffffff"/>
+<circle cx="90" cy="184" r="12" fill="#f3d6b8" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M72 252 L72 214 Q72 198 90 198 Q108 198 108 214 L108 252 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="76" y="252" width="11" height="54" fill="#374151"/>
+<rect x="93" y="252" width="11" height="54" fill="#374151"/>
+<rect x="116" y="236" width="94" height="70" rx="2" fill="#9ca3af" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="126" y="252" width="74" height="40" rx="2" fill="#6b7280"/>
+<rect x="112" y="230" width="102" height="8" rx="2" fill="#4b5563"/>
+<path d="M136 230 L136 204 Q136 198 142 198 L184 198 Q190 198 190 204 L190 230 Z" fill="#d1d5db" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="130" y="196" width="66" height="6" rx="2" fill="#6b7280"/>
+<path d="M150 192 q4 -8 0 -16 M163 192 q4 -8 0 -16" stroke="#9ca3af" stroke-width="1.5" fill="none"/>
+<line x1="176" y1="214" x2="186" y2="174" stroke="#1f2937" stroke-width="2.5"/>
+<circle cx="188" cy="166" r="9" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="188" y1="166" x2="192" y2="161" stroke="#be2f7d" stroke-width="1.8"/>
+<rect x="218" y="250" width="44" height="56" fill="#cbd5e1" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="214" y="246" width="48" height="6" fill="#64748b"/>
+<path d="M220 244 L238 236 L238 216 L220 224 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M256 244 L238 236 L238 216 L256 224 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<g stroke="#9ca3af" stroke-width="1"><line x1="224" y1="229" x2="234" y2="225"/><line x1="224" y1="234" x2="234" y2="230"/><line x1="242" y1="225" x2="252" y2="229"/><line x1="242" y1="230" x2="252" y2="234"/></g>
+<line x1="285" y1="70" x2="285" y2="146" stroke="#4b5563" stroke-width="1.5"/>
+<line x1="314" y1="70" x2="314" y2="146" stroke="#4b5563" stroke-width="1.5"/>
+<path d="M275 158 L285 144 L295 158 Z" fill="#f6bd3b" stroke="#1f2937" stroke-width="1.2"/>
+<path d="M304 158 L314 144 L324 158 Z" fill="#f6bd3b" stroke="#1f2937" stroke-width="1.2"/>
+<rect x="264" y="226" width="70" height="9" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="270" y="235" width="6" height="71" fill="#9ca3af"/>
+<rect x="322" y="235" width="6" height="71" fill="#9ca3af"/>
+<ellipse cx="284" cy="223" rx="13" ry="4" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
+<ellipse cx="314" cy="223" rx="13" ry="4" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
+<path d="M278 221 q6 -8 12 0" fill="#eab308" stroke="#1f2937" stroke-width="1"/>
+<path d="M308 221 q6 -8 12 0" fill="#4caf6e" stroke="#1f2937" stroke-width="1"/>
+<g stroke="#1f2937" stroke-width="1.5" fill="#ffffff"><circle cx="282" cy="250" r="6"/><circle cx="299" cy="250" r="6"/><circle cx="316" cy="250" r="6"/></g>
+<g stroke="#1f2937" stroke-width="1.6" fill="none"><path d="M279 250 l2 2.5 l4 -5"/><path d="M296 250 l2 2.5 l4 -5"/><path d="M313 250 l2 2.5 l4 -5"/></g>
+<rect x="346" y="112" width="74" height="50" rx="3" fill="#111827" stroke="#1f2937" stroke-width="1.5"/>
+<polyline points="352,140 364,140 369,128 375,152 381,136 386,140 414,140" fill="none" stroke="#4caf6e" stroke-width="2"/>
+<rect x="378" y="162" width="10" height="8" fill="#4b5563"/>
+<path d="M425 126 Q425 110 432 110 Q439 110 439 126 Z" fill="#f6bd3b" stroke="#1f2937" stroke-width="1.3"/>
+<circle cx="432" cy="128.5" r="2" fill="#1f2937"/>
+<path d="M443 113 l4 -3 M444 120 h5" stroke="#1f2937" stroke-width="1.4" fill="none"/>
+<circle cx="378" cy="196" r="12" fill="#e7c09c" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M361 262 L361 226 Q361 210 378 210 Q395 210 395 226 L395 262 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M372 212 L378 220 L384 212" fill="#ffffff"/>
+<path d="M374 216 l4 3 l4 -3 l0 5 l-4 -3 l-4 3z" fill="#be2f7d"/>
+<path d="M392 222 L408 196 L410 176" stroke="#1f2937" stroke-width="7" stroke-linecap="round" fill="none"/>
+<rect x="392" y="170" width="38" height="5" rx="2" fill="#9ca3af" stroke="#1f2937" stroke-width="1"/>
+<path d="M397 170 Q411 148 425 170 Z" fill="#d1d5db" stroke="#1f2937" stroke-width="1.2"/>
+<circle cx="411" cy="155" r="2" fill="#1f2937"/>
+<rect x="364" y="262" width="12" height="44" fill="#374151"/>
+<rect x="381" y="262" width="12" height="44" fill="#374151"/>
+<circle cx="452" cy="208" r="11" fill="#c99a6e" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M438 262 L438 236 Q438 222 452 222 Q466 222 466 236 L466 262 Z" fill="#60a5fa" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="436" y="262" width="30" height="6" fill="#78716c"/>
+<rect x="438" y="268" width="4" height="38" fill="#78716c"/>
+<circle cx="548" cy="208" r="11" fill="#f1d2b6" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M534 262 L534 236 Q534 222 548 222 Q562 222 562 236 L562 262 Z" fill="#f6bd3b" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="534" y="262" width="30" height="6" fill="#78716c"/>
+<rect x="558" y="268" width="4" height="38" fill="#78716c"/>
+<rect x="466" y="240" width="68" height="7" fill="#a16207" stroke="#1f2937" stroke-width="1.2"/>
+<rect x="496" y="247" width="8" height="59" fill="#78350f"/>
+<rect x="484" y="300" width="32" height="6" fill="#78350f"/>
+<ellipse cx="484" cy="238" rx="10" ry="3" fill="#ffffff" stroke="#1f2937" stroke-width="1"/>
+<ellipse cx="516" cy="238" rx="10" ry="3" fill="#ffffff" stroke="#1f2937" stroke-width="1"/>
+<path d="M478 237 q6 -6 12 0" fill="#eab308" stroke="#1f2937" stroke-width="0.8"/>
+<path d="M510 237 q6 -6 12 0" fill="#4caf6e" stroke="#1f2937" stroke-width="0.8"/>
+<rect x="602" y="102" width="102" height="66" rx="3" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<g fill="#be2f7d"><rect x="614" y="140" width="11" height="18"/><rect x="631" y="130" width="11" height="28"/><rect x="648" y="122" width="11" height="36"/><rect x="665" y="134" width="11" height="24"/><rect x="682" y="116" width="11" height="42"/></g>
+<line x1="610" y1="158" x2="698" y2="158" stroke="#1f2937" stroke-width="1"/>
+<circle cx="628" cy="222" r="10" fill="#f3d6b8" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M618 204 L638 204 L636 212 L620 212 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/>
+<path d="M616 268 L616 246 Q616 234 628 234 Q640 234 640 246 L640 268 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/>
+<circle cx="686" cy="222" r="10" fill="#e7c09c" stroke="#1f2937" stroke-width="1.5"/>
+<path d="M674 268 L674 246 Q674 234 686 234 Q698 234 698 246 L698 268 Z" fill="#1f2937" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="636" y="252" width="44" height="6" fill="#a16207" stroke="#1f2937" stroke-width="1"/>
+<rect x="654" y="258" width="8" height="48" fill="#78350f"/>
+<rect x="612" y="268" width="30" height="5" fill="#78716c"/><rect x="614" y="273" width="4" height="33" fill="#78716c"/>
+<rect x="672" y="268" width="30" height="5" fill="#78716c"/><rect x="696" y="273" width="4" height="33" fill="#78716c"/>
+<g font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12.5" font-weight="700" text-anchor="middle">
+<circle cx="118" cy="168" r="11" fill="#1e3a8a" stroke="#ffffff" stroke-width="1.5"/><text x="118" y="172.5" fill="#ffffff">1</text>
+<circle cx="240" cy="202" r="11" fill="#1e3a8a" stroke="#ffffff" stroke-width="1.5"/><text x="240" y="206.5" fill="#ffffff">2</text>
+<circle cx="208" cy="160" r="11" fill="#1e3a8a" stroke="#ffffff" stroke-width="1.5"/><text x="208" y="164.5" fill="#ffffff">4</text>
+<circle cx="74" cy="122" r="11" fill="#1e3a8a" stroke="#ffffff" stroke-width="1.5"/><text x="74" y="126.5" fill="#ffffff">5</text>
+<rect x="288" y="265" width="22" height="22" rx="3" fill="#f6bd3b" stroke="#111827" stroke-width="1.2"/><text x="299" y="280.5" fill="#111827">8</text>
+<polygon points="350,190 364,204 350,218 336,204" fill="#4caf6e" stroke="#111827" stroke-width="1.2"/><text x="350" y="208.5" fill="#111827">11</text>
+<polygon points="450,136 464,150 450,164 436,150" fill="#4caf6e" stroke="#111827" stroke-width="1.2"/><text x="450" y="154.5" fill="#111827">12</text>
+<polygon points="653,74 671,103 635,103" fill="#be2f7d" stroke="#ffffff" stroke-width="1.5"/><text x="653" y="98" fill="#ffffff">15</text>
+</g>
+</g>
+<g font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12.5" font-weight="700" text-anchor="middle">
+<rect x="284" y="46" width="24" height="22" rx="3" fill="#f6bd3b" stroke="#111827" stroke-width="1.2"/><text x="296" y="61.5" fill="#111827">10</text>
+<polygon points="296,2 310,16 296,30 282,16" fill="#4caf6e" stroke="#111827" stroke-width="1.2"/><text x="296" y="20.5" fill="#111827">13</text>
+</g>
+</svg>
+
+<div style="display: grid; grid-template-columns: 222px minmax(0, 1fr); gap: 12px; align-items: start">
+<div>
+<div class="sech"><svg class="ic" width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6.5" fill="#1e3a8a"/></svg>Kitchen</div>
+<div style="background: #e6ebf7; border-radius: 6px; padding: 8px 10px">
+<div class="chead"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10.5" fill="#1e3a8a"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">3</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10 H16.5 V14.5 A2.5 2.5 0 0 1 14 17 H6 A2.5 2.5 0 0 1 3.5 14.5 Z"/><path d="M2 11.5 H3.5 M16.5 11.5 H18"/><path d="M10 2 V7.5 M7.6 5.2 L10 7.6 L12.4 5.2"/></svg><span>Continuous integration (CI)</span></div>
+<div>Every cook adds small changes to the shared recipe at least once a day, and each change is cooked and checked at once by the thermometer and scale, so clashes show while they are small.</div>
+</div>
+</div>
+<div>
+<div class="sech"><svg class="ic" width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><rect x="0.6" y="0.6" width="12.8" height="12.8" rx="2" fill="#f6bd3b" stroke="#111827" stroke-width="1"/></svg>Pass: before and after</div>
+<div style="background: #fdf1d6; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; gap: 10px; align-items: center">
+<svg class="ic" width="118" height="59" viewBox="0 0 226 112" role="img" aria-label="Before: a closed door between a cook and a waiter, each complaining"><rect x="0" y="0" width="226" height="112" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/><rect x="104" y="10" width="18" height="96" fill="#9ca3af" stroke="#1f2937" stroke-width="1.2"/><rect x="107" y="38" width="12" height="68" fill="#6b7280" stroke="#1f2937" stroke-width="1"/><circle cx="116" cy="74" r="1.6" fill="#ffffff"/><rect x="104" y="22" width="18" height="10" fill="#ffffff" stroke="#1f2937" stroke-width="1"/><ellipse cx="113" cy="26" rx="10" ry="3" fill="#ffffff" stroke="#1f2937" stroke-width="1"/><rect x="44" y="34" width="22" height="9" rx="2" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/><circle cx="55" cy="51" r="9" fill="#f3d6b8" stroke="#1f2937" stroke-width="1.2"/><path d="M41 106 L41 76 Q41 62 55 62 Q69 62 69 76 L69 106 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/><path d="M66 70 L96 30" stroke="#1f2937" stroke-width="4" stroke-linecap="round"/><circle cx="170" cy="51" r="9" fill="#e7c09c" stroke="#1f2937" stroke-width="1.2"/><path d="M156 106 L156 76 Q156 62 170 62 Q184 62 184 76 L184 106 Z" fill="#1f2937"/><path d="M186 22 L206 22 L206 36 L194 36 L188 42 L189 36 L186 36 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/><path d="M193 26 L199 32 M199 26 L193 32" stroke="#be2f7d" stroke-width="1.8"/><path d="M18 22 L38 22 L38 36 L35 36 L36 42 L30 36 L18 36 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/><path d="M25 26 L31 32 M31 26 L25 32" stroke="#be2f7d" stroke-width="1.8"/></svg>
+<div><div class="chead"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="0.6" y="0.6" width="20.8" height="20.8" rx="3" fill="#f6bd3b" stroke="#111827" stroke-width="1.2"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">6</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="16" height="14"/><path d="M2 7 H7.5 M12.5 7 H18 M2 11 H7.5 M12.5 11 H18 M2 15 H7.5 M12.5 15 H18 M5 3 V7 M15 3 V7 M4.5 7 V11 M15.5 7 V11 M5 11 V15 M15 11 V15"/><rect x="7.5" y="6" width="5" height="11" fill="#111827"/></svg><span>Silo</span></div>
+<div>Before: a closed door between kitchen and dining room; cooks push new dishes through, waiters take the complaints, and each crew blames the other.</div></div>
+</div>
+<div style="display: flex; gap: 10px; align-items: center">
+<svg class="ic" width="118" height="59" viewBox="0 0 226 112" role="img" aria-label="After: a cook and a waiter on either side of an open pass, working together"><rect x="0" y="0" width="226" height="112" rx="6" fill="#ffffff" stroke="#1f2937" stroke-width="1.5"/><rect x="86" y="66" width="54" height="7" fill="#e5e7eb" stroke="#1f2937" stroke-width="1.2"/><rect x="92" y="73" width="5" height="33" fill="#9ca3af"/><rect x="129" y="73" width="5" height="33" fill="#9ca3af"/><ellipse cx="113" cy="63" rx="12" ry="3.5" fill="#ffffff" stroke="#1f2937" stroke-width="1"/><path d="M107 62 q6 -7 12 0" fill="#4caf6e" stroke="#1f2937" stroke-width="0.8"/><line x1="113" y1="0" x2="113" y2="26" stroke="#4b5563" stroke-width="1.2"/><path d="M104 36 L113 24 L122 36 Z" fill="#f6bd3b" stroke="#1f2937" stroke-width="1"/><rect x="44" y="34" width="22" height="9" rx="2" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/><circle cx="55" cy="51" r="9" fill="#f3d6b8" stroke="#1f2937" stroke-width="1.2"/><path d="M41 106 L41 76 Q41 62 55 62 Q69 62 69 76 L69 106 Z" fill="#ffffff" stroke="#1f2937" stroke-width="1.2"/><circle cx="170" cy="51" r="9" fill="#e7c09c" stroke="#1f2937" stroke-width="1.2"/><path d="M156 106 L156 76 Q156 62 170 62 Q184 62 184 76 L184 106 Z" fill="#1f2937"/><path d="M67 74 Q90 52 113 50 Q136 52 158 74" fill="none" stroke="#1f2937" stroke-width="1.5" stroke-dasharray="4 3"/></svg>
+<div><div class="chead"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="0.6" y="0.6" width="20.8" height="20.8" rx="3" fill="#f6bd3b" stroke="#111827" stroke-width="1.2"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">7</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10 C8 7 3.5 7 3.5 10 C3.5 13 8 13 10 10 C12 7 16.5 7 16.5 10 C16.5 13 12 13 10 10 Z"/></svg><span>DevOps</span></div>
+<div>After: kitchen and dining-room staff work as one crew across an open pass, answerable together for each dish from recipe to the guest's last bite; every other item here is a way this crew works.</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 222px minmax(0, 1fr); gap: 12px; align-items: start">
+<div>
+<div class="sech"><svg class="ic" width="12" height="12" viewBox="0 0 14 14" aria-hidden="true"><rect x="0.6" y="0.6" width="12.8" height="12.8" rx="2" fill="#f6bd3b" stroke="#111827" stroke-width="1"/></svg>Pass</div>
+<div style="background: #fdf1d6; border-radius: 6px; padding: 8px 10px">
+<div class="chead"><svg class="ic" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><rect x="0.6" y="0.6" width="20.8" height="20.8" rx="3" fill="#f6bd3b" stroke="#111827" stroke-width="1.2"/><text x="11" y="15.2" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#111827">9</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13 H17 M5 13 V18 M15 13 V18"/><path d="M6 9.5 H14"/><path d="M7.5 9.5 Q10 5.5 12.5 9.5"/></svg><span>Small batches</span></div>
+<div>One new dish at a time, instead of a whole new menu on one big night.</div>
+</div>
+</div>
+<div>
+<div class="sech"><svg class="ic" width="14" height="12" viewBox="0 0 16 14" aria-hidden="true"><polygon points="8,0.5 15.5,13.5 0.5,13.5" fill="#be2f7d"/></svg>Staff table</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<div style="background: #f8e3ee; border-radius: 6px; padding: 8px 10px">
+<div class="chead"><svg class="ic" width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="13,0.6 25.4,23.4 0.6,23.4" fill="#be2f7d"/><text x="13" y="20.6" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">14</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.8"/><path d="M12.8 12.8 L17.5 17.5" stroke-width="2.2"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M8.5 5 V6.2 M8.5 10.8 V12 M5 8.5 H6.2 M10.8 8.5 H12 M6 6 L6.9 6.9 M10.1 10.1 L11 11 M6 11 L6.9 10.1 M10.1 6.9 L11 6"/></svg><span>Blameless postmortem</span></div>
+<div>After a bad night the crew asks what in the setup let it happen, never who is to blame.</div>
+</div>
+<div style="background: #f8e3ee; border-radius: 6px; padding: 8px 10px">
+<div class="chead"><svg class="ic" width="26" height="24" viewBox="0 0 26 24" aria-hidden="true"><polygon points="13,0.6 25.4,23.4 0.6,23.4" fill="#be2f7d"/><text x="13" y="20.6" text-anchor="middle" font-family="Atkinson Hyperlegible, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">16</text></svg><svg class="ic" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.2 12.6 C5.6 11.4 4.7 9.8 4.7 8 A5.3 5.3 0 0 1 15.3 8 C15.3 9.8 14.4 11.4 12.8 12.6 V14 H7.2 Z"/><path d="M7.8 16 H12.2 M8.6 18 H11.4"/></svg><span>Continual learning</span></div>
+<div>The crew sets time aside, tries one small change to how it works, and keeps what helps.</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

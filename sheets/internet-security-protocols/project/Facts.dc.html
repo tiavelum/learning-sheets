@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Security standards: the facts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#1e3a8a}a:hover{color:#15803d}
+</style>
+</helmet>
+<div style="width: 794px; height: 1123px; box-sizing: border-box; padding: 44px 48px 0 48px; background: #ffffff; color: #1b1b1b; font-family: 'Atkinson Hyperlegible', Verdana, sans-serif; display: flex; flex-direction: column; gap: 12px">
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 700">The facts behind each number</h1>
+<p style="margin: 0; font-size: 13px; line-height: 18px; color: #333333">Same numbers, names and icons as on page one; the marker's shape and colour show the zone.</p>
+</div>
+
+<table style="width: 698px; table-layout: fixed; border-collapse: collapse; font-size: 12px; line-height: 15px">
+<colgroup><col style="width: 128px"><col style="width: 206px"><col style="width: 120px"><col style="width: 122px"><col style="width: 122px"></colgroup>
+<thead>
+<tr style="text-align: left; vertical-align: bottom">
+<th style="padding: 4px 6px; border-bottom: 2px solid #1b1b1b; font-size: 12.5px">Name</th>
+<th style="padding: 4px 6px; border-bottom: 2px solid #1b1b1b; font-size: 12.5px">What it is</th>
+<th style="padding: 4px 6px; border-bottom: 2px solid #1b1b1b; font-size: 12.5px">What it protects</th>
+<th style="padding: 4px 6px; border-bottom: 2px solid #1b1b1b; font-size: 12.5px">Where you meet it</th>
+<th style="padding: 4px 6px; border-bottom: 2px solid #1b1b1b; font-size: 12.5px">Without it</th>
+</tr>
+</thead>
+<tbody>
+
+<tr style="background: #e4e4e0"><td colspan="5" style="padding: 4px 6px; border-bottom: 1px solid #b9b9b4; font-weight: 700; font-size: 12.5px">In the scene on page one</td></tr>
+
+<tr style="background: #f4f4f1; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="#e3e9f7" stroke="#1e3a8a" stroke-width="2.5"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">1</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><b>TLS (HTTPS)</b><br><span style="color: #474747">Transport Layer Security, formerly SSL</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Encrypts the connection between your browser or app and a server, after checking the server's certificate (4).</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">What you send, from being read or changed on the way.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">https:// in the address bar (often with a lock), e-mail, apps.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Anyone on the same Wi-Fi or network path can read and alter it.</td>
+</tr>
+
+<tr style="background: #f4f4f1; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="#e3e9f7" stroke="#1e3a8a" stroke-width="2.5"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">2</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 10l3 2.5L7 15M12 16h5"/></svg></div><div><b>SSH</b><br><span style="color: #474747">Secure Shell</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Encrypted remote login to another computer's command line, usually with a key pair; also copies files (scp, sftp).</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Admin work on servers: commands, passwords and files.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Running servers and routers; Git hosting (git@github.com).</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Telnet, the older tool it replaced, sent passwords as plain text.</td>
+</tr>
+
+<tr style="background: #f4f4f1; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="#e3e9f7" stroke="#1e3a8a" stroke-width="2.5"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">3</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20v-7a7 7 0 0 1 14 0v7"/><path d="M9 20v-5a3 3 0 0 1 6 0v5"/></svg></div><div><b>VPN</b><br><span style="color: #474747">Virtual Private Network, e.g. WireGuard</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">An encrypted tunnel that carries all your device's traffic into another network, which treats the device as its own.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Traffic on untrusted Wi-Fi; reaching internal systems.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Working from home; consumer apps that also mask your location.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Internal systems are out of reach, or must face the open internet.</td>
+</tr>
+
+<tr style="background: #f4f4f1; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="2" fill="#fdf0d5" stroke="#f59e0b" stroke-width="2.5"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">4</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M9 14.2L7 21l5-2.5 5 2.5-2-6.8"/></svg></div><div><b>Certificate</b><br><span style="color: #474747">X.509, from a certificate authority (CA)</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">A digitally signed ID that ties a domain name to the server's public key, issued by a CA your browser trusts.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">You from a fake server posing as the address you typed.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Lock or site icon in the address bar; "certificate expired" warnings.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">The line is still encrypted, but maybe to the wrong party.</td>
+</tr>
+
+<tr style="background: #f4f4f1; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="2" fill="#fdf0d5" stroke="#f59e0b" stroke-width="2.5"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">5</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2"/><circle cx="9.8" cy="11" r="0.9" fill="#1b1b1b"/><circle cx="12" cy="11" r="0.9" fill="#1b1b1b"/><circle cx="14.2" cy="11" r="0.9" fill="#1b1b1b"/><path d="M11 18.5h2"/></svg></div><div><b>MFA (two-factor)</b><br><span style="color: #474747">Multi-factor authentication</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">A login with two kinds of proof: something you know (password) plus something you have (phone, key) or are (fingerprint).</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Your account when the password leaks or is guessed.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Codes from an authenticator app (TOTP) or SMS; "Is this you?" prompts.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">A leaked password is all an attacker needs.</td>
+</tr>
+
+<tr style="background: #f4f4f1; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="1.5" width="21" height="21" rx="2" fill="#fdf0d5" stroke="#f59e0b" stroke-width="2.5"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">6</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="12" r="4"/><path d="M11.5 12H21v3.5M17.5 12v2.5"/></svg></div><div><b>Passkey</b><br><span style="color: #474747">FIDO2 / WebAuthn credential</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">A key pair per website: you keep the private key, unlocked by fingerprint, face or PIN; the site keeps only the public key.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Against phishing: it works only at the real site's address.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">"Sign in with a passkey" on phone, laptop or security key.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">You rely on passwords, which can be guessed, reused or phished.</td>
+</tr>
+
+<tr style="background: #f4f4f1; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,0.8 23.2,12 12,23.2 0.8,12" fill="#dff0e5" stroke="#15803d" stroke-width="2.5" stroke-linejoin="round"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">9</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h12"/><rect x="4.5" y="3" width="9" height="18"/><circle cx="11" cy="12.5" r="0.8" fill="#1b1b1b"/><rect x="16" y="8.5" width="6" height="8" rx="1"/><path d="M17.5 12.6l1.2 1.2 1.9-2.5"/></svg></div><div><b>Zero Trust</b><br><span style="color: #474747">Zero Trust Architecture (ZTA)</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">A security model (NIST SP 800-207), not a protocol: being inside the network earns no trust; every access is checked.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Against an intruder who got in once moving on to everything else.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Access gateways (ZTNA) that check you and your device every time.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">"Castle and moat": once past the wall, everything inside is open.</td>
+</tr>
+
+<tr style="background: #c9e6d3"><td colspan="5" style="padding: 4px 6px; border-bottom: 1px solid #b9b9b4; font-weight: 700; font-size: 12.5px"><div style="display: flex; gap: 6px; align-items: center"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="flex: none"><polygon points="12,1.5 22.5,12 12,22.5 1.5,12" fill="#ffffff" stroke="#15803d" stroke-width="3" stroke-linejoin="round"/></svg>Inside: a pass for a job, or a card that says who you are</div></td></tr>
+
+<tr style="background: #dff0e5; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,0.8 23.2,12 12,23.2 0.8,12" fill="#ffffff" stroke="#15803d" stroke-width="2.5" stroke-linejoin="round"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">7</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/><path d="M14 8v8" stroke-dasharray="2 2"/></svg></div><div><b>OAuth 2.0</b><br><span style="color: #474747">Open Authorization</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Lets you grant an app limited access to your data at another service via an access token, without giving it your password.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Your password; access is limited (scopes) and can be revoked.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">"App X wants to access your Google Calendar. Allow?"</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">You'd give the app your password, and with it full access.</td>
+</tr>
+
+<tr style="background: #dff0e5; vertical-align: top">
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4"><div style="display: flex; gap: 6px; align-items: flex-start"><div style="display: flex; flex-direction: column; gap: 3px; align-items: center; flex: none"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,0.8 23.2,12 12,23.2 0.8,12" fill="#ffffff" stroke="#15803d" stroke-width="2.5" stroke-linejoin="round"/><text x="12" y="16.5" text-anchor="middle" font-size="13" font-weight="700" fill="#1b1b1b" font-family="Atkinson Hyperlegible, Verdana, sans-serif">8</text></svg><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1b1b1b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M9.5 2.5h5v4h-5z"/><circle cx="12" cy="12" r="2.5"/><path d="M8 18.5a4 4 0 0 1 8 0"/></svg></div><div><b>OpenID Connect (OIDC)</b><br><span style="color: #474747">Built on OAuth 2.0</span></div></div></td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">The sign-in service also gives the app a signed ID token (a JWT) that states who you are.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">You from yet another password; the app gets a verified identity.</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">"Sign in with Google / Apple"; work sign-on (often SAML, an older cousin).</td>
+<td style="padding: 5px 6px; border-bottom: 1px solid #b9b9b4">Each app needs its own account and password.</td>
+</tr>
+
+</tbody>
+</table>
+
+<div style="display: flex; flex-direction: column; gap: 7px">
+<div style="display: grid; grid-template-columns: 100px 192px 192px 192px; column-gap: 7px; align-items: center">
+<p style="margin: 0; font-size: 13px; line-height: 17px; font-weight: 700">Three questions for any login</p>
+<div style="border: 1.5px solid #6b6b6b; border-radius: 6px; padding: 5px 10px; font-size: 12.5px; line-height: 16px"><b>Is the line protected?</b><br>see 1, 2 and 3</div>
+<div style="border: 1.5px solid #6b6b6b; border-radius: 6px; padding: 5px 10px; font-size: 12.5px; line-height: 16px"><b>Who is who?</b><br>see 4, 5, 6 and 8</div>
+<div style="border: 1.5px solid #6b6b6b; border-radius: 6px; padding: 5px 10px; font-size: 12.5px; line-height: 16px"><b>What may it do?</b><br>see 7 and 9</div>
+</div>
+<p style="margin: 3px 0 0 0; font-size: 14px; line-height: 18px; font-weight: 700">Rules to remember</p>
+<ul style="margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 16.5px; display: grid; grid-template-columns: 330px 330px; column-gap: 20px; row-gap: 4px">
+<li>A lock or https:// means a protected line to that address, not an honest site: check the address too.</li>
+<li>OAuth hands out permission; OpenID Connect adds who you are. Remove app access you no longer use.</li>
+<li>Prefer passkeys, which usually count as two factors; else turn on MFA, ideally not by SMS.</li>
+<li>Private keys (SSH, passkeys) stay on your own devices; only the public half is handed out.</li>
+<li>A VPN protects the line, not the device: being inside a network earns no automatic trust (Zero Trust).</li>
+<li>In daily life you meet 1, 4, 5, 6, 7 and 8; 2 and 9 mostly at work; 3 at work or in VPN apps.</li>
+</ul>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

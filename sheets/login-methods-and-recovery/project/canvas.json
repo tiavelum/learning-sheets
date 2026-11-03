@@ -1,0 +1,35 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Details.dc.html": {
+      "h": 1123,
+      "title": "Page 2 · Details",
+      "w": 794,
+      "x": 874,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "h": 1123,
+      "title": "Page 1 · Mental pictures",
+      "w": 794,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-11-01T15:30:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {},
+  "order": [
+    "Main.dc.html",
+    "Details.dc.html"
+  ],
+  "pages": [],
+  "title": "login-methods-and-recovery"
+}

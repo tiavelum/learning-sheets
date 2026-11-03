@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Page 1: the scene</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;display=swap">
+<style>
+/* Layout: A4 fixed page, 40 px edge, legend in two zone columns above one scene illustration. */
+:root {
+  --ink: #1f2328; --ink-2: #474d55; --paper: #fffdf9; --line: #c9c4ba;
+  --a: #f0a830; --a-deep: #9a6508; --a-tint: #fdf0d5; --a-roof: #f6dca6;
+  --b: #1f4e8c; --b-deep: #1f4e8c; --b-tint: #e2eaf5; --b-roof: #c3d3ea;
+  --c: #2e7d3e; --c-deep: #2e7d3e; --c-tint: #e1f0e3; --c-roof: #c4e2ca;
+  --body: "Atkinson Hyperlegible", "Verdana", "Segoe UI", sans-serif;
+  --display: "Bricolage Grotesque", "Arial Narrow", "Helvetica Neue", sans-serif;
+}
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); }
+.page { width: 794px; height: 1123px; box-sizing: border-box; padding: 40px 40px 0; display: flex; flex-direction: column; gap: 12px; background: var(--paper); overflow: hidden; }
+.eyebrow { margin: 0; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2); font-weight: 700; }
+h1 { margin: 2px 0 0; font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1.05; letter-spacing: -.01em; text-wrap: balance; }
+.brief { margin: 6px 0 0; font-size: 13px; line-height: 1.35; max-width: 714px; }
+.legend { display: grid; grid-template-columns: 350px 350px; column-gap: 14px; align-items: start; }
+.col { display: flex; flex-direction: column; gap: 5px; }
+.zh { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: 4px; font-size: 12px; line-height: 1.25; }
+.zh b { font-family: var(--display); font-weight: 600; font-size: 14px; }
+.zh.za { background: var(--a-tint); } .zh.zb { background: var(--b-tint); } .zh.zc { background: var(--c-tint); }
+.zh + .it { margin-top: 1px; }
+.it { display: grid; grid-template-columns: 30px 1fr; column-gap: 5px; align-items: start; }
+.it p { margin: 0; font-size: 12px; line-height: 1.3; }
+.it b { font-weight: 700; }
+.mk { width: 26px; height: 24px; display: block; justify-self: center; }
+.mk.tri { width: 30px; height: 26px; }
+.mk text, .scene .mn { font-family: var(--body); font-weight: 700; font-size: 12px; text-anchor: middle; }
+.zone-gap { height: 4px; }
+.scene { margin: 0; }
+.scene svg { display: block; width: 714px; height: auto; }
+.scene text { font-family: var(--body); font-size: 12px; fill: var(--ink); }
+.scene .sign { font-weight: 700; font-size: 12.5px; }
+.scene .lab { font-size: 12px; }
+.scene .labb { font-size: 12px; font-weight: 700; }
+.scene .ttl { font-family: var(--display); font-weight: 600; font-size: 15px; }
+.scene .mn.w { fill: #ffffff; }
+.ic { fill: none; stroke: #1f2328; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</helmet>
+<div class="page">
+  <header>
+    <p class="eyebrow">Learning sheet · The Swiss pension system</p>
+    <h1>Three kitchens for your old age</h1>
+    <p class="brief">The village street below is a picture of the Swiss pension system, from paying in while you work to your plate in old age. Page two gives the facts behind each numbered item.</p>
+  </header>
+
+  <section class="legend" aria-label="Legend">
+    <div class="col">
+      <div class="zh za">
+        <svg class="mk" viewBox="0 0 26 24" aria-hidden="true"><circle cx="13" cy="12" r="10" fill="#f0a830" stroke="#9a6508" stroke-width="1"/></svg>
+        <span><b>The village kitchen</b><br>1st pillar · state pension (AHV/IV)</span>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="1"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">1</text></svg>
+        <p><b>AHV contributions.</b> Everyone who earns fills the village kitchen's basket, a worker with a share of every wage that the employer matches; the village adds a share from tax money, and what comes in this month is served to the old this month.</p>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="2"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">2</text></svg>
+        <p><b>Contribution years.</b> A stamp card at the kitchen door gets one stamp for every year you paid in, and every missing stamp makes your monthly bowl a little smaller for life.</p>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="3"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">3</text></svg>
+        <p><b>IV (disability insurance).</b> If illness or an accident stops you working before retirement age, the same kitchen first helps you back to work and, only if that fails, starts filling a bowl for you early.</p>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="4"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">4</text></svg>
+        <p><b>AHV pension.</b> From retirement age the kitchen fills a bowl for you every month for life, plus an extra one each December: bigger if you brought more, but never more than twice the smallest full bowl, and a married couple together never more than three.</p>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="5"><circle cx="13" cy="12" r="10.5" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text x="13" y="16.2" fill="#1f2328">5</text></svg>
+        <p><b>Supplementary benefits (EL).</b> If your bowls and jars together do not cover the basics and you have little put aside, you can ask the town hall next door to top up your bowl from tax money.</p>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="zh zb">
+        <svg class="mk" viewBox="0 0 26 24" aria-hidden="true"><rect x="3" y="2" width="20" height="20" rx="2" fill="#1f4e8c"/></svg>
+        <span><b>The storeroom at work</b><br>2nd pillar · occupational pension (BVG)</span>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="6"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">6</text></svg>
+        <p><b>Pension fund.</b> Once you are employed and earn enough, a shelf in the storeroom at work carries your name; every month you and your employer put jars on it, and the storekeeper adds interest every year.</p>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="7"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">7</text></svg>
+        <p><b>Buy-in.</b> If your shelf has gaps, you may add jars of your own to the same shelf, and the tax office gives you a discount on them.</p>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="8"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">8</text></svg>
+        <p><b>Vested benefits.</b> When you change jobs, your shelf moves in a sealed crate to the next employer's storeroom (you tell the old storekeeper where), or waits in a locker until there is one.</p>
+      </div>
+      <div class="it">
+        <svg class="mk" viewBox="0 0 26 24" role="img" aria-label="9"><rect x="2.5" y="1.5" width="21" height="21" rx="2" fill="#1f4e8c"/><text x="13" y="16.2" fill="#ffffff">9</text></svg>
+        <p><b>Pension or lump sum.</b> At retirement the storekeeper turns your shelf into a fixed monthly delivery for life; if you ask in time, you may take part of it at once, or all of it if the storeroom's rules allow.</p>
+      </div>
+      <div class="zone-gap"></div>
+      <div class="zh zc">
+        <svg class="mk" viewBox="0 0 26 24" aria-hidden="true"><polygon points="13,1.5 25,22.5 1,22.5" fill="#2e7d3e"/></svg>
+        <span><b>Your kitchen at home</b><br>3rd pillar · private provision (3a/3b)</span>
+      </div>
+      <div class="it">
+        <svg class="mk tri" viewBox="0 0 30 26" role="img" aria-label="10"><polygon points="15,0.5 29.5,25.5 0.5,25.5" fill="#2e7d3e"/><text x="15" y="22.5" fill="#ffffff">10</text></svg>
+        <p><b>Pillar 3a.</b> At home, a locked cupboard takes up to a fixed number of jars each year, the tax office gives you a discount on them, and it opens only near retirement or for a few big steps such as buying a home.</p>
+      </div>
+      <div class="it">
+        <svg class="mk tri" viewBox="0 0 30 26" role="img" aria-label="11"><polygon points="15,0.5 29.5,25.5 0.5,25.5" fill="#2e7d3e"/><text x="15" y="22.5" fill="#ffffff">11</text></svg>
+        <p><b>Pillar 3b.</b> Next to it, your open pantry holds whatever else you put aside, with no limit and no lock, and usually no tax discount.</p>
+      </div>
+    </div>
+  </section>
+
+  <figure class="scene">
+    <svg viewBox="0 0 714 396" role="img" aria-label="A village street: the village kitchen with the town hall next door, the storeroom at work, and your kitchen at home, each with numbered items; in front, your table in old age with a plate filled from all three.">
+      <defs>
+        <marker id="arA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9a6508"/></marker>
+        <marker id="arB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1f4e8c"/></marker>
+        <marker id="arC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2e7d3e"/></marker>
+      </defs>
+
+      <!-- street -->
+      <rect x="0" y="236" width="714" height="10" fill="#ece8e0"/>
+      <line x1="0" y1="236" x2="714" y2="236" stroke="#9a958c" stroke-width="1.2"/>
+
+      <!-- Zone A: village kitchen -->
+      <polygon points="0,74 101,30 202,74" fill="#f6dca6" stroke="#9a6508" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="6" y="72" width="190" height="164" fill="#fdf0d5" stroke="#9a6508" stroke-width="1.5"/>
+      <rect x="28" y="82" width="148" height="24" rx="4" fill="#ffffff" stroke="#9a6508" stroke-width="1.2"/>
+      <circle cx="42" cy="94" r="6" fill="#f0a830" stroke="#9a6508" stroke-width="1"/>
+      <text class="sign" x="53" y="98.5">Village kitchen</text>
+      <rect x="82" y="176" width="38" height="60" fill="#ffffff" stroke="#9a6508" stroke-width="1.2"/>
+      <circle cx="113" cy="208" r="2" fill="#9a6508"/>
+      <rect x="132" y="182" width="58" height="50" rx="3" fill="#ffffff" stroke="#9a6508" stroke-width="1.2"/>
+
+      <g class="ic" transform="translate(28 120) scale(1.6)"><path d="M3.5 11h17l-2.2 9.5H5.7z"/><path d="M7.5 11c0-5.2 9-5.2 9 0"/><path d="M4.3 14.5h15.4M12 11v9.5M8 11l.6 9.5M16 11l-.6 9.5"/><circle cx="9.6" cy="8.6" r="1.7" fill="#fff"/><circle cx="14.2" cy="8.2" r="1.9" fill="#fff"/></g>
+      <g class="ic" transform="translate(38 192) scale(1.6)"><rect x="2.5" y="5" width="19" height="14" rx="1.5" fill="#fff"/><circle cx="7" cy="10" r="1.7" fill="#1f2328"/><circle cx="12" cy="10" r="1.7" fill="#1f2328"/><circle cx="17" cy="10" r="1.7" fill="#1f2328"/><circle cx="7" cy="14.6" r="1.7" fill="#1f2328"/><circle cx="12" cy="14.6" r="1.7" stroke-dasharray="1.4 1.2"/><circle cx="17" cy="14.6" r="1.7" fill="#1f2328"/></g>
+      <g class="ic" transform="translate(140 116) scale(1.6)"><circle cx="12" cy="3.8" r="1.9"/><path d="M12 5.8v4.4M9.2 7.6h5.6M12 10.2l-2 2.6M12 10.2l2 2.6"/><path d="M3 21v-5h3l3-1.6h5.2a1.6 1.6 0 0 1 0 3.2H10.5"/><path d="M14.2 16.6l4.6-2.2c1.6-.7 2.7 1.1 1.2 2.1l-6 3.7H6"/></g>
+      <g class="ic" transform="translate(142 190) scale(1.6)"><path d="M3 12h18c0 4.6-4 7.6-9 7.6S3 16.6 3 12z"/><path d="M9 19.6h6"/><path d="M13.2 11.4l4.4-7.2"/><circle cx="18.4" cy="3.3" r="1.4"/></g>
+
+      <g><circle cx="24" cy="118" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="24" y="122.3">1</text></g>
+      <g><circle cx="26" cy="188" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="26" y="192.3">2</text></g>
+      <g><circle cx="136" cy="118" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="136" y="122.3">3</text></g>
+      <g><circle cx="132" cy="168" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="132" y="172.3">4</text></g>
+
+      <!-- Zone A: town hall next door -->
+      <polygon points="200,124 235,100 270,124" fill="#f6dca6" stroke="#9a6508" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="203" y="122" width="64" height="114" fill="#fdf0d5" stroke="#9a6508" stroke-width="1.5"/>
+      <text class="lab" x="235" y="142" text-anchor="middle">Town hall</text>
+      <g class="ic" transform="translate(222 178) scale(1.6)"><path d="M3.5 4.5h7.5l-1 6.5H5z" transform="rotate(-25 7 8)"/><path d="M11.4 5.2c1.6 0 1.8 2.4.4 3"/><path d="M11.2 9.6c.6 2 .6 3.6 0 5" stroke-dasharray="1.6 1.4"/><path d="M6 15.5h12c0 3.2-2.7 5.2-6 5.2s-6-2-6-5.2z"/></g>
+      <g><circle cx="213" cy="166" r="11" fill="#f0a830" stroke="#9a6508" stroke-width="1"/><text class="mn" x="213" y="170.3">5</text></g>
+
+      <!-- Zone B: storeroom at work -->
+      <rect x="278" y="76" width="228" height="12" fill="#c3d3ea" stroke="#1f4e8c" stroke-width="1.5"/>
+      <rect x="284" y="88" width="216" height="148" fill="#e2eaf5" stroke="#1f4e8c" stroke-width="1.5"/>
+      <rect x="308" y="96" width="168" height="24" rx="4" fill="#ffffff" stroke="#1f4e8c" stroke-width="1.2"/>
+      <rect x="317" y="102" width="12" height="12" rx="1" fill="#1f4e8c"/>
+      <text class="sign" x="336" y="112.5">Storeroom at work</text>
+      <rect x="358" y="176" width="38" height="60" fill="#ffffff" stroke="#1f4e8c" stroke-width="1.2"/>
+      <circle cx="389" cy="208" r="2" fill="#1f4e8c"/>
+      <rect x="440" y="134" width="40" height="30" fill="#ffffff" stroke="#1f4e8c" stroke-width="1.2"/>
+      <path d="M460 134v30M440 149h40" stroke="#1f4e8c" stroke-width="1"/>
+
+      <g class="ic" transform="translate(310 128) scale(2)"><path d="M2.5 15h19M4.5 15v6M19.5 15v6"/><rect x="3.8" y="7.5" width="4.4" height="7.5" rx="1" fill="#fff"/><rect x="9.8" y="6" width="4.4" height="9" rx="1" fill="#fff"/><rect x="15.8" y="8.5" width="4.4" height="6.5" rx="1" fill="#fff"/><rect x="9.5" y="16.4" width="5" height="3" rx=".5" fill="#fff"/></g>
+      <g class="ic" transform="translate(382 132) scale(1.6)"><rect x="4" y="8" width="11" height="13" rx="2" fill="#fff"/><path d="M5.5 8V5.5h8V8"/><path d="M4 12.5h11"/><path d="M19 2.8v6.4M15.8 6h6.4"/></g>
+      <g class="ic" transform="translate(312 190) scale(1.6)"><path d="M2.5 3v14.5h10"/><circle cx="4.3" cy="19.6" r="1.7" fill="#fff"/><rect x="5.5" y="9" width="7" height="8.5" fill="#fff"/><path d="M5.5 9l7 8.5M12.5 9l-7 8.5"/><rect x="15" y="4" width="6.5" height="17" rx=".6" fill="#fff"/><path d="M16.6 7h3.3M16.6 9h3.3M19.8 13v2"/></g>
+      <g class="ic" transform="translate(452 186) scale(1.6)"><path d="M12 2.5v19M8.5 21.5h7"/><path d="M12 5H5l-2 2.2L5 9.4h7z" fill="#fff"/><path d="M12 11.2h7l2 2.2-2 2.2h-7z" fill="#fff"/></g>
+
+      <g><rect x="288" y="126" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="299" y="141.3" fill="#ffffff">6</text></g>
+      <g><rect x="358" y="132" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="369" y="147.3" fill="#ffffff">7</text></g>
+      <g><rect x="285" y="192" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="296" y="207.3" fill="#ffffff">8</text></g>
+      <g><rect x="428" y="190" width="22" height="22" rx="2" fill="#1f4e8c"/><text class="mn w" x="439" y="205.3" fill="#ffffff">9</text></g>
+
+      <!-- Zone C: your kitchen at home -->
+      <rect x="668" y="58" width="14" height="30" fill="#c4e2ca" stroke="#2e7d3e" stroke-width="1.5"/>
+      <polygon points="514,100 613,52 712,100" fill="#c4e2ca" stroke="#2e7d3e" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="522" y="98" width="182" height="138" fill="#e1f0e3" stroke="#2e7d3e" stroke-width="1.5"/>
+      <rect x="532" y="108" width="162" height="24" rx="4" fill="#ffffff" stroke="#2e7d3e" stroke-width="1.2"/>
+      <polygon points="546,113 553,125 539,125" fill="#2e7d3e"/>
+      <text class="sign" x="559" y="124.5">Your kitchen at home</text>
+
+      <g class="ic" transform="translate(558 160) scale(2)"><rect x="3" y="2.5" width="18" height="19" rx="1" fill="#fff"/><path d="M12 2.5v19"/><rect x="9.4" y="12.6" width="5.2" height="4.4" rx=".6" fill="#fff"/><path d="M10.4 12.6v-1.4a1.6 1.6 0 0 1 3.2 0v1.4"/><circle cx="17" cy="6.6" r="2"/></g>
+      <g class="ic" transform="translate(644 160) scale(2)"><rect x="3" y="2.5" width="12" height="19" fill="#fff"/><path d="M3 9h12M3 15.5h12"/><rect x="4.6" y="4.5" width="2.6" height="4.5" rx=".6"/><rect x="9" y="5.5" width="2.6" height="3.5" rx=".6"/><rect x="6.5" y="11" width="2.6" height="4.5" rx=".6"/><path d="M15 2.5l6 2.4v14.2l-6 2.4" fill="#fff"/></g>
+
+      <g><polygon points="545,148 560,174 530,174" fill="#2e7d3e"/><text class="mn w" x="545" y="171" fill="#ffffff">10</text></g>
+      <g><polygon points="631,148 646,174 616,174" fill="#2e7d3e"/><text class="mn w" x="631" y="171" fill="#ffffff">11</text></g>
+
+      <!-- arrows to the table -->
+      <path d="M101 240 Q 130 252 176 254" fill="none" stroke="#9a6508" stroke-width="2" marker-end="url(#arA)"/>
+      <path d="M377 240 L 377 252" fill="none" stroke="#1f4e8c" stroke-width="2" marker-end="url(#arB)"/>
+      <path d="M613 240 Q 600 252 560 254" fill="none" stroke="#2e7d3e" stroke-width="2" marker-end="url(#arC)"/>
+
+      <!-- your table in old age -->
+      <rect x="110" y="258" width="494" height="134" rx="12" fill="#f7f2e8" stroke="#c9bda6" stroke-width="1.2"/>
+      <circle cx="357" cy="324" r="64" fill="#ffffff" stroke="#9aa0a6" stroke-width="1.5"/>
+      <path d="M357 324L357 268A56 56 0 0 1 357 380Z" fill="#f0a830" stroke="#ffffff" stroke-width="2"/>
+      <path d="M357 324L357 380A56 56 0 0 1 311.7 291.1Z" fill="#1f4e8c" stroke="#ffffff" stroke-width="2"/>
+      <path d="M357 324L311.7 291.1A56 56 0 0 1 357 268Z" fill="#2e7d3e" stroke="#ffffff" stroke-width="2"/>
+      <circle cx="386" cy="324" r="6.5" fill="#ffffff" stroke="#1f2328" stroke-width="1.2"/>
+      <rect x="323" y="333" width="12" height="12" fill="#ffffff" stroke="#1f2328" stroke-width="1.2"/>
+      <polygon points="342,284 349,296 335,296" fill="#ffffff" stroke="#1f2328" stroke-width="1.2"/>
+
+      <path d="M414 320 L 434 316" stroke="#1f2328" stroke-width="1"/>
+      <text class="labb" x="438" y="314">The basics</text>
+      <text class="lab" x="438" y="329">from the village kitchen</text>
+      <path d="M318 288 L 298 284" stroke="#1f2328" stroke-width="1"/>
+      <text class="labb" x="294" y="282" text-anchor="end">On top, if you wish</text>
+      <text class="lab" x="294" y="297" text-anchor="end">from your own kitchen</text>
+      <path d="M314 350 L 298 352" stroke="#1f2328" stroke-width="1"/>
+      <text class="labb" x="294" y="350" text-anchor="end">Most of the rest</text>
+      <text class="lab" x="294" y="365" text-anchor="end">from the storeroom at work</text>
+      <text class="ttl" x="438" y="364">Your table in old age</text>
+      <text class="lab" x="438" y="380">(not to scale)</text>
+    </svg>
+  </figure>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
