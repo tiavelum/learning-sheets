@@ -173,6 +173,7 @@ describe("the build", () => {
     for (const file of ["index.html", "browse.js", "browse.css"]) {
       assert.ok(existsSync(path.join(out, file)), file);
     }
+    assert.equal(existsSync(path.join(out, "README.md")), false);
     const png = readFileSync(path.join(out, "images", `${SHEET}.png`));
     assert.equal(png.readUInt32BE(16), IMAGE_WIDTH);
   });

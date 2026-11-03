@@ -189,6 +189,8 @@ export async function buildSite({
 
   mkdirSync(out, { recursive: true });
   for (const file of readdirSync(site)) {
+    // The README of site/ describes the source for its maintainers and is not part of the page.
+    if (file === "README.md") continue;
     if (file === "index.html") {
       const html = readFileSync(path.join(site, file), "utf8");
       writeFileSync(path.join(out, file), pageWithCatalog(html, catalog));
