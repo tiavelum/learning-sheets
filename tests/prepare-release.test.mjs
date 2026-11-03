@@ -41,6 +41,9 @@ function released(tag, titles) {
   git(repository, "init", "--quiet", "--initial-branch=main");
   git(repository, "config", "user.name", "Test");
   git(repository, "config", "user.email", "test@example.org");
+  // A signing key the machine's git configuration asks for would not be found.
+  git(repository, "config", "commit.gpgsign", "false");
+  git(repository, "config", "tag.gpgsign", "false");
   for (const title of titles) addSheet(root, title);
   writeFileSync(path.join(root, "README.md"), "# Sheets\n");
   git(repository, "add", ".");
