@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Terraform learning sheet, page 2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#1E3A8A}a:hover{color:#142a66}
+.pg > *{flex-shrink:0}
+.pg code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:-0.02em}
+.pg td{padding:3px 6px;vertical-align:top;border-bottom:1px solid #C9C9C3}
+</style>
+</helmet>
+<div class="pg" style="width: 794px; height: 1123px; box-sizing: border-box; padding: 44px 44px 0; background: #FFFFFF; color: #1C1F24; font-family: Inter, 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; gap: 7px; overflow: hidden">
+
+<div style="display: flex; justify-content: space-between; align-items: baseline">
+<h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em">Terraform</h1>
+<div style="font-size: 12px; color: #4A4E54">Learning sheet · page 2 of 2 · the facts, as of November 2026</div>
+</div>
+<p style="margin: 0; font-size: 12.5px; line-height: 1.4">Terraform is an infrastructure-as-code tool: you describe servers, networks and other services in text files, and Terraform creates, changes and deletes the real ones through each platform's API until they match the files.</p>
+
+<table style="width: 706px; table-layout: fixed; border-collapse: collapse; font-size: 12px; line-height: 1.28">
+<colgroup><col style="width: 146px"><col style="width: 180px"><col style="width: 200px"><col style="width: 180px"></colgroup>
+<thead>
+<tr style="background: #E4E4DF"><th style="text-align: left; padding: 4px 6px; border-bottom: 1.5px solid #1C1F24">Item</th><th style="text-align: left; padding: 4px 6px; border-bottom: 1.5px solid #1C1F24">What it is</th><th style="text-align: left; padding: 4px 6px; border-bottom: 1.5px solid #1C1F24">What it does</th><th style="text-align: left; padding: 4px 6px; border-bottom: 1.5px solid #1C1F24">Watch out</th></tr>
+</thead>
+<tbody>
+<tr style="background: #EDEDEA"><td colspan="4" style="font-weight: 700; font-size: 12.5px; padding: 4px 6px"><span style="display: inline-flex; align-items: center; gap: 4px; vertical-align: -2px; margin-right: 6px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5.5" fill="#1E3A8A"></circle></svg><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><rect x="0.5" y="0.5" width="11" height="11" rx="1.5" fill="#E8A317" stroke="#1C1F24" stroke-width="0.8"></rect></svg><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0L12 6 6 12 0 6Z" fill="#3A9D5D"></path></svg></span>Drawn in the scene</td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><circle cx="11" cy="11" r="10" fill="#1E3A8A"></circle><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Inter, sans-serif">1</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="5" y="4" width="14" height="17" rx="2"></rect><rect x="9" y="2.5" width="6" height="3.5" rx="1"></rect><path d="M8.5 10.5h7M8.5 14h7M8.5 17.5h4.5"></path></svg><b>Configuration</b></div></td><td><code>.tf</code> files in HCL, kept in git</td><td>Declares the end state; Terraform derives the steps</td><td>The code is the truth: change and review it there</td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><circle cx="11" cy="11" r="10" fill="#1E3A8A"></circle><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Inter, sans-serif">2</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M3 9h18v3H3zM5 12v8M19 12v8M13 12v4h6"></path></svg><b>Resource</b></div></td><td>A <code>resource</code> block: a VM, network, DNS record…</td><td>Creates, updates or deletes real objects to match</td><td>Renaming destroys and recreates it; use <code>moved</code></td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><rect x="1" y="1" width="20" height="20" rx="3" fill="#E8A317" stroke="#1C1F24" stroke-width="1"></rect><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1F24" font-family="Inter, sans-serif">7</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="9" cy="7" r="3.5"></circle><path d="M3 20.5c0-4 2.7-6.5 6-6.5s6 2.5 6 6.5"></path><circle cx="18" cy="12.5" r="2.5"></circle><path d="M18 15v5M18 17.5h2M18 19.5h1.5"></path></svg><b>Terraform</b></div></td><td>HashiCorp (IBM) CLI; OpenTofu is an open fork</td><td>Builds a dependency graph; runs steps in parallel</td><td>Not meant for configuring software inside servers</td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><rect x="1" y="1" width="20" height="20" rx="3" fill="#E8A317" stroke="#1C1F24" stroke-width="1"></rect><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1F24" font-family="Inter, sans-serif">8</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M4 14v-2a8 8 0 0 1 16 0v2"></path><rect x="3" y="13" width="4" height="6.5" rx="1.5"></rect><rect x="17" y="13" width="4" height="6.5" rx="1.5"></rect><path d="M19 19.5c0 1.5-2 2-5 2"></path></svg><b>Provider</b></div></td><td>A plugin per platform, e.g. <code>hashicorp/aws</code></td><td>Adds resource types; makes the API calls</td><td>Pin its version; commit <code>.terraform.lock.hcl</code></td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><rect x="1" y="1" width="20" height="20" rx="3" fill="#E8A317" stroke="#1C1F24" stroke-width="1"></rect><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1F24" font-family="Inter, sans-serif">9</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 6.5C9 4.5 6 4.5 3 5.5v13.5c3-1 6-1 9 1M12 6.5c3-2 6-2 9-1v13.5c-3-1-6-1-9 1M12 6.5v14"></path></svg><b>State</b></div></td><td><code>terraform.tfstate</code>, a JSON file</td><td>Maps each resource to its real object and values</td><td>May hold plain-text secrets; don't edit or commit</td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><rect x="1" y="1" width="20" height="20" rx="3" fill="#E8A317" stroke="#1C1F24" stroke-width="1"></rect><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1F24" font-family="Inter, sans-serif">10</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="3" y="3.5" width="18" height="16" rx="2"></rect><circle cx="12" cy="11.5" r="3.5"></circle><path d="M12 8v1.5M6 19.5v1.5M18 19.5v1.5"></path></svg><b>Backend</b></div></td><td>Where state lives: local by default, or S3, GCS…</td><td>Shares state; most remote ones can lock it</td><td>Remote, locked, encrypted; one per environment</td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" style="flex: none; margin: -2px"><path d="M13 0.5L25.5 13 13 25.5 0.5 13Z" fill="#3A9D5D"></path><text x="13" y="17.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111111" font-family="Inter, sans-serif">14</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M3 9.5L5 4h14l2 5.5M3 9.5a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0M5 12.5V20h14v-7.5M9.5 20v-4.5h5V20"></path></svg><b>Platform API</b></div></td><td>Web API of AWS, Azure, Google Cloud, GitHub…</td><td>Creates everything; Terraform only calls it</td><td>Its permissions and quotas limit what Terraform can do</td></tr>
+
+<tr style="background: #F6F6F4"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" style="flex: none; margin: -2px"><path d="M13 0.5L25.5 13 13 25.5 0.5 13Z" fill="#3A9D5D"></path><text x="13" y="17.2" text-anchor="middle" font-size="12" font-weight="700" fill="#111111" font-family="Inter, sans-serif">15</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M4 19c0-5 4-5 5.5-9S13 4.5 19 4.5M15.5 1.5L19 4.5l-3 3.2"></path></svg><b>Drift</b></div></td><td>Managed objects changed outside Terraform</td><td>Found at the next plan, which proposes to undo it</td><td>To keep a manual change, write it into the code</td></tr>
+
+<tr style="background: #E6ECFA"><td colspan="4" style="font-weight: 700; font-size: 12.5px; padding: 4px 6px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" style="vertical-align: -1px; margin-right: 6px"><circle cx="6" cy="6" r="5.5" fill="#1E3A8A"></circle></svg>Your desk: more things you write</td></tr>
+
+<tr style="background: #F2F6FD"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><circle cx="11" cy="11" r="10" fill="#1E3A8A"></circle><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Inter, sans-serif">3</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5.5 5.5"></path></svg><b>Data source</b></div></td><td>A <code>data</code> block: an existing network, an image…</td><td>Reads an unmanaged object; others use its values</td><td>Use it for things someone else manages</td></tr>
+
+<tr style="background: #F2F6FD"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><circle cx="11" cy="11" r="10" fill="#1E3A8A"></circle><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Inter, sans-serif">4</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M3 7.5l9-4 9 4v9l-9 4-9-4zM3 7.5l9 4 9-4M12 11.5v9"></path></svg><b>Module</b></div></td><td>A folder of <code>.tf</code> files, called by a <code>module</code> block</td><td>Packages resources: variables in, outputs out</td><td>Pin a registry module's <code>version</code></td></tr>
+
+<tr style="background: #F2F6FD"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><circle cx="11" cy="11" r="10" fill="#1E3A8A"></circle><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Inter, sans-serif">5</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="3" y="6" width="18" height="12" rx="2"></rect><path d="M7 14.5h10"></path></svg><b>Variable</b></div></td><td>A <code>variable</code> block, set in <code>.tfvars</code> or with <code>-var</code></td><td>One configuration serves several environments</td><td><code>sensitive</code> hides it in output, not in state</td></tr>
+
+<tr style="background: #F2F6FD"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><circle cx="11" cy="11" r="10" fill="#1E3A8A"></circle><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#FFFFFF" font-family="Inter, sans-serif">6</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="3" y="4" width="10" height="16" rx="1.5"></rect><path d="M6 8.5h4M6 12h4M11 15.5h10M17.5 12L21 15.5l-3.5 3.5"></path></svg><b>Output</b></div></td><td>An <code>output</code> block</td><td>Prints values after apply; hands a module's results to its caller</td><td>Mark secret ones <code>sensitive</code></td></tr>
+
+<tr style="background: #FCF1D6"><td colspan="4" style="font-weight: 700; font-size: 12.5px; padding: 4px 6px"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true" style="vertical-align: -1px; margin-right: 6px"><rect x="0.5" y="0.5" width="11" height="11" rx="1.5" fill="#E8A317" stroke="#1C1F24" stroke-width="0.8"></rect></svg>The manager's office: the three steps you ask for, in order</td></tr>
+
+<tr style="background: #FDF7E6"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><rect x="1" y="1" width="20" height="20" rx="3" fill="#E8A317" stroke="#1C1F24" stroke-width="1"></rect><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1F24" font-family="Inter, sans-serif">11</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M12 3v11M7.5 9.5L12 14l4.5-4.5M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"></path></svg><b>init</b></div></td><td><code>terraform init</code></td><td>Installs providers, modules; sets up the backend</td><td>Rerun after such changes; commit its lock file</td></tr>
+
+<tr style="background: #FDF7E6"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><rect x="1" y="1" width="20" height="20" rx="3" fill="#E8A317" stroke="#1C1F24" stroke-width="1"></rect><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1F24" font-family="Inter, sans-serif">12</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><rect x="4" y="3" width="16" height="18" rx="2"></rect><path d="M8 6.5v3M6.5 8h3M6.5 13.3c.75-.9 1.5-.9 2.25 0s1.5.9 2.25 0M6.5 17.5h3M13 8h4M13 13h4M13 17.5h4"></path></svg><b>plan</b></div></td><td><code>terraform plan</code>: a dry run that changes nothing</td><td>Lists <b>+</b> create, <b>~</b> update, <b>−/+</b> replace, <b>−</b> destroy</td><td>Check every <b>−/+</b> and <b>−</b>: data can be lost</td></tr>
+
+<tr style="background: #FDF7E6"><td><div style="display: flex; align-items: center; gap: 4px"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" style="flex: none"><rect x="1" y="1" width="20" height="20" rx="3" fill="#E8A317" stroke="#1C1F24" stroke-width="1"></rect><text x="11" y="15.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1C1F24" font-family="Inter, sans-serif">13</text></svg><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M4 20.5h8M15 4.5l4.5 4.5L10 18.5H5.5V14z"></path></svg><b>apply</b></div></td><td><code>terraform apply</code>: asks for <code>yes</code>, or runs a saved plan</td><td>Calls APIs in dependency order; updates state</td><td>With no gap, a rerun changes nothing</td></tr>
+</tbody>
+</table>
+
+<div style="display: flex; flex-direction: column; gap: 3px; margin-top: 4px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700">Principles to remember</h2>
+<ol style="margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.36">
+<li><b>Describe the end state, not the steps.</b> Terraform derives the order from the references between blocks.</li>
+<li><b>The code is the truth.</b> State is only Terraform's memory of what exists in the real world.</li>
+<li><b>Apply twice, change once.</b> A second apply finds no gap and does nothing (idempotence).</li>
+<li><b>Any outside change to a managed object is drift;</b> the next plan proposes to undo it.</li>
+</ol>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 3px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"></path></svg>Do</h2>
+<ul style="margin: 0; padding-left: 16px; font-size: 12px; line-height: 1.36">
+<li>Keep the code in git and review every change.</li>
+<li>Read the plan, then apply exactly that plan.</li>
+<li>Keep state remote and locked, one per environment.</li>
+<li>Run <code>terraform fmt</code> and <code>validate</code> before committing.</li>
+<li>Adopt existing objects with an <code>import</code> block.</li>
+<li>Pass credentials by environment or login, never in code.</li>
+</ul>
+</div>
+<div style="display: flex; flex-direction: column; gap: 3px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#1C1F24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>Don't</h2>
+<ul style="margin: 0; padding-left: 16px; font-size: 12px; line-height: 1.36">
+<li>Change managed objects by hand in a web console.</li>
+<li>Edit, delete or commit the state file.</li>
+<li>Put secrets in <code>.tf</code> or <code>.tfvars</code> files in git.</li>
+<li>Skim past <b>−/+</b> or <b>−</b> lines in a plan.</li>
+<li>Put everything into one huge state.</li>
+<li>Make <code>-target</code> or <code>-auto-approve</code> a habit.</li>
+</ul>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

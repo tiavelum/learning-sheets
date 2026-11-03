@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>GitOps sheet, page 2: the scene, continued</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&amp;family=Atkinson+Hyperlegible+Next:wght@200..800&amp;family=IBM+Plex+Mono:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+.sheet{font-family:'Atkinson Hyperlegible Next',Verdana,sans-serif;color:#1B2430}
+.disp{font-family:Archivo,'Arial Narrow',Arial,sans-serif}
+.nm{display:flex;align-items:center;gap:6px;font-family:Archivo,'Arial Narrow',Arial,sans-serif;font-weight:700;font-size:14px;line-height:1.2}
+.ico{flex:none;color:#1B2430}
+.mk{flex:none}
+.txt{margin:4px 0 0;font-size:13px;line-height:1.38}
+.card{display:flex;gap:10px;align-items:flex-start;border-radius:6px;padding:12px 14px;min-width:0}
+.gh{display:flex;align-items:center;gap:8px;margin:0}
+.gh b{font-family:Archivo,'Arial Narrow',Arial,sans-serif;font-size:16px;font-weight:700}
+.gh span{font-size:12.5px;font-weight:400;color:#4F5A68}
+.lab{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#1B2430}
+</style>
+</helmet>
+<div class="sheet" style="width: 794px; height: 1123px; box-sizing: border-box; padding: 44px; background: #FFFFFF; display: flex; flex-direction: column; gap: 12px">
+
+<header style="display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4F5A68"><span>Learning sheet · GitOps and its tools</span><span>Page 2 of 5</span></div>
+<h2 class="disp" style="margin: 0; font-size: 26px; line-height: 1.1; font-weight: 800; font-stretch: 112%">The scene, continued</h2>
+<p style="margin: 0; font-size: 13px; line-height: 1.4">These items are not drawn on page 1. Each block sits in the place where its items do their job.</p>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h3 class="gh"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="1" width="12" height="12" rx="1.5" fill="#2463B5" stroke="#1B2430" stroke-width="1"/></svg><b>Head office</b><span>· two ways to write plan sheets for many stores</span></h3>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<div class="card" style="background: #E4EDF9; border: 1px solid #A9C4EA"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1.5" y="1.5" width="23" height="23" rx="2.5" fill="#2463B5" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.5" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12.5" fill="#FFFFFF">4</text></svg><div style="min-width: 0"><div class="nm"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="1"/><rect x="7" y="6.5" width="10" height="4" stroke-dasharray="2 1.6"/><rect x="7" y="13.5" width="6" height="4" stroke-dasharray="2 1.6"/></svg>Helm chart</div><p class="txt">A ready-made plan template with blanks, such as store size, filled in for each store; chains share such templates with each other.</p></div></div>
+<div class="card" style="background: #E4EDF9; border: 1px solid #A9C4EA"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect x="1.5" y="1.5" width="23" height="23" rx="2.5" fill="#2463B5" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.5" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12.5" fill="#FFFFFF">5</text></svg><div style="min-width: 0"><div class="nm"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 3h11v17h-11z"/><path d="M6.5 7h5M6.5 10.5h5"/><path d="M11 12.5h9.5v6l-2.5 2.5H11z" fill="#FFFFFF"/><path d="M18 21v-2.5h2.5"/></svg>Kustomize</div><p class="txt">One finished base plan plus a few sticky notes per store that change single lines; there are no blanks to fill.</p></div></div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h3 class="gh"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/></svg><b>Store</b><span>· how the plan reaches the store: the one contrast to remember</span></h3>
+<div style="background: #E3F4E9; border: 1px solid #A6D6B8; border-radius: 8px; padding: 12px 14px; display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 16px">
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+<div class="lab">From outside: push</div>
+<div class="nm"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.4" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#1B2430">12</text></svg><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 9.5h4l3 3.5v3h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/></svg>Push deployment</div>
+<svg width="232" height="132" viewBox="0 0 232 132" role="img" aria-label="A courier van with keys drives from head office to the store, pins up a sheet and drives off; later a sheet on the board is changed by hand and nobody notices" style="display: block; font-family: 'Atkinson Hyperlegible Next', Verdana, sans-serif">
+<g stroke-linecap="round" stroke-linejoin="round">
+<rect x="1" y="6" width="58" height="58" rx="6" fill="#E4EDF9" stroke="#A9C4EA" stroke-width="1.5"/>
+<rect x="21" y="16" width="18" height="38" rx="2" fill="#2463B5" stroke="#1B2430" stroke-width="1.2"/>
+<rect x="25" y="22" width="10" height="12" fill="#FFFFFF" stroke="#1B2430" stroke-width="0.8"/>
+<path d="M66 50H86" stroke="#1B2430" stroke-width="1.6" stroke-dasharray="4 4"/>
+<rect x="88" y="34" width="34" height="24" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<path d="M122 41h10l7 8v9h-17" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<circle cx="97" cy="60" r="4" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<circle cx="130" cy="60" r="4" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<circle cx="104" cy="18" r="6" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<path d="M110 18h14M120 18v5M124 18v4" stroke="#1B2430" stroke-width="1.5"/>
+<circle cx="104" cy="18" r="2" fill="#1B2430"/>
+<path d="M142 50H158" stroke="#1B2430" stroke-width="1.6" stroke-dasharray="4 4"/>
+<path d="M153 45l6 5-6 5" fill="none" stroke="#1B2430" stroke-width="1.6"/>
+<rect x="162" y="6" width="68" height="120" rx="6" fill="#FFFFFF" stroke="#A6D6B8" stroke-width="1.5"/>
+<rect x="170" y="16" width="52" height="40" rx="2" fill="#EBD9B9" stroke="#1B2430" stroke-width="1.2"/>
+<rect x="176" y="22" width="16" height="26" fill="#FFFFFF" stroke="#1B2430" stroke-width="1"/>
+<rect x="198" y="22" width="16" height="26" fill="#FFFFFF" stroke="#1B2430" stroke-width="1"/>
+<path d="M179 30h10M179 36h10M201 30h10" stroke="#1B2430" stroke-width="1"/>
+<path d="M200 40l3-4 3 5 3-5 3 4" fill="none" stroke="#1B2430" stroke-width="1.4"/>
+<path d="M172 66h48M172 86h48M172 106h48" stroke="#1B2430" stroke-width="1.5"/>
+<g fill="#FFFFFF" stroke="#1B2430" stroke-width="1"><rect x="174" y="72" width="9" height="14"/><rect x="185" y="72" width="9" height="14"/><rect x="196" y="72" width="9" height="14"/><rect x="174" y="92" width="9" height="14"/><rect x="207" y="92" width="9" height="14"/></g>
+<rect x="88" y="94" width="26" height="16" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.2"/>
+<path d="M88 98h-7l-4 5v7h11" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.2"/>
+<circle cx="82" cy="111" r="3" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.2"/>
+<circle cx="108" cy="111" r="3" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.2"/>
+<path d="M120 98h14M122 104h18M120 110h12" stroke="#1B2430" stroke-width="1.2"/>
+<text x="62" y="128" font-size="12" fill="#1B2430">drives off</text>
+</g>
+</svg>
+<p class="txt" style="margin: 0">A courier with keys to every store pins up the new sheets and drives off; nobody comes back to check the board.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; border-left: 1.5px solid #A6D6B8; padding-left: 16px">
+<div class="lab">From inside: pull</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+<div class="nm"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.4" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#1B2430">13</text></svg><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="19" height="13" rx="1.5"/><path d="M8 20.5h8M12 16.5v4"/><path d="M5.5 7.8l1.2 1.2 2-2M11 8h7.5"/><path d="M5.6 11.6l2.4 2.4M8 11.6l-2.4 2.4M11 12.8h7.5"/></svg>Argo CD</div>
+<svg width="170" height="100" viewBox="0 0 190 112" role="img" aria-label="A shelf keeper in front of a large status screen with one line per item, linked to several stores" style="display: block">
+<g stroke-linecap="round" stroke-linejoin="round">
+<rect x="48" y="4" width="138" height="70" rx="4" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<path d="M58 20l3 3 5-5" fill="none" stroke="#1B2430" stroke-width="1.8"/>
+<path d="M76 21h98" stroke="#1B2430" stroke-width="1.2"/>
+<path d="M58 34l7 7M65 34l-7 7" stroke="#1B2430" stroke-width="1.8"/>
+<path d="M76 38h98" stroke="#1B2430" stroke-width="3.2"/>
+<path d="M58 56l3 3 5-5" fill="none" stroke="#1B2430" stroke-width="1.8"/>
+<path d="M76 57h98" stroke="#1B2430" stroke-width="1.2"/>
+<circle cx="22" cy="40" r="9" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<path d="M6 92V62a8 8 0 0 1 8-8h16a8 8 0 0 1 8 8v30" fill="#FFFFFF" stroke="#1B2430" stroke-width="1.5"/>
+<path d="M36 62l14-6" stroke="#1B2430" stroke-width="1.5"/>
+<path d="M90 74v16M128 74v16M166 74v16" stroke="#1B2430" stroke-width="1.2" stroke-dasharray="3 3"/>
+<g fill="#FFFFFF" stroke="#1B2430" stroke-width="1.2"><path d="M79 98l3-6h16l3 6v12H79z"/><path d="M117 98l3-6h16l3 6v12h-22z"/><path d="M155 98l3-6h16l3 6v12h-22z"/></g>
+</g>
+</svg>
+<p class="txt" style="margin: 0">A shelf keeper with a big status screen: it shows where the board differs from the binder and fixes it when someone presses Sync, or by itself if told to. It can also tend other stores, but then holds their keys.</p>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; min-width: 0">
+<div class="nm"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.4" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#1B2430">14</text></svg><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8.5" width="18" height="11.5" rx="1.5"/><path d="M9 8.5V5.5h6v3"/><path d="M3 13h18"/><path d="M10 13v2.2h4V13"/></svg>Flux</div>
+<svg width="170" height="100" viewBox="0 0 190 112" role="img" aria-label="Four specialists inside one store, each with their own job, walking a round" style="display: block">
+<g stroke-linecap="round" stroke-linejoin="round">
+<rect x="1" y="1" width="188" height="110" rx="6" fill="#FFFFFF" stroke="#A6D6B8" stroke-width="1.5"/>
+<ellipse cx="95" cy="76" rx="84" ry="22" fill="none" stroke="#1B2430" stroke-width="1.4" stroke-dasharray="4 4"/>
+<path d="M176 66l4 9-9 2" fill="none" stroke="#1B2430" stroke-width="1.4"/>
+<g fill="#FFFFFF" stroke="#1B2430" stroke-width="1.4">
+<circle cx="32" cy="56" r="7"/><path d="M21 92V71a6 6 0 0 1 6-6h10a6 6 0 0 1 6 6v21"/>
+<circle cx="74" cy="56" r="7"/><path d="M63 92V71a6 6 0 0 1 6-6h10a6 6 0 0 1 6 6v21"/>
+<circle cx="116" cy="56" r="7"/><path d="M105 92V71a6 6 0 0 1 6-6h10a6 6 0 0 1 6 6v21"/>
+<circle cx="158" cy="56" r="7"/><path d="M147 92V71a6 6 0 0 1 6-6h10a6 6 0 0 1 6 6v21"/>
+</g>
+<g fill="none" stroke="#1B2430" stroke-width="1.3">
+<rect x="25" y="10" width="14" height="26" rx="1.5" fill="#2463B5"/><path d="M29 10v26"/>
+<rect x="66" y="10" width="16" height="26" rx="1"/><path d="M66 19h16M66 28h16M71.5 10v26M76.5 10v26"/>
+<rect x="108" y="10" width="16" height="26" rx="1"/><rect x="111" y="14" width="10" height="6" stroke-dasharray="2 1.6"/><rect x="111" y="25" width="6" height="6" stroke-dasharray="2 1.6"/>
+<path d="M149 12h18v14h-10l-5 5v-5h-3z"/><path d="M153 17h10M153 21h7"/>
+</g>
+</g>
+</svg>
+<p class="txt" style="margin: 0">A team of specialists living in each store: one fetches the plan, others pin up sheets or fill in templates, one sends messages. Each round, they fix what differs.</p>
+</div>
+</div>
+
+<div style="display: flex; gap: 12px; align-items: flex-start; border-top: 1.5px dashed #8FC4A4; padding-top: 10px">
+<svg width="92" height="56" viewBox="0 0 92 56" role="img" aria-label="An aisle with a trial shelf end at the front marked with a flag" style="display: block; flex: none">
+<g stroke-linecap="round" stroke-linejoin="round" stroke="#1B2430">
+<path d="M4 18h52M4 36h52M4 52h52" stroke-width="1.5"/>
+<g fill="#FFFFFF" stroke-width="1"><rect x="6" y="6" width="10" height="12"/><rect x="18" y="6" width="10" height="12"/><rect x="30" y="6" width="10" height="12"/><rect x="42" y="6" width="10" height="12"/><rect x="6" y="24" width="10" height="12"/><rect x="18" y="24" width="10" height="12"/><rect x="30" y="24" width="10" height="12"/><rect x="42" y="24" width="10" height="12"/></g>
+<rect x="62" y="24" width="26" height="28" fill="#FFFFFF" stroke-width="1.5"/>
+<rect x="66" y="30" width="8" height="10" fill="#1B2430" stroke-width="1"/><rect x="76" y="30" width="8" height="10" fill="#1B2430" stroke-width="1"/>
+<path d="M75 24V4l12 5-12 5" fill="#FFFFFF" stroke-width="1.5"/>
+</g>
+</svg>
+<div style="min-width: 0">
+<div class="nm"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.4" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#1B2430">15</text></svg><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19.5h18"/><rect x="4" y="12.5" width="4.4" height="7"/><rect x="9.8" y="12.5" width="4.4" height="7"/><rect x="15.6" y="12.5" width="4.4" height="7" fill="currentColor"/><path d="M17.8 12.5V4.5l3.2 1.6-3.2 1.6"/></svg>Progressive delivery <span style="font-family: 'Atkinson Hyperlegible Next', Verdana, sans-serif; font-weight: 400; font-size: 12.5px; color: #4F5A68">works alongside 13 and 14</span></div>
+<p class="txt">A trial shelf: a new product first fills one shelf end. If sales and complaints look good it takes over the aisle; if not, it comes off again.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h3 class="gh"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/></svg><b>Store</b><span>· keeping the safe's code out of plain sight</span></h3>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<div class="card" style="background: #E3F4E9; border: 1px solid #A6D6B8"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.4" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#1B2430">16</text></svg><div style="min-width: 0"><div class="nm"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="1"/><path d="M3.5 6.8l8.5 6 8.5-6"/><circle cx="12" cy="15.2" r="2.4" fill="currentColor"/></svg>Sealed Secrets / SOPS</div><p class="txt">Each store's safe has a code. It travels in the binder, sealed in an envelope that the store's own key opens.</p></div></div>
+<div class="card" style="background: #E3F4E9; border: 1px solid #A6D6B8"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="12" fill="#3FA36A" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.4" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#1B2430">17</text></svg><div style="min-width: 0"><div class="nm"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5L12 4.5l9 5z"/><path d="M5.5 10v8M9.8 10v8M14.2 10v8M18.5 10v8"/><path d="M3 20.5h18"/></svg>External Secrets Operator</div><p class="txt">The binder only names a box at the bank; a clerk in the store fetches the code from there and asks again at set times, so the store's copy follows the bank's.</p></div></div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 6px">
+<h3 class="gh"><svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><polygon points="7.5,0.8 14.2,7.5 7.5,14.2 0.8,7.5" fill="#4B2577" stroke="#1B2430" stroke-width="1"/></svg><b>Building</b><span>· the premises the store stands on: walls, power, cold rooms</span></h3>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<div class="card" style="background: #EEE7F6; border: 1px solid #C3AEDD"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><polygon points="13,0.6 25.4,13 13,25.4 0.6,13" fill="#4B2577" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.3" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF">18</text></svg><div style="min-width: 0"><div class="nm"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 17.5h19"/><path d="M4.5 17.5a7.5 7.5 0 0 1 15 0"/><path d="M10 10.3V7h4v3.3"/><path d="M4.5 17.5V20h15v-2.5"/></svg>Terraform / OpenTofu</div><p class="txt">A building contractor: compares the drawings with a logbook of what was built, shows what will change, builds when you say go, then leaves.</p></div></div>
+<div class="card" style="background: #EEE7F6; border: 1px solid #C3AEDD"><svg class="mk" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><polygon points="13,0.6 25.4,13 13,25.4 0.6,13" fill="#4B2577" stroke="#1B2430" stroke-width="1"/><text x="13" y="17.3" text-anchor="middle" font-family="Archivo, Arial, sans-serif" font-weight="700" font-size="12" fill="#FFFFFF">19</text></svg><div style="min-width: 0"><div class="nm"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 21V8.5L7.25 5 12 8.5V21"/><path d="M5.5 21v-4h3.5v4"/><path d="M5.5 11.5h.01M9 11.5h.01"/><path d="M1.5 21h12"/><path d="M21.2 9a3.4 3.4 0 1 1-1-2.4"/><path d="M20.4 3.8v2.8h-2.8"/></svg>Crossplane</div><p class="txt">A caretaker living in the store who keeps the building matching its drawings all day, the way the staff keep the shelves.</p></div></div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":794,"height":1123}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
