@@ -1,0 +1,414 @@
+/* The browse page in the system fonts, so the page loads nothing from
+   elsewhere, with one palette for light and one for dark. */
+
+:root {
+  color-scheme: light dark;
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --text: #1d1f22;
+  --muted: #555b63;
+  --line: #d4d1ca;
+  --link: #1a4fa0;
+  --focus: #b8410c;
+  --tag-bg: #eceae4;
+  /* A released PDF: a filled blue button with a down arrow. */
+  --pdf-bg: #1a4fa0;
+  --pdf-text: #ffffff;
+  /* Not released yet: a pale amber box with a dashed border and a dash. */
+  --unreleased-bg: #fbefd2;
+  --unreleased-text: #6a4500;
+  --unreleased-line: #a8761b;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171a;
+    --surface: #1e2125;
+    --text: #e9e7e2;
+    --muted: #a9adb3;
+    --line: #3c4148;
+    --link: #9cc0ff;
+    --focus: #ffa66b;
+    --tag-bg: #2c3036;
+    --pdf-bg: #9cc0ff;
+    --pdf-text: #0d1b33;
+    --unreleased-bg: #33270e;
+    --unreleased-text: #f2cd7d;
+    --unreleased-line: #b88a2e;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.15em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.filter-area[hidden] {
+  display: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.skip:focus {
+  top: 1rem;
+}
+
+.page {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+}
+
+.intro h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.intro p {
+  margin: 0 0 0.5rem;
+  max-width: 44rem;
+}
+
+.release,
+.count,
+.hint,
+.footer {
+  color: var(--muted);
+}
+
+.layout {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 52rem) {
+  .layout {
+    grid-template-columns: 15rem 1fr;
+    align-items: start;
+  }
+
+  .filter-area {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+.filters {
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+.filters summary {
+  min-height: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filters form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.field > label,
+.field > legend {
+  font-weight: 600;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+input[type="search"],
+select,
+.clear {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.6rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+}
+
+.clear {
+  cursor: pointer;
+  background: var(--surface);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag-option {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.75rem;
+  padding: 0 0.6rem;
+  background: var(--tag-bg);
+  border-radius: 4px;
+}
+
+.tag-option input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  accent-color: var(--link);
+}
+
+.tag-option label {
+  display: flex;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.tag-count {
+  color: var(--muted);
+}
+
+.tag-count::before {
+  content: "(";
+}
+
+.tag-count::after {
+  content: ")";
+}
+
+.count {
+  margin: 0 0 0.75rem;
+}
+
+.results:focus {
+  outline: none;
+}
+
+.sheets {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 72rem) {
+  .sheets {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sheet {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1rem;
+  height: 100%;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+@media (min-width: 30rem) {
+  .sheet {
+    grid-template-columns: 7.5rem 1fr;
+  }
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #ffffff;
+  border: 1px solid var(--line);
+}
+
+.body {
+  min-width: 0;
+}
+
+.sheet h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.topic {
+  margin: 0 0 0.5rem;
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+.facts div {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.facts dt {
+  color: var(--muted);
+}
+
+.facts dt::after {
+  content: ":";
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.tags-of-sheet,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.6rem;
+  padding: 0;
+  list-style: none;
+}
+
+.tags-of-sheet li {
+  padding: 0.05rem 0.5rem;
+  font-size: 0.85rem;
+  background: var(--tag-bg);
+  border-radius: 4px;
+}
+
+.actions {
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.actions a,
+.unreleased {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border-radius: 4px;
+}
+
+.actions a.pdf {
+  font-weight: 600;
+  color: var(--pdf-text);
+  background: var(--pdf-bg);
+  border: 2px solid var(--pdf-bg);
+  text-decoration: none;
+}
+
+/* A down arrow: the shape that marks a PDF to download. */
+.actions a.pdf::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.8rem;
+  background: currentColor;
+  clip-path: polygon(35% 0, 65% 0, 65% 50%, 100% 50%, 50% 100%, 0 50%, 35% 50%);
+}
+
+.actions a.pdf:hover span:first-child {
+  text-decoration: underline;
+}
+
+.actions a.plain {
+  padding: 0 0.5rem;
+}
+
+.unreleased {
+  font-size: 0.9rem;
+  color: var(--unreleased-text);
+  background: var(--unreleased-bg);
+  border: 2px dashed var(--unreleased-line);
+}
+
+/* A dash: the shape that marks a PDF not there yet. */
+.unreleased::before {
+  content: "";
+  width: 0.7rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.notice {
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--line);
+}
+
+@media (forced-colors: active) {
+  .actions a.pdf,
+  .unreleased {
+    border-color: CanvasText;
+  }
+}

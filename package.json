@@ -1,10 +1,11 @@
 {
   "name": "learning-sheets",
   "private": true,
-  "description": "Checks the sheet folders and renders each sheet to PDF",
+  "description": "Checks the sheet folders, renders each sheet to PDF and builds the browse page",
   "scripts": {
     "check": "node scripts/check-sheets.mjs",
     "render": "node scripts/render-sheets.mjs",
+    "site": "node scripts/build-site.mjs",
     "test": "node --test",
     "lint": "biome ci .",
     "format": "biome check --write ."
