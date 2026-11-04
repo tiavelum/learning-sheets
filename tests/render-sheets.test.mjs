@@ -358,6 +358,26 @@ describe("the renderer", () => {
     assert.deepEqual(drawn.get("NotoSansMath-Regular"), new Set(["→"]));
   });
 
+  test("looks at the first letter of generated content in a font-family list of its own", async () => {
+    // Source Sans 3 draws the rest of the heading; Zilla Slab lacks Ω.
+    const { root, out, main } = copyWithMain((text) =>
+      text
+        .replace(
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400",
+          "family=Source+Sans+3:ital,wght@0,400;0,700;1,400&amp;family=Zilla+Slab:wght@700",
+        )
+        .replace(
+          "<style>",
+          "<style>h1::before { content: \"Ω x \"; } h1::first-letter { font-family: 'Zilla Slab', Georgia, serif; }",
+        ),
+    );
+    const [result] = await renderSheets({ root, out });
+    assert.equal(result.error, undefined, result.error);
+    assert.deepEqual(result.warnings, [
+      `${main}: draws U+03A9 Ω in a font neither the page nor the fallback loads`,
+    ]);
+  });
+
   test("fails on a network request made while the page renders", async () => {
     const { root, out, main } = copyWithMain((text) =>
       text.replace("<style>", '<style>h1{background-image:u\\72l("https://example.org/e.png")}'),

@@ -534,16 +534,16 @@ async function uncoveredCharacters(page, drawable) {
     const { nodeIds } = await session.send("DOM.pushNodesByBackendIdsToFrontend", {
       backendNodeIds: texts.map(({ index }) => nodes.backendNodeId[index]),
     });
-    // A ::first-letter node has no id of its own; its element's fonts include its letter.
-    const { nodeIds: parentIds } = await session.send("DOM.pushNodesByBackendIdsToFrontend", {
-      backendNodeIds: texts.map(({ index }) => nodes.backendNodeId[nodes.parentIndex[index]]),
-    });
-    for (const [at, id] of nodeIds.entries()) if (id === 0) nodeIds[at] = parentIds[at];
     const found = new Set();
     for (const [at, { index, text, style }] of texts.entries()) {
-      const fonts = await fontsOf(nodeIds[at]);
-      // A text with no font named is not painted (a closed <details>), so it counts as covered.
-      if (fonts.length === 0 || covered(fonts, text)) continue;
+      // A ::first-letter node has no id of its own, and no element's fonts say which font drew it
+      // (those of a ::before or ::after hold its letter's only on the pseudo-element), so its
+      // letter is always drawn alone.
+      if (nodeIds[at] !== 0) {
+        const fonts = await fontsOf(nodeIds[at]);
+        // A text with no font named is not painted (a closed <details>), so it counts as covered.
+        if (fonts.length === 0 || covered(fonts, text)) continue;
+      }
       // Chromium reports fonts per text, not per character, so a text that is
       // not covered is drawn again one character at a time to find which.
       const graphemes = [...new Set(graphemesOf(text))].filter((g) => !DRAWS_NOTHING.test(g));
