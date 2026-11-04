@@ -9,6 +9,7 @@ This folder holds the scripts that check the sheet folders, render the sheets to
 | `build-site.mjs`      | Builds the browse page from the page's source in [`site/`](../site/README.md), the sheet READMEs and the images of page one, run by `npm run site` |
 | `prepare-release.mjs` | Writes the notes and `catalog.json` of a release, run by [the release workflow](../README.md#release-the-pdfs)                                     |
 | `sheet-files.mjs`     | What the scripts read from a sheet folder: the form of a name, the front matter, the page order, the static rule and the fonts                     |
+| `font-files.mjs`      | What `render-sheets.mjs` reads from a WOFF2 font file: its PostScript name and the characters it holds                                             |
 
 The scripts run from the root of the repository, on Node 22 after `npm ci`.
 
@@ -61,12 +62,22 @@ npm run render -- --root tests/fixtures/sheets --out build --png-width 400 two-p
 
 For each sheet it prints the pages in the reading order of their frames, as [Page files](../sheets/README.md#page-files) gives. For each page it puts the `<helmet>` into `<head>` and what `<x-dc>` holds into `<body>`, drops the canvas runtime and the Google Fonts links, links the Fontsource stylesheets of the same families from `node_modules` instead, sets `@page` to the board's size with no margin and prints one page with backgrounds, as wide as the board. It takes each family from the package that [Page files](../sheets/README.md#page-files) names. From a variable package it links one of the stylesheets that [the Fontsource guide to variable fonts](https://fontsource.org/docs/getting-started/variable) describes, with `-italic` before `.css` for italic: `wght.css` where the page asks for no axis but `ital` and `wght`, `<axis>.css` where it asks for one other axis and the package holds that file, and `standard.css` otherwise. The family of a variable package takes the name the page uses, as [decision 0002](../docs/decisions/0002-render-with-chromium-and-fontsource.md) gives. It merges the pages into `<out>/<name>.pdf`.
 
+It adds the fallback fonts, Noto Sans Symbols 2, Noto Sans Math and Noto Emoji, in this order, the regular weight of each from its Fontsource package, as three families of their own whose `@font-face` rules hold, by `unicode-range`, only the characters that their files hold within general punctuation, superscripts and subscripts, letterlike symbols, number forms, arrows, mathematical signs, technical symbols, shapes, symbols, dingbats and emoji (`U+2000-209F`, `U+20D0-20FF`, `U+2100-2BFF`, `U+1F000-1FBFF`). Before it measures and prints the page, it puts the three families into the computed `font-family` list of every element and of its generated content, right after the last family of the list that the page loads, or at the end of a list that names none. Chromium takes a character from the first family of the list that holds it, so a character that any family of the list that the page loads holds is drawn from that family, and only one that none of them holds is drawn from the fallback, before the fonts of the machine that a later name of the list, such as `Arial` or `sans-serif`, stands for: such as "→" and "≥" from Noto Sans Math, "✓", "★" and "●" from Noto Sans Symbols 2 and "😀" in black and white from Noto Emoji. [Decision 0007](../docs/decisions/0007-draw-missing-symbols-from-pinned-fallback-fonts.md) records why.
+
 A sheet fails, and leaves neither its PDF nor its PNG in the output folder, also none of an earlier run, where:
 
 - a page is not static under [the contract](../sheets/README.md#page-files), or asks for a font its installed package does not hold;
 - a page requests anything other than its own HTML and the Fontsource files, a request the renderer blocks;
 - a font does not load;
-- the content of a page's body runs past its frame, which it reports by side and by how many px.
+- the content of a page's body runs past its frame, which it reports by side and by how many px;
+- the browser refuses `CSS.getPlatformFontsForNode`, with which the renderer finds the characters that fall to a font of the machine.
+
+A character that neither the page's fonts nor the fallback hold prints in a font of the machine, or as an empty box where no font of the machine holds it either, and the renderer warns about it on stderr, but the sheet still renders. To find such characters, it asks Chromium, through `CSS.getPlatformFontsForNode` of [the DevTools protocol's CSS domain](https://github.com/ChromeDevTools/devtools-protocol/blob/master/pdl/domains/CSS.pdl), which fonts it drew each text and generated content of the page with that has `visibility: visible`, not counting the value, placeholder and options of form controls, by their PostScript names, and whether each was downloaded. A text is covered where every one of these fonts was downloaded, and so is one the renderer served, and each of its characters lies in the `unicode-range` of a face of one of them whose file, read from `node_modules`, holds it. A font of the machine is one Chromium did not download; where no font at all holds a character, Chromium reports a font the renderer served, such as the first family of the list, whose file then shows that it lacks the character. For a text that is not covered it draws each character alone in the same font properties and names every character that is still not covered: once per page, by its code points and the character, one line each, after the line of the sheet's PDF, such as for an emoji written with U+FE0F, which asks for the colour form that Noto Emoji does not have, where the machine has a font that draws it, and for a Chinese character, which a sheet's own fonts have to hold:
+
+```text
+sheets/login-methods-and-recovery/project/Main.dc.html: draws U+26A0 U+FE0F ⚠️ in a font neither the page nor the fallback loads
+sheets/login-methods-and-recovery/project/Main.dc.html: draws U+4E2D 中 in a font neither the page nor the fallback loads
+```
 
 It renders with the Chrome at `CHROME_PATH` where that variable is set, and otherwise with Playwright's Chromium, which this command installs:
 
@@ -76,7 +87,7 @@ npx playwright install chromium
 
 Where neither starts, it prints a line that begins with `no browser:` and names this command, and exits with status 1.
 
-It prints one line per sheet, the PDF and its number of pages or the reason it failed, then how many sheets rendered. The command above prints:
+It prints one line per sheet, the PDF and its number of pages or the reason it failed, then how many sheets rendered; the warnings go to stderr and leave the exit status as it is. The command above prints:
 
 ```text
 build/two-pages-of-squares.pdf: 2 pages

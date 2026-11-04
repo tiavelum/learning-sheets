@@ -198,7 +198,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    npm run format
    ```
 
-   Where the check or the render reports a page, change the page on the canvas and go back to step 5; [`scripts/README.md`](scripts/README.md) explains each message.
+   Where the check or the render reports a page, change the page on the canvas and go back to step 5; [`scripts/README.md`](scripts/README.md) explains each message. Where the render warns that a page draws a character in a font neither the page nor the fallback loads, such as `draws U+26A0 U+FE0F ⚠️ in a font neither the page nor the fallback loads`, the sheet renders and its PDF draws that character in a font of the machine, or as an empty box where the machine has none that holds it: open the PDF and look at it, and where it does not print as the canvas shows it, ask the person whether to replace it on the canvas, here with "⚠" without U+FE0F, and go back to step 5.
 
 10. Commit the sheet folder and push the branch:
 
