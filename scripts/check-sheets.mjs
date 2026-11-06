@@ -170,10 +170,15 @@ function checkFields(file, name, fields, report) {
       `front matter: "last_modified" ${lastModified} is before "created" ${created}; a sheet's latest version is not handed over before its first`,
     );
   }
-  if (skillVersion !== undefined && !/^tiavelum\/claude-setup@[0-9a-f]{7,}$/.test(skillVersion)) {
+  // The skill was kept in tiavelum/claude-setup before decision 0008 moved it here, so versions made
+  // before the move keep naming a commit of that repository.
+  if (
+    skillVersion !== undefined &&
+    !/^tiavelum\/(learning-sheets|claude-setup)@[0-9a-f]{7,}$/.test(skillVersion)
+  ) {
     report(
       file,
-      `front matter: "skill_version" ${JSON.stringify(skillVersion)} is not tiavelum/claude-setup@ and a commit hash of at least 7 lowercase hexadecimal characters`,
+      `front matter: "skill_version" ${JSON.stringify(skillVersion)} is not tiavelum/learning-sheets@ or tiavelum/claude-setup@ and a commit hash of at least 7 lowercase hexadecimal characters`,
     );
   }
   if (
