@@ -1,9 +1,9 @@
 # learning-sheets
 
-The source of the printable learning sheets made with the learning-sheet skill of
-[tiavelum/claude-setup](https://github.com/tiavelum/claude-setup), each kept with
-what it was asked to cover and the version of the skill that made it, for anyone
-who wants to find, print or change a sheet and for the sessions that archive them.
+The source of the printable learning sheets and of the learning-sheet skill that
+makes them, each sheet kept with what it was asked to cover and the version of the
+skill that made it, for anyone who wants to find, print or change a sheet and for
+the sessions that archive them.
 
 ## Getting started
 
@@ -105,6 +105,16 @@ Its notes give the number of sheets and the titles of the sheets added, changed 
 
 A run makes no release, and shows a red cross, where `sheets/` holds no sheet, where a check fails or a sheet does not render, where it was started on a branch other than `main`, or where a release was made in the same minute. A red cross on the last job, `Rebuild the browse page`, leaves the release made; run the workflow "Pages" with "Run workflow" to rebuild the page. Click the run, then the job with the red cross: the step with the red cross names the reason in its log, such as the sheet that did not render and why. After a release in the same minute, run the workflow again a minute later. A run started while another is in progress waits for it, and of several runs waiting, only the one started last goes ahead, as [GitHub's guide to concurrency](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) describes for a group's pending runs. [Decision 0003](docs/decisions/0003-release-every-pdf-from-a-dispatched-workflow.md) records why releases are made this way.
 
+## Upload the skill
+
+Package [the learning-sheet skill](skills/learning-sheet/SKILL.md) into a new ZIP in your Downloads folder, here from a clone in `~/vc/learning-sheets` with `main` checked out and up to date:
+
+```bash
+rm -f ~/Downloads/learning-sheet.zip && (cd ~/vc/learning-sheets/skills && zip -r ~/Downloads/learning-sheet.zip learning-sheet)
+```
+
+It prints `adding: learning-sheet/` and `adding: learning-sheet/SKILL.md`. In the Claude app, open [Customize > Skills](https://claude.ai/customize/skills), click **+**, choose **Create skill**, then **Upload a skill**, and select `learning-sheet.zip`, as [Anthropic's guide to skills](https://support.claude.com/en/articles/12512180-use-skills-in-claude) describes; an upload under the same name replaces the earlier version. Upload it again after each change to `skills/learning-sheet/SKILL.md`. [Decision 0008](docs/decisions/0008-keep-the-learning-sheet-skill-in-this-repository.md) records why the skill is kept here.
+
 ## Archive a sheet
 
 1. In a clone set up as [Getting started](#getting-started) shows, with push access to this repository, start from the latest `main`:
@@ -168,16 +178,15 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
    shasum -a 256 sheets/login-methods-and-recovery/project/*
    ```
 
-7. Find the commit of the skill that made the sheet. Clone tiavelum/claude-setup and save the copy of the learning-sheet skill the session loaded, here from the skills folder of a Claude cloud workspace; elsewhere, save the `SKILL.md` the session read with its file tool:
+7. Find the version of the skill that made the sheet. Save the copy of the learning-sheet skill the session loaded, here from the skills folder of a Claude cloud workspace; elsewhere, save the `SKILL.md` the session read with its file tool:
 
    ```bash
-   git clone https://github.com/tiavelum/claude-setup.git /tmp/claude-setup
    cp /mnt/skills/user/learning-sheet/SKILL.md /tmp/learning-sheet-skill.md
    ```
 
-   In `/tmp/claude-setup`, run the command of [Front matter](sheets/README.md#front-matter) that prints the commit, such as `24b49de`, and do what it says where it prints nothing.
+   Run the command of [Front matter](sheets/README.md#front-matter) that prints the skill version, such as `tiavelum/learning-sheets@3f2a9c1`, and do what it says where it prints nothing.
 
-8. Write `sheets/login-methods-and-recovery/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill_version` as `tiavelum/claude-setup@` and the commit from step 7, `paper` from the board sizes, `topic`, `tags` and `language` from the sheet, the request under `## Request` from the person's prompt as [The sheet README](sheets/README.md#the-sheet-readme) gives, and `created` and `last_modified` both as this command prints it on the day the session hands the sheet over:
+8. Write `sheets/login-methods-and-recovery/README.md` as [The sheet README](sheets/README.md#the-sheet-readme) and [Front matter](sheets/README.md#front-matter) give: `title` from the `title` of `project/canvas.json`, `artifact` from its `url`, `artifact_version` from its `ver`, `skill_version` as step 7 printed it, `paper` from the board sizes, `topic`, `tags` and `language` from the sheet, the request under `## Request` from the person's prompt as [The sheet README](sheets/README.md#the-sheet-readme) gives, and `created` and `last_modified` both as this command prints it on the day the session hands the sheet over:
 
    ```bash
    date -u +%F
@@ -286,7 +295,7 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
      git mv sheets/login-methods-and-recovery sheets/login-methods-and-recovery-codes
      ```
 
-   - In the README, as [Front matter](sheets/README.md#front-matter) gives, `created` stays as it is, `last_modified` takes the date that the command of step 8 of "Archive a sheet" prints on the day this session hands the change over, `skill_version` takes the commit that step 7 of "Archive a sheet" finds for the skill this session loaded, and `artifact` and `artifact_version` take the canvas's current link and version. The request stays as it is, unless the change changes what the sheet is asked to be, such as a further subject or another reader; then rewrite it as [The sheet README](sheets/README.md#the-sheet-readme) gives.
+   - In the README, as [Front matter](sheets/README.md#front-matter) gives, `created` stays as it is, `last_modified` takes the date that the command of step 8 of "Archive a sheet" prints on the day this session hands the change over, `skill_version` takes the skill version that step 7 of "Archive a sheet" prints for the skill this session loaded, and `artifact` and `artifact_version` take the canvas's current link and version. The request stays as it is, unless the change changes what the sheet is asked to be, such as a further subject or another reader; then rewrite it as [The sheet README](sheets/README.md#the-sheet-readme) gives.
    - The pull request's title names the change, such as `feat: add the recovery codes to login-methods-and-recovery`, and its description quotes the prompt that asked for the change, as [The prompt](sheets/README.md#the-prompt) gives.
 
 ## Content and structure
@@ -297,10 +306,11 @@ A run makes no release, and shows a red cross, where `sheets/` holds no sheet, w
 | `project-instructions.md`       | The rules a Claude session follows in this repository; after each change to it, the maintainer pastes its whole text into the instructions field of the claude.ai project "Learning Sheet", whose description field stays empty or holds a few words |
 | `CLAUDE.md`                     | The file Claude Code reads in this repository: it imports `project-instructions.md` and adds what only Claude Code needs                                                                                                                             |
 | [`sheets/`](sheets/README.md)   | One folder per learning sheet, with its README and its canvas files; its [README](sheets/README.md) states what a sheet folder holds and how it is named                                                                                             |
+| `skills/`                       | One folder per skill, named after it and holding its `SKILL.md`: the learning-sheet skill, which [Upload the skill](#upload-the-skill) packages for the claude.ai account                                                                            |
 | [`scripts/`](scripts/README.md) | The scripts that check the sheet folders, render the sheets to PDF, build the browse page and write the notes of a release; its [README](scripts/README.md) gives their options, output and exit status                                              |
 | [`site/`](site/README.md)       | The source of the browse page: its HTML, script and stylesheet, which `scripts/build-site.mjs` builds into the page; its [README](site/README.md) describes them                                                                                     |
 | [`tests/`](tests/README.md)     | The tests of the scripts and the fixture sheet they run on; its [README](tests/README.md) lists them                                                                                                                                                 |
-| `docs/`                         | The documentation beyond the READMEs: in `docs/decisions/`, the decision records that say why the sheets are kept, versioned, rendered, released, browsed and archived as they are                                                                   |
+| `docs/`                         | The documentation beyond the READMEs: in `docs/decisions/`, the decision records that say why the sheets and their skill are kept, versioned, rendered, released, browsed and archived as they are                                                   |
 | `.github/workflows/check.yml`   | The checks every pull request and every push to `main` run: formatting and lint, the tests, the sheet check and the render of every sheet, whose PDFs it attaches to the run as the artifact `sheets`                                                |
 | `.github/workflows/release.yml` | The release of every sheet's PDF, the zip of them all and the catalog, started by "Run workflow" under Actions, and the rebuild of the browse page after it                                                                                          |
 | `.github/workflows/pages.yml`   | The build of the browse page on every push to `main`, on "Run workflow" and when the release workflow calls it, and its deployment to GitHub Pages where Pages publishes from GitHub Actions                                                         |

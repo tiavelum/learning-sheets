@@ -1,6 +1,6 @@
 Repository tiavelum/learning-sheets.
 
-This repository keeps the learning sheets made with the learning-sheet skill of tiavelum/claude-setup, each as the files of its Design canvas with a README, so that they can be found, printed and changed after their session ends.
+This repository keeps the learning-sheet skill, in `skills/learning-sheet/`, and the learning sheets made with it, each as the files of its Design canvas with a README, so that they can be found, printed and changed after their session ends.
 
 Canvas files: Take a sheet's canvas files only from its artifact through the Artifact tool; to change a page, change it on the canvas and read it again. `sheets/README.md` gives how the files are kept.
 

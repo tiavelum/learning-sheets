@@ -227,7 +227,7 @@ describe("the check", () => {
       "skill_version",
       '"tiavelum/claude-setup@4f26fe8"',
       '"tiavelum/claude-setup@main"',
-      /"skill_version" .* is not tiavelum\/claude-setup@ and a commit hash/,
+      /"skill_version" .* is not tiavelum\/learning-sheets@ or tiavelum\/claude-setup@ and a commit hash/,
     ],
     [
       "artifact",
@@ -247,6 +247,28 @@ describe("the check", () => {
       );
     });
   }
+
+  test("allows a skill_version of this repository, as a version made after the skill moved here has", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(
+        path.join(sheet, "README.md"),
+        'skill_version: "tiavelum/claude-setup@4f26fe8"',
+        'skill_version: "tiavelum/learning-sheets@06032d1"',
+      ),
+    );
+    assert.deepEqual(checkSheets(root).violations, []);
+  });
+
+  test("reports a skill_version of another repository", () => {
+    const root = brokenCopy((_, sheet) =>
+      edit(
+        path.join(sheet, "README.md"),
+        'skill_version: "tiavelum/claude-setup@4f26fe8"',
+        'skill_version: "tiavelum/mac-config@06032d1"',
+      ),
+    );
+    assertViolation(root, readme, /"skill_version" .* is not tiavelum\/learning-sheets@/);
+  });
 
   test("allows a last_modified equal to created, as a sheet with one version has", () => {
     const root = brokenCopy((_, sheet) =>
